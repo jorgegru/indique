@@ -16,10 +16,10 @@ return function (App $app) {
         $app->add(new Project\Middleware\AuthMiddleware());
 
     // Login 
-    $app->group('/login', function () {
-        $this->get('', \Project\Controllers\LoginController::class . ':login')->setName('login');
-        $this->post('', \Project\Controllers\LoginController::class . ':logar')->setName('logar');
-    });
+        $app->group('/login', function () {
+            $this->get('', \Project\Controllers\LoginController::class . ':login')->setName('login');
+            $this->post('', \Project\Controllers\LoginController::class . ':logar')->setName('logar');
+        });
 
 
 

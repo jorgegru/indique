@@ -11,6 +11,17 @@ return function (App $app) {
         return new \Slim\Views\PhpRenderer($settings['template_path']);
     };
 
+    $container['flash'] = function () {
+        return new \Slim\Flash\Messages();
+    };
+
+    $container['validator'] = function () {
+        // $defaultMessages = require __DIR__ . '/../src/defaultMessages.php';
+        $defaultMessages = [];
+        
+        return new Awurth\SlimValidation\Validator(true, $defaultMessages);
+    };
+
     // monolog
     $container['logger'] = function ($c) {
         $settings = $c->get('settings')['logger'];
