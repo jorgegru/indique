@@ -3,7 +3,7 @@
 namespace Project\Controllers;
 
 use \Psr\Container\ContainerInterface;
-use Project\Models\Model;
+use Project\Models\UsersModel;
 use Respect\Validation\Validator as V;
 
 class LoginController
@@ -20,7 +20,9 @@ class LoginController
    {
 
 
-        $Model = new Model($this->container);
+		$UsersModel = new UsersModel($this->container);
+		
+		var_dump($UsersModel->find());die;
 		//$error = $this->container->flash->getMessages();
         return $this->container->renderer->render($response, 'login/index.php', ['error'=>$error]);
    }
