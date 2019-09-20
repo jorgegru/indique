@@ -10,15 +10,15 @@ return function (App $app) {
 
 
     //Logout
-       $app->get('/logout', \App\Controllers\LoginController::class . ':logout');
+       $app->get('/logout', Project\Controllers\LoginController::class . ':logout');
 
     //Check Auth
         $app->add(new Project\Middleware\AuthMiddleware());
 
     // Login 
         $app->group('/login', function () {
-            $this->get('', \Project\Controllers\LoginController::class . ':login')->setName('login');
-            $this->post('', \Project\Controllers\LoginController::class . ':logar')->setName('logar');
+            $this->get('', Project\Controllers\LoginController::class . ':login')->setName('login');
+            $this->post('', Project\Controllers\LoginController::class . ':logar')->setName('logar');
         });
 
 

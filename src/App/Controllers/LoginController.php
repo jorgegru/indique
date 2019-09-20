@@ -2,25 +2,25 @@
 
 namespace Project\Controllers;
 
-use Psr\Container\ContainerInterface;
+use \Psr\Container\ContainerInterface;
+use Project\Models\Model;
 use Respect\Validation\Validator as V;
 
 class LoginController
 {
    protected $container;
-   private $domainModel;
 
-   // constructor receives container instance
-   public function __construct(ContainerInterface $container) 
+
+   public function __construct( $container) 
    {
        $this->container = $container;
-       
-       //var_dump($this->container);
-	//    $this->domainModel = new DomainModel($this->container);
    }
 
    public function login($request, $response, $args)
    {
+
+
+        $Model = new Model($this->container);
 		//$error = $this->container->flash->getMessages();
         return $this->container->renderer->render($response, 'login/index.php', ['error'=>$error]);
    }

@@ -3,9 +3,13 @@
 namespace Tests\App\Models;
 
 use Tests\Functional\BaseTestCase;
+use \Project\Models\Model;
+use Psr\Container\ContainerInterface;
 
 class ModelTest extends BaseTestCase
 {
+
+    
 
     /**
      * Test validando email
@@ -14,8 +18,9 @@ class ModelTest extends BaseTestCase
     {
         $conteiner = $this->app()->getContainer();
         
-        $Model = new \Project\Models\Model($conteiner);
+        
+        $Model = new Model($conteiner);
 
-        var_dump($Model);
+        //var_dump($Model);
     }
 }
