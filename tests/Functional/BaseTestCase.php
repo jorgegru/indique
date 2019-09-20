@@ -135,9 +135,12 @@ class BaseTestCase extends TestCase
     {
         if ($this->conn === null) {
             if ($this->conn == null) {
-                $this->conn = new \PDO( $GLOBALS['DB_DSN'], $GLOBALS['DB_USER'], $GLOBALS['DB_PASSWD'] );
+                $this->conn = new \PDO( $GLOBALS['DB_DSN'], $GLOBALS['DB_USER'], $GLOBALS['DB_PASSWD'], array(\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8") );
             }
             //$this->conn = $this->createDefaultDBConnection(self::$pdo, $GLOBALS['DB_DBNAME']);
+
+            $this->conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+            $this->conn->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
         }
 
         return $this->conn;
