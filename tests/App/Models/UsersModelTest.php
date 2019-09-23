@@ -20,4 +20,15 @@ class UsersModelTest extends BaseTestCase
         $dados["user_uuid"] = 2;
         $this->assertFalse($Model->deleteUsers($dados));
     }
+
+    public function testFindAllUser(){
+
+        $conteiner = $this->app()->getContainer();
+        
+        $Model = new \Project\Models\UsersModel($conteiner);
+
+        $tabela = "users";
+        $this->assertIsArray($Model->findAllUsers($tabela));
+        
+    }
 }

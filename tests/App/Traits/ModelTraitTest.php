@@ -36,12 +36,34 @@ class ModelTraitTest extends BaseTestCase
 
     public function testFind()
     {
-
         $this->container = $this->app()->getContainer();
         $this->conn = $this->container->get('conn');
 
-        $rs= $this->find(['name'=>'jorge', 'user_uuid'=>'dsdsdsds']);
+        $rs = $this->find(['name'=>'jorgehjkhjkjh', 'uuid'=>'56572bdc-dfdfgdfbd7-11e9-be79-cdc05b889658']);
 
-        //var_dump($rs);
-        $this->assertTrue(true);    }
+        $this->assertEquals("boolean", gettype($rs));
+    }
+
+    public function testAll()
+    {
+        $this->container = $this->app()->getContainer();
+        $this->conn = $this->container->get('conn');
+
+        $rs = $this->all(['name'=>'jorgehjkhjkjh', 'uuid'=>'56572bdc-dfdfgdfbd7-11e9-be79-cdc05b889658']);
+
+        $this->assertCount(0, $rs);
+        $this->assertEquals("array", gettype($rs));
+    }
+
+
+
+    public function testUpdate()
+    {
+        $this->container = $this->app()->getContainer();
+        $this->conn = $this->container->get('conn');
+
+        $rs = $this->update(['name'=>'Jorge Goulart', 'uuid'=>'56572bdc-dfdfgdfbd7-11e9-be79-cdc05b889658']);
+
+        $this->assertEquals("boolean", gettype($rs));
+    }
 }
