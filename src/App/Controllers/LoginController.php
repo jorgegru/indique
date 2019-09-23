@@ -44,8 +44,8 @@ class LoginController
 
 			$UsersModel = new UsersModel($this->container);
 
-			var_dump($UsersModel->find(['name'=>'jorge']));
-			die;
+			// var_dump($UsersModel->find(['name'=>'jorge']));
+			// die;
 			// $domain = $this->get_domain();
 			// $auth = $loginModel->authentication($domain);
 			// if($auth) {
