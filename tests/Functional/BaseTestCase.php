@@ -40,6 +40,23 @@ class BaseTestCase extends TestCase
      */
     public function runApp($requestMethod, $requestUri, $requestData = null)
     {
+
+        //start the session
+        if (!isset($_SESSION)) {
+           // If we are run from the command line interface then we do not care
+           // about headers sent using the session_start.
+            if (PHP_SAPI === 'cli') {
+              $_SESSION = array();
+            } elseif (!headers_sent()) {
+                if (!session_start()) {
+                    throw new Exception(__METHOD__ . 'session_start failed.');
+                }
+            } else {
+              throw new Exception(
+                 __METHOD__ . 'Session started after headers sent.');
+           }
+        }
+
         // Create a mock environment for testing with
         $environment = Environment::mock(
             [
@@ -96,6 +113,22 @@ class BaseTestCase extends TestCase
 
     public function app()
     {
+
+        //start the session
+        if (!isset($_SESSION)) {
+            // If we are run from the command line interface then we do not care
+            // about headers sent using the session_start.
+             if (PHP_SAPI === 'cli') {
+               $_SESSION = array();
+             } elseif (!headers_sent()) {
+                 if (!session_start()) {
+                     throw new Exception(__METHOD__ . 'session_start failed.');
+                 }
+             } else {
+               throw new Exception(
+                  __METHOD__ . 'Session started after headers sent.');
+            }
+        }
 
         if (file_exists(base_path() . '/.env')) {
             $dotenv = \Dotenv\Dotenv::create(base_path());

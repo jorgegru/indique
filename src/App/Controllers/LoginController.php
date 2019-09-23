@@ -2,8 +2,8 @@
 
 namespace Project\Controllers;
 
-use \Psr\Container\ContainerInterface;
 use Project\Models\UsersModel;
+use \Psr\Container\ContainerInterface;
 use Respect\Validation\Validator as V;
 
 class LoginController
@@ -11,19 +11,15 @@ class LoginController
    protected $container;
 
 
-   public function __construct( $container) 
+   public function __construct(ContainerInterface $container) 
    {
        $this->container = $container;
    }
 
    public function login($request, $response, $args)
    {
-
-
-		$UsersModel = new UsersModel($this->container);
+		$error = $this->container->flash->getMessages();
 		
-		var_dump($UsersModel->find());die;
-		//$error = $this->container->flash->getMessages();
         return $this->container->renderer->render($response, 'login/index.php', ['error'=>$error]);
    }
 
@@ -37,22 +33,20 @@ class LoginController
 	*/
    public function logar($request, $response, $args)
    {
-	   $metadata = $request->getParsedBody();
+	   	$metadata = $request->getParsedBody();
 		$validator  = $this->container->validator->validate($request, [
 			'username' => V::length(6, 100)->alnum('@.:')->noWhitespace()->notBlank(),
 			'password' => V::length(6, 25)->noWhitespace()->notBlank(),
         ]);
         
-        
-        
-        $errors = $validator->getErrors();
-        var_dump($errors);
-        die;
-
 		if ($validator->isValid()) {
-    
+
+
+			$UsersModel = new UsersModel($this->container);
+
+			var_dump($UsersModel->find(['name'=>'jorge']));
+			die;
 			// $domain = $this->get_domain();
-			// $loginModel = new LoginModel($this->container);
 			// $auth = $loginModel->authentication($domain);
 			// if($auth) {
 			// 	//get the groups assigned to the user and then set the groups in $_SESSION["groups"]
