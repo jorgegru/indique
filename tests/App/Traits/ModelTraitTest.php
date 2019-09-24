@@ -38,7 +38,7 @@ class ModelTraitTest extends BaseTestCase
         $this->conn = $this->container->get('conn');
         
         $id = uuid();
-        $rs = $this->set(['uuid'=>$id, 'name'=>'teste', 'cnpj'=>'00.000.000/0000-00', 'create_time'=>'0000-00-00 00:00:00']);
+        $rs = $this->set(['uuid'=>$id, 'name'=>'teste', 'cnpj'=>'00.000.000/0000-00']);
 
         $this->assertEquals("boolean", gettype($rs));
 
