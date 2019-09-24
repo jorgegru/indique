@@ -44,6 +44,19 @@ class LoginController
 
 			$UsersModel = new UsersModel($this->container);
 
+			$user = $UsersModel->find(['email'=>$metadata['username'], 'password'=>$metadata['password']]);
+
+			if($user){
+				$_SESSION['user']['id'] = $user['user_uuid'];
+				$_SESSION['user']['name'] = $user['name'];
+				$_SESSION['user']['email'] = $user['email'];
+				$_SESSION['user']['company_id'] = $user['company_uuid'];
+			}
+			else{
+				$this->container->flash->addMessage('error', 'Falha na autenticação, login ou senha inválida');
+				return $response->withRedirect($this->container->router->pathFor('login'));
+			}
+
 			// var_dump($UsersModel->find(['name'=>'jorge']));
 			// die;
 			// $domain = $this->get_domain();
@@ -181,7 +194,14 @@ class LoginController
 			return $response->withRedirect($this->container->router->pathFor('login'));
       	}
    	}
-// 	/**
+
+	public function logout(){
+		\session_destroy();
+		//$this->container->flash->addMessage('aviso', 'logout');
+		//return $this->container->renderer->render($response, 'login/index.php', ['error'=>"erro"]);
+		
+	}
+	   // 	/**
 // 	 * Destroy session
 // 	 *
 // 	 * @param [type] $request
