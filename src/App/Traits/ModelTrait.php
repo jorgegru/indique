@@ -62,9 +62,36 @@ trait ModelTrait {
         }
     }
 
-    public function delete()
+    public function delete(array $dados)
     {
-        var_dump($this->conn);
+        try{
+            if(count($dados)==0)
+                return false;
+            foreach ($dados as $key => $row) {
+                $key_name = explode('.',$key);
+                $key_name = end($key_name);
+                $sqlArray[] = "{$key} = :{$key_name}";
+            }
+            $sql = "DELETE FROM {$this->table} 
+            WHERE ". implode(' AND ', $sqlArray);
+
+            $stmt = $this->conn->prepare($sql);
+
+            foreach ($dados as $key => $row) {
+                $key_name = explode('.',$key);
+                $key_name = end($key_name);
+                $stmt->bindValue(":{$key_name}", $row, \PDO::PARAM_STR);
+            }
+                
+            $stmt->execute();
+
+            if($stmt->rowCount()>0)     return true;
+            else                        return false;
+            
+        }catch(\PDOException $e){
+            $this->logger->error('ExtensionsModel::get() => '.$e);
+            return $e;
+        }
     }
 
     public function set($dados)
