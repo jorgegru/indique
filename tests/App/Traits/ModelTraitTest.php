@@ -14,7 +14,7 @@ class ModelTraitTest extends BaseTestCase
      *
      * @var string
      */
-    protected $table = 'users';
+    protected $table = 'companies';
 
     protected $container;
     protected $conn;
@@ -32,37 +32,73 @@ class ModelTraitTest extends BaseTestCase
     //     //var_dump($Model);
     // }
 
-        
-
-    public function testFind()
+    public function testInsert()
     {
         $this->container = $this->app()->getContainer();
         $this->conn = $this->container->get('conn');
-
-        $rs = $this->find(['name'=>'jorgehjkhjkjh', 'uuid'=>'56572bdc-dfdfgdfbd7-11e9-be79-cdc05b889658']);
+        
+        $id = uuid();
+        $rs = $this->set(['uuid'=>$id, 'name'=>'teste', 'cnpj'=>'00.000.000/0000-00', 'create_time'=>'0000-00-00 00:00:00']);
 
         $this->assertEquals("boolean", gettype($rs));
-    }
 
-    public function testAll()
+        $dados['uuid'] = $id;
+        $dados['name'] = 'teste';
+        return $dados;
+    }   
+
+
+    /**
+     * @depends testInsert
+     */
+    public function testFind(array $dados)
     {
         $this->container = $this->app()->getContainer();
         $this->conn = $this->container->get('conn');
 
-        $rs = $this->all(['name'=>'jorgehjkhjkjh', 'uuid'=>'56572bdc-dfdfgdfbd7-11e9-be79-cdc05b889658']);
+        $rs = $this->find(['name'=>$dados['name'], 'uuid'=>$dados['uuid']]);
 
-        $this->assertCount(0, $rs);
+        $this->assertEquals("array", gettype($rs));//("boolean", gettype($rs));
+    }
+
+    /**
+     * @depends testInsert
+     */
+    public function testAll(array $dados)
+    {
+        $this->container = $this->app()->getContainer();
+        $this->conn = $this->container->get('conn');
+
+        $rs = $this->all(['name'=>$dados['name'], 'uuid'=>$dados['uuid']]);
+
+        //$this->assertCount(0, $rs);
         $this->assertEquals("array", gettype($rs));
     }
 
 
-
-    public function testUpdate()
+    /**
+     * @depends testInsert
+     */
+    public function testUpdate(array $dados)
     {
         $this->container = $this->app()->getContainer();
         $this->conn = $this->container->get('conn');
 
-        $rs = $this->update(['name'=>'Jorge Goulart', 'uuid'=>'56572bdc-dfdfgdfbd7-11e9-be79-cdc05b889658']);
+        $rs = $this->update(['name'=>$dados['name'], 'uuid'=>$dados['uuid']]);
+
+        $this->assertEquals("boolean", gettype($rs));
+    }
+
+
+    /**
+     * @depends testInsert
+     */
+    public function testDelete(array $dados)
+    {
+        $this->container = $this->app()->getContainer();
+        $this->conn = $this->container->get('conn');
+
+        $rs = $this->delete(['name'=>$dados['name'], 'uuid'=>$dados['uuid']]);
 
         $this->assertEquals("boolean", gettype($rs));
     }
