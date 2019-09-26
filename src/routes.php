@@ -20,6 +20,11 @@ return function (App $app) {
             $this->get('', Project\Controllers\LoginController::class . ':login')->setName('login');
             $this->post('', Project\Controllers\LoginController::class . ':logar')->setName('logar');
         });
+    // Ladastro Login
+        $app->group('/cadastroLogin', function () {
+            $this->get('', Project\Controllers\LoginController::class . ':login')->setName('login');
+            $this->post('', Project\Controllers\LoginController::class . ':logar')->setName('logar');
+        });    
 
 
 
