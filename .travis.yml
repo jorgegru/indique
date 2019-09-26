@@ -18,8 +18,8 @@ before_script:
 script: 
   - php vendor/jorgegru/migrate/start init
   - php vendor/jorgegru/migrate/start migrate
-  - ./vendor/bin/phpunit --configuration ./travis.phpunit.xml.dist
   - mysql -u root --password="datascan" < tests/travis.sql
+  - ./vendor/bin/phpunit --configuration ./travis.phpunit.xml.dist
 
 notifications:
   email: false
