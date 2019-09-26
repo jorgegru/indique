@@ -44,7 +44,8 @@
         "start": "php -S localhost:8080 -t public",
         "test": "phpunit",
         "post-install-cmd": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+            "@php -r \"file_exists('phpunit.xml') || copy('phpunit.xml.example', 'phpunit.xml');\""
         ]
     }
     
