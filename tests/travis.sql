@@ -1,7 +1,7 @@
 use indique;
 INSERT INTO `companies` (`uuid`, `name`, `cnpj`, `create_time`) VALUES ('878b5a1b-de92-11e9-be79-cdc05b889658', 'JGSITE SOLUCOES WEB', '19959019000198', CURRENT_TIMESTAMP);
 
-/*companies*/
+
 INSERT INTO companies (uuid,name,cnpj) VALUES ("4191e2b5-21be-4afd-95b9-2e364b869bfd","teste","12.123.123/0001-12");
 ​
 INSERT INTO companies (uuid,name,cnpj) VALUES ("06cc2035-4a49-489b-8315-7515600f9cbd","Compania","53.791.933/0001-24");
@@ -24,7 +24,7 @@ INSERT INTO companies (uuid,name,cnpj) VALUES ("edfa7b0d-7934-4541-904b-a245d62e
 ​
 ​
 ​
-​/*users*/
+
 INSERT INTO users (uuid,name,email,password,cpf,company_uuid) VALUES ("3c85ebd2-0d01-4910-a34c-2b0e64ab2789","teste123","anlumira@gmail.com",123123,"000.000.000-00","4191e2b5-21be-4afd-95b9-2e364b869bfd");
 ​
 INSERT INTO users (uuid,name,email,password,cpf,company_uuid) VALUES ("287acd66-2b60-41e3-99a2-081a3ec886bd","Bernardo","ber@gmail.com",123321,"123.123.123-12","06cc2035-4a49-489b-8315-7515600f9cbd");
@@ -48,8 +48,7 @@ INSERT INTO users (uuid,name,email,password,cpf,company_uuid) VALUES ("d94255d6-
 ​
 ​
 ​
-​
-​/*indications*/
+
 INSERT INTO indications (uuid, cpf_cnpj, name, telefone, name_responsavel, email, cep, estado, cidade ,bairro, rua, numero, complemento, user_uuid, company_uuid) VALUES ("c13b77c2-0ade-4733-9e42-dc3782ba40a7","000.000.000-00","Teste","0000-0000","Teste","teste@gmail.com","00000-000","Teste","Teste","bairro Teste","rua teste", "000", "ap 000", "3c85ebd2-0d01-4910-a34c-2b0e64ab2789","4191e2b5-21be-4afd-95b9-2e364b869bfd");
 ​
 INSERT INTO indications (uuid, cpf_cnpj, name, telefone, name_responsavel, email, cep, estado, cidade ,bairro, rua, numero, complemento, user_uuid, company_uuid) VALUES ("6d9a13fb-a3fe-4bf5-9a53-06cdad5a33bc","874.412.124-87","André","1478-7854","André2","andre@gmail.com","04185-632","São Paulo","São Paulo","bairro jardim","rua professor", "452", "ap 110", "3c85ebd2-0d01-4910-a34c-2b0e64ab2789","4191e2b5-21be-4afd-95b9-2e364b869bfd");
