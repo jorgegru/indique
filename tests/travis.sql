@@ -2,11 +2,11 @@ use indique;
 INSERT INTO `companies` (`uuid`, `name`, `cnpj`, `create_time`) VALUES ('878b5a1b-de92-11e9-be79-cdc05b889658', 'JGSITE SOLUCOES WEB', '19959019000198', CURRENT_TIMESTAMP);
 
 
-INSERT INTO companies (uuid,name,cnpj) VALUES ("4191e2b5-21be-4afd-95b9-2e364b869bfd","teste","12.123.123/0001-12");
+INSERT INTO `companies` (`uuid`,`name`,`cnpj`) VALUES ('4191e2b5-21be-4afd-95b9-2e364b869bfd','teste','12.123.123/0001-12');
 ​
-INSERT INTO companies (uuid,name,cnpj) VALUES ("06cc2035-4a49-489b-8315-7515600f9cbd","Compania","53.791.933/0001-24");
+INSERT INTO `companies` (`uuid`,`name`,`cnpj`) VALUES ('06cc2035-4a49-489b-8315-7515600f9cbd','Compania','53.791.933/0001-24');
 ​
-INSERT INTO companies (uuid,name,cnpj) VALUES ("32e61c3b-213b-4944-b8d6-6e0663354b7e","Servicos","32.496.164/0001-16");
+INSERT INTO `companies` (`uuid`,`name`,`cnpj`) VALUES ('32e61c3b-213b-4944-b8d6-6e0663354b7e','Servicos','32.496.164/0001-16');
 ​
 INSERT INTO companies (uuid,name,cnpj) VALUES ("f5b95d3e-4638-4328-8d8a-b650458373c5","Transporte","14.714.665/0001-77");
 ​
