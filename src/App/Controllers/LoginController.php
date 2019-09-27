@@ -47,7 +47,7 @@ class LoginController
 			$user = $UsersModel->find(['email'=>$metadata['username'], 'password'=>$metadata['password']]);
 
 			if($user){
-				$_SESSION['user']['id'] = $user['user_uuid'];
+				$_SESSION['user']['id'] = $user['uuid'];
 				$_SESSION['user']['name'] = $user['name'];
 				$_SESSION['user']['email'] = $user['email'];
 				$_SESSION['user']['company_id'] = $user['company_uuid'];
@@ -187,7 +187,7 @@ class LoginController
 			// 	return $response->withRedirect('/dashboard', 301);
 			// }
 			// $this->container->flash->addMessage('error', 'Falha na autenticação, login ou senha inválida');
-			return $response->withRedirect($this->container->router->pathFor('login'));
+			return $response->withRedirect('/dashboard');
       	} else {
 			$errors = $validator->getErrors();
 			$this->container->flash->addMessage('error', 'Falha na autenticação, login ou senha inválida');
