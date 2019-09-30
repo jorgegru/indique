@@ -20,10 +20,10 @@ return function (App $app) {
             $this->get('', Project\Controllers\LoginController::class . ':login')->setName('login');
             $this->post('', Project\Controllers\LoginController::class . ':logar')->setName('logar');
         });
-    // Ladastro Login
+    // Cadastro Login
         $app->group('/cadastroLogin', function () {
-            $this->get('', Project\Controllers\LoginController::class . ':login')->setName('login');
-            $this->post('', Project\Controllers\LoginController::class . ':logar')->setName('logar');
+            $this->get('', Project\Controllers\CadastroLoginController::class . ':cadastroLogin')->setName('cadastroLogin');
+            $this->post('', Project\Controllers\CadastroLoginController::class . ':cadastrarLogin')->setName('cadastrarLogin');
         });    
 
 
