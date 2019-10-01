@@ -9,6 +9,7 @@ class LoginControllerTest extends BaseTestCase
 {
     public function testGetLogin()
     {
+        $_SESSION['user'] = null;
         $response = $this->runApp('GET', '/login');
 
         $this->assertEquals(200, $response->getStatusCode());

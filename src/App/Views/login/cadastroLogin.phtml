@@ -1,5 +1,9 @@
 <?php
-    $error = isset($error['error']) ? $error['error'] : '';
+    
+    $error = isset($message['error']) ? $message['error'] : '';
+    $success = isset($message['success']) ? $message['success'] : '';
+    $companies = isset($companies) ? $companies : '';
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -32,6 +36,9 @@
 
         <!-- Google Font -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+        <script>
+		   // $('.select2').select2();
+	    </script>
     </head>
 
     <body class="hold-transition login-page">
@@ -43,15 +50,42 @@
             <div class="login-box-body">
                 
 
-                <form action="login" method="post">
+                <form action="cadastroLogin" method="post">
                     <div class="form-group has-feedback">
-                        <input type="text" class="form-control" name="username" placeholder="Usuário">
+                        <input type="text" class="form-control" id="txt_name" name="name" placeholder="Nome">
                         <span class="glyphicon glyphicon-user form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
-                        <input type="password" class="form-control" name="password" placeholder="Senha">
+                        <input type="text" class="form-control" id="txt_email" name="email" placeholder="Email">
+                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="password" class="form-control" id="txt_password" name="password" placeholder="Senha">
                         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     </div>
+                    <div class="form-group has-feedback">
+                        <input type="password" class="form-control" id="txt_confirm_password" name="confirm_password" placeholder="Repita a Senha">
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" id="txt_cpf" name="cpf" placeholder="CPF" onchange="
+                            var cpf = document.getElementById('txt_cpf').value;
+                            cpf = cpf.replace(/\D+/g, '');
+                            document.getElementById('txt_cpf').value = cpf;
+                        ">
+                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <select  id='opt_company_uuid' name="company_uuid" class="normal form-control select2" name='optCons' onchange="">
+                            <option value="0">Selecione uma compania</option>
+                            <?php
+                                foreach($companies as $value){
+                                    echo("<option value='".$value["uuid"]."'>".$value["name"]."</option>");
+                                }
+                            ?>
+                        </select>
+                    </div>
+
                     <div class="row">
                         
                         <!-- /.col -->
@@ -107,8 +141,12 @@
                     "showMethod": "fadeIn",
                     "hideMethod": "fadeOut"
                 }
-				<?php if(isset($error[0]))
-                    echo "toastr.error('{$error[0]}');"; ?>
+                <?php 
+                    if(isset($error[0]))
+                        echo "toastr.error('{$error[0]}');";
+                    else if(isset($success[0]))
+                        echo "toastr.success('{$success[0]}');";
+                 ?>
 			});
         </script>	
     </body>
