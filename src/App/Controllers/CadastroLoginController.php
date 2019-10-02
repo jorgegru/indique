@@ -25,7 +25,7 @@ class CadastroLoginController
 
         $message = $this->container->flash->getMessages();
 		
-        return $this->container->renderer->render($response, 'compania/cadastroCompania.phtml',['message'=>$message,'companies'=>$companies]);
+        return $this->container->renderer->render($response, 'login/cadastroLogin.phtml',['message'=>$message,'companies'=>$companies]);
    }
 
    /**
