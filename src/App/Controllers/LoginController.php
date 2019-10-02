@@ -195,8 +195,9 @@ class LoginController
       	}
    	}
 
-	public function logout(){
+	public function logout($request, $response, $args){
 		\session_destroy();
+		return $response->withRedirect($this->container->router->pathFor('login'));
 		//$this->container->flash->addMessage('aviso', 'logout');
 		//return $this->container->renderer->render($response, 'login/index.php', ['error'=>"erro"]);
 		
