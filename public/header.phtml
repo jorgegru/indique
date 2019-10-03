@@ -1,0 +1,61 @@
+<header class="main-header">
+    <!-- Logo -->
+            
+    <a href="index.php" class="logo">
+        <!-- mini logo for sidebar mini 50x50 pixels -->
+        <span class="logo-mini"><b>Ind</b></span>
+        <!-- logo for regular state and mobile devices -->
+        <!-- <span class="logo-lg"><img src="images/unnamed.png" style="height: 46px;"></span> -->
+    </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top" role="navigation">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Navegação</span>
+            </a>
+            <!-- Navbar Right Menu -->
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                                                <!-- User Account: style can be found in dropdown.less -->
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <!-- <div class="user-image" style="background:url('http://sistema.setaconsultoria.com.br/datascan/app/images/no-img.gif') no-repeat center center; background-size:cover;"></div> -->
+                            <!-- <img src="http://sistema.setaconsultoria.com.br/datascan/app/images/no-img.gif" class="user-image" alt="User Image"/> -->
+                            <span class="hidden-xs"><?php echo $_SESSION["user"]["name"]?></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header" style="height: 100%">
+                                
+                                <!-- <img src="http://sistema.setaconsultoria.com.br/datascan/app/images/no-img.gif" class="img-circle" alt="User Image" /> -->
+                                <p><?php echo $_SESSION["user"]["name"]?></p>
+                            </li>
+                            <!-- Menu Body -->
+                            <!--<li class="user-body">
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Followers</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Sales</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Friends</a>
+                                </div>
+                            </li>-->
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-left">
+                
+                                    <!-- <a href="#" class="btn btn-default btn-flat">Profile</a> -->
+                <a href="/logout" class="btn btn-default btn-flat" title="Editar login">Editar login</a>
+                                                    </div>
+                                <div class="pull-right">
+                                    <a href="/logout" style="color:#fff;" class="btn btn-block btn-danger" onclick="window.location='/logout.php'" title="Encerrar sua sessão no Datascan">Sair</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+</header>
