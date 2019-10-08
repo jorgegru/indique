@@ -14,12 +14,12 @@ class CadastroLoginControllerTest extends BaseTestCase
      *
      * @var string
      */
-    protected $table = 'companies';
+    protected $table = 'users';
 
     protected $container;
     protected $conn;
     protected $logger;
-    
+
     public function testGetCadastro()
     {
         $_SESSION['user']['id'] = "3c85ebd2-0d01-4910-a34c-2b0e64ab2789";
@@ -65,7 +65,7 @@ class CadastroLoginControllerTest extends BaseTestCase
         $this->container = $this->app()->getContainer();
         $this->conn = $this->container->get('conn');
 
-        $rs = $this->delete(['name'=>'Teste Cadastro', 'cnpj'=>'78719080069']);
+        $rs = $this->delete(['name'=>'Teste Cadastro', 'cpf'=>'78719080069']);
 
         //$location = $response->getHeader("location");
        // $this->assertStringContainsString('dashboard', current($location));
