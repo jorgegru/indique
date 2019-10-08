@@ -114,7 +114,7 @@ class CadastroLoginController
                     return $response->withRedirect($this->container->router->pathFor('cadastroLogin'));
                 }
                 else{
-                    if($user_type == 3 || $user_type == 4){
+                    if($_SESSION['user']['user_type'] == 3 || $_SESSION['user']['user_type'] == 4){
                         $metadata['user_type'] = 4;
                         $metadata['status'] = 2;
                     }
