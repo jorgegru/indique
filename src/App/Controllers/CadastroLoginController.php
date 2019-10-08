@@ -114,7 +114,10 @@ class CadastroLoginController
                     return $response->withRedirect($this->container->router->pathFor('cadastroLogin'));
                 }
                 else{
-
+                    if($user_type == 3 || $user_type == 4){
+                        $metadata['user_type'] = 4;
+                        $metadata['status'] = 2;
+                    }
                     $user = $UsersModel->set([  'uuid'=>$uuid,
                                                 'user_type'=>$metadata['user_type'],
                                                 'email'=>$metadata['email'], 
