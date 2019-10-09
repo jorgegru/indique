@@ -1,5 +1,9 @@
 <?php
-    $error = isset($error['error']) ? $error['error'] : '';
+    $error = isset($message['error']) ? $message['error'] : '';//mensagem de erro
+    $success = isset($message['success']) ? $message['success'] : '';//mensagem de sucesso
+    $companies = isset($companies) ? $companies : '';//uuids das companias
+    $validate = isset($message['validate']) ? $message['validate'] : '';//mensagem do validador dos campos
+    $user_type = $_SESSION['user']['user_type'];//tipo de usuario
 ?>
 <!DOCTYPE html>
 <html>
@@ -22,7 +26,7 @@
 
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
-
+        <link rel="stylesheet" href="template/bower_components/select2/dist/css/select2.min.css">
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -43,65 +47,65 @@
             <div class="login-box-body">
                 
 
-                <form id="myForm" class="form-horizontal" action="cadastroLogin" method="post">
-                                            <div class="box-body">
-                                                <div class="form-group">
-                                                    <label class="col-sm-3 control-label">Nome:</label>
-                                                    <div class="col-sm-11">
-                                                        <input type="text" class="form-control" id="txt_name" name="name" placeholder="Nome" onkeyup="revisaCampos();">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group has-feedback">
-                                                    <label class="col-sm-3 control-label">Email:</label>
-                                                    <div class="col-sm-11">
-                                                        <input type="text" class="form-control" id="txt_email" name="email" placeholder="Email" onkeyup="revisaCampos();">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group has-feedback">
-                                                    <label class="col-sm-3 control-label">Senha:</label>
-                                                    <div class="col-sm-11">
-                                                        <input type="password" class="form-control" id="txt_password" name="password" placeholder="Senha" onkeyup="revisaCampos();">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group has-feedback">
-                                                    <label class="col-sm-5 control-label">Repita a Senha:</label>
-                                                    <div class="col-sm-11">
-                                                        <input type="password" class="form-control" id="txt_confirm_password" name="confirm_password" placeholder="Repita a Senha" onkeyup="revisaCampos();">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group has-feedback">
-                                                    <label class="col-sm-2 control-label">CPF:</label>
-                                                    <div class="col-sm-11">
-                                                        <input type="text" class="form-control" id="txt_cpf" name="cpf" placeholder="CPF" onchange="
-                                                            var cpf = document.getElementById('txt_cpf').value;
-                                                            cpf = cpf.replace(/\D+/g, '');
-                                                            document.getElementById('txt_cpf').value = cpf;
-                                                            revisaCampos();
-                                                        ">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group has-feedback">
-                                                    <label class="col-sm-3 control-label">Compania:</label>
-                                                    <div class="col-sm-11">
-                                                        <select  id='opt_company_uuid' name="company_uuid" class="normal form-control select2" onchange="revisaCampos();">
-                                                            <option value="">Selecione uma compania</option>
-                                                            <?php
-                                                                foreach($companies as $value){
-                                                                    echo("<option value='".$value["uuid"]."'>".$value["name"]."</option>");
-                                                                }
-                                                            ?>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                
+                <form id="myForm" class="form-horizontal" action="cadastroLoginDeslogado" method="post">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Nome:</label>
+                            <div class="col-sm-11">
+                                <input type="text" class="form-control" id="txt_name" name="name" placeholder="Nome" onkeyup="revisaCampos();">
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label class="col-sm-3 control-label">Email:</label>
+                            <div class="col-sm-11">
+                                <input type="text" class="form-control" id="txt_email" name="email" placeholder="Email" onkeyup="revisaCampos();">
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label class="col-sm-3 control-label">Senha:</label>
+                            <div class="col-sm-11">
+                                <input type="password" class="form-control" id="txt_password" name="password" placeholder="Senha" onkeyup="revisaCampos();">
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label class="col-sm-5 control-label">Repita a Senha:</label>
+                            <div class="col-sm-11">
+                                <input type="password" class="form-control" id="txt_confirm_password" name="confirm_password" placeholder="Repita a Senha" onkeyup="revisaCampos();">
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label class="col-sm-2 control-label">CPF:</label>
+                            <div class="col-sm-11">
+                                <input type="text" class="form-control" id="txt_cpf" name="cpf" placeholder="CPF" onchange="
+                                    var cpf = document.getElementById('txt_cpf').value;
+                                    cpf = cpf.replace(/\D+/g, '');
+                                    document.getElementById('txt_cpf').value = cpf;
+                                    revisaCampos();
+                                ">
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label class="col-sm-3 control-label">Compania:</label>
+                            <div class="col-sm-11">
+                                <select  id='opt_company_uuid' name="company_uuid" class="normal form-control select2" onchange="revisaCampos();">
+                                    <option value="">Selecione uma compania</option>
+                                    <?php
+                                        foreach($companies as $value){
+                                            echo("<option value='".$value["uuid"]."'>".$value["name"]."</option>");
+                                        }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                        
 
-                                                <div class="form-group">
-                                                    <div class="col-sm-3 col-sm-offset-2">
-                                                        <button id="cadastrar" type="submit" class="btn btn-primary" onclick="" disabled="true">Cadastrar</button>
-                                                    </div>
-                                                </div>
-                                            </div>    
-                                        </form>
+                        <div class="form-group">
+                            <div class="col-sm-3 col-sm-offset-2">
+                                <button id="cadastrar" type="submit" class="btn btn-primary" onclick="" disabled="true">Cadastrar</button>
+                            </div>
+                        </div>
+                    </div>    
+                </form>
 
                 <!-- /.social-auth-links -->
 
