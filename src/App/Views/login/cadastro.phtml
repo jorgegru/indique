@@ -3,7 +3,6 @@
     $success = isset($message['success']) ? $message['success'] : '';//mensagem de sucesso
     $companies = isset($companies) ? $companies : '';//uuids das companias
     $validate = isset($message['validate']) ? $message['validate'] : '';//mensagem do validador dos campos
-    $user_type = $_SESSION['user']['user_type'];//tipo de usuario
 ?>
 <!DOCTYPE html>
 <html>
@@ -176,9 +175,6 @@
 
         <script>
         $('.select2').select2();
-       
-        <?php if($user_type == 3 || $user_type == 4) echo('$("#div_status").hide();'); ?>
-        <?php if($user_type == 3 || $user_type == 4) echo('$("#div_user").hide();'); ?>
             function revisaCampos(){
                 if($('#txt_name').val() == '' || 
                 $('#opt_user_type').val() == '' || 
