@@ -25,6 +25,12 @@ return function (App $app) {
             $this->get('', Project\Controllers\CadastroLoginController::class . ':cadastroLogin')->setName('cadastroLogin');
             $this->post('', Project\Controllers\CadastroLoginController::class . ':cadastrarLogin')->setName('cadastrarLogin');
         });
+
+    // Editar Login
+        $app->group('/EditaLogin', function () {
+            $this->get('', Project\Controllers\EditarLoginController::class . ':EditaLogin')->setName('EditaLogin');
+            $this->post('', Project\Controllers\EditarLoginController::class . ':EditarLogin')->setName('EditarLogin');
+        });
         
     // Cadastro Compania
         $app->group('/cadastroCompania', function () {
