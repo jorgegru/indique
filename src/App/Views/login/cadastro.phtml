@@ -38,7 +38,7 @@
     </head>
 
     <body class="hold-transition login-page">
-        <div class="login-box">
+        <div class="login-box" style="width:600px;">
             <div class="login-logo">
                 Cadastrar Login
             </div>
@@ -50,31 +50,31 @@
                     <div class="box-body">
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Nome:</label>
-                            <div class="col-sm-11">
+                            <div class="col-sm-8">
                                 <input type="text" class="form-control" id="txt_name" name="name" placeholder="Nome" onkeyup="revisaCampos();">
                             </div>
                         </div>
                         <div class="form-group has-feedback">
                             <label class="col-sm-3 control-label">Email:</label>
-                            <div class="col-sm-11">
+                            <div class="col-sm-8">
                                 <input type="text" class="form-control" id="txt_email" name="email" placeholder="Email" onkeyup="revisaCampos();">
                             </div>
                         </div>
                         <div class="form-group has-feedback">
                             <label class="col-sm-3 control-label">Senha:</label>
-                            <div class="col-sm-11">
+                            <div class="col-sm-8">
                                 <input type="password" class="form-control" id="txt_password" name="password" placeholder="Senha" onkeyup="revisaCampos();">
                             </div>
                         </div>
                         <div class="form-group has-feedback">
-                            <label class="col-sm-5 control-label">Repita a Senha:</label>
-                            <div class="col-sm-11">
+                            <label class="col-sm-3 control-label">Repita a Senha:</label>
+                            <div class="col-sm-8">
                                 <input type="password" class="form-control" id="txt_confirm_password" name="confirm_password" placeholder="Repita a Senha" onkeyup="revisaCampos();">
                             </div>
                         </div>
                         <div class="form-group has-feedback">
-                            <label class="col-sm-2 control-label">CPF:</label>
-                            <div class="col-sm-11">
+                            <label class="col-sm-3 control-label">CPF:</label>
+                            <div class="col-sm-8">
                                 <input type="text" class="form-control" id="txt_cpf" name="cpf" placeholder="CPF" onchange="
                                     var cpf = document.getElementById('txt_cpf').value;
                                     cpf = cpf.replace(/\D+/g, '');
@@ -85,7 +85,7 @@
                         </div>
                         <div class="form-group has-feedback">
                             <label class="col-sm-3 control-label">Compania:</label>
-                            <div class="col-sm-11">
+                            <div class="col-sm-8">
                                 <select  id='opt_company_uuid' name="company_uuid" class="normal form-control select2" onchange="revisaCampos();">
                                     <option value="">Selecione uma compania</option>
                                     <?php
@@ -99,7 +99,7 @@
                         
 
                         <div class="form-group">
-                            <div class="col-sm-3 col-sm-offset-2">
+                            <div class="col-sm-3 col-sm-offset-3">
                                 <button id="cadastrar" type="submit" class="btn btn-primary" onclick="" disabled="true">Cadastrar</button>
                             </div>
                         </div>
