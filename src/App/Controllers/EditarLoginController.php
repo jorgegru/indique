@@ -7,7 +7,7 @@ use Project\Models\CompaniesModel;
 use \Psr\Container\ContainerInterface;
 use Respect\Validation\Validator as V;
 
-class CadastroLoginController
+class EditarLoginController
 {
    protected $container;
 
@@ -17,7 +17,7 @@ class CadastroLoginController
        $this->container = $container;
    }
 
-   public function cadastroLogin($request, $response, $args)
+   public function editaLogin($request, $response, $args)
    {
         $companiesModel = new CompaniesModel($this->container);
         $usersModel = new UsersModel($this->container);
@@ -44,7 +44,7 @@ class CadastroLoginController
 	* @param [type] $args
 	* @return redirect
 	*/
-   public function cadastrarLogin($request, $response, $args)
+   public function editarLogin($request, $response, $args)
    {
 	   	$metadata = $request->getParsedBody();
         $validator = $this->container->validator->validate($request, [

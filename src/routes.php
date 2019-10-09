@@ -27,9 +27,9 @@ return function (App $app) {
         });
 
     // Editar Login
-        $app->group('/EditaLogin', function () {
-            $this->get('', Project\Controllers\EditarLoginController::class . ':EditaLogin')->setName('EditaLogin');
-            $this->post('', Project\Controllers\EditarLoginController::class . ':EditarLogin')->setName('EditarLogin');
+        $app->group('/editaLogin', function () {
+            $this->get('', Project\Controllers\EditarLoginController::class . ':editaLogin')->setName('editaLogin');
+            $this->post('', Project\Controllers\EditarLoginController::class . ':editarLogin')->setName('editarLogin');
         });
         
     // Cadastro Compania
