@@ -47,10 +47,17 @@ class LoginController
 			$user = $UsersModel->find(['email'=>$metadata['username'], 'password'=>$metadata['password']]);
 
 			if($user){
-				$_SESSION['user']['id'] = $user['uuid'];
-				$_SESSION['user']['name'] = $user['name'];
-				$_SESSION['user']['email'] = $user['email'];
-				$_SESSION['user']['company_id'] = $user['company_uuid'];
+				if($user['status'] == 1){
+					$_SESSION['user']['id'] = $user['uuid'];
+					$_SESSION['user']['name'] = $user['name'];
+					$_SESSION['user']['email'] = $user['email'];
+					$_SESSION['user']['company_id'] = $user['company_uuid'];
+					$_SESSION['user']['user_type'] = $user['user_type'];
+				}
+				else{
+					$this->container->flash->addMessage('error', 'Falha na autenticação, login desativado');
+					return $response->withRedirect($this->container->router->pathFor('login'));
+				}
 			}
 			else{
 				$this->container->flash->addMessage('error', 'Falha na autenticação, login ou senha inválida');
