@@ -8,6 +8,14 @@ return function (App $app) {
     $container = $app->getContainer();
 
 
+    // Cadastro usuario
+    $app->get('/cadastro', function (Request $request, Response $response, array $args) use ($container) {
+        // Sample log message
+        $container->get('logger')->info("Slim-Skeleton '/' route");
+
+        // Render index view
+        return $container->get('renderer')->render($response, 'login/cadastro.phtml', $args);
+    });
 
     //Logout
        $app->get('/logout', Project\Controllers\LoginController::class . ':logout');

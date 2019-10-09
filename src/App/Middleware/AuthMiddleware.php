@@ -22,7 +22,8 @@ class AuthMiddleware
         }else
         if((isset($_SESSION["user"]) && $_SESSION["user"]) || 
            (($routeName == '/login') && !isset($_SESSION["user"]))  ||// Caso nao tenha o login e tentar logar
-           (($routeName == '/logout'))  
+           (($routeName == '/logout')) ||
+           (($routeName == '/cadastro'))
         ){
             $route = $request->getAttribute('route');
             // $name = $route->getName();
