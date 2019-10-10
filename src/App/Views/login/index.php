@@ -71,6 +71,7 @@
                 <!-- /.social-auth-links -->
 
                 <a href="#">Eu esqueci a senha</a><br>
+                <a href="cadastroLoginDeslogado">Cadastro</a><br>
 
             </div>
         <!-- /.login-box-body -->
