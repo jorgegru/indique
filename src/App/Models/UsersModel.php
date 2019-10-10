@@ -26,10 +26,17 @@ class UsersModel extends Model
             foreach ($dados as $key => $row) {
                 $key_name = explode('.',$key);
                 $key_name = end($key_name);
-                $sqlArray[] = "{$key} = :{$key_name}";
+
+                $firld = " ";
+                if($key!='uuid' && $key!='id') 
+                    $sqlArray[] = "{$key} = :{$key_name}";
+                else{
+                    $sqlArray2[] = "{$key} != :{$key_name}";
+                    $firld = "&&";
+                }
             }
             $sql = "SELECT * FROM {$this->table}
-            WHERE ". implode(' OR ', $sqlArray);
+            WHERE (". implode(' OR ', $sqlArray) .") ".$firld. " ". implode(' && ', $sqlArray2);
             
             $stmt = $this->conn->prepare($sql);
 

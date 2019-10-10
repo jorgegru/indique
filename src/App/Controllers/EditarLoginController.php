@@ -23,17 +23,17 @@ class EditarLoginController
         $usersModel = new UsersModel($this->container);
 
         if($_SESSION['user']['user_type'] == 1){
-            $user = $usersModel->all(["user_type"=>"2"],["user_type"=>"3"],["user_type"=>"4"]);
+            $users = $usersModel->allOr(["user_type"=>array("2","3","4")]);
         }
         else if($_SESSION['user']['user_type'] == 2){
-            $user = $usersModel->all(["user_type"=>"3"],["user_type"=>"4"]);
+            $users = $usersModel->allOr(["user_type"=>array("3","4")]);
         }
 
         $companies = $companiesModel->all(["1"=>"1"]);
 
         $message = $this->container->flash->getMessages();
 		
-        return $this->container->renderer->render($response, 'login/editaLogin.phtml',['message'=>$message,'companies'=>$companies, 'user'=>$user]);
+        return $this->container->renderer->render($response, 'login/editaLogin.phtml',['message'=>$message,'companies'=>$companies, 'users'=>$users]);
    }
 
    /**
@@ -115,7 +115,7 @@ class EditarLoginController
             
                 $UsersModel = new UsersModel($this->container);
 
-                $user = $UsersModel->validateUser(['email'=>$metadata['email'], 'cpf'=>$metadata['cpf']]);
+                $user = $UsersModel->validateUser(['email'=>$metadata['email'], 'cpf'=>$metadata['cpf'], 'uuid'=>$metadata['uuid']]);
 
                 if($user){
                     if($user['email'] == $metadata['email']){
@@ -131,7 +131,7 @@ class EditarLoginController
                         $metadata['user_type'] = 4;
                         $metadata['status'] = 2;
                     }
-                    $user = $UsersModel->update(['uuid'=>$metadata['uuid'],
+                    $user = $UsersModel->update(['uuid'=>$metadata['user_uuid'],
                                                 'user_type'=>$metadata['user_type'],
                                                 'email'=>$metadata['email'], 
                                                 'password'=>$metadata['password'],
@@ -161,5 +161,13 @@ class EditarLoginController
             $this->container->flash->addMessage('validate', $errors);
 			return $response->withRedirect($this->container->router->pathFor('editaLogin'));
       	}
-   	}
+    }
+    
+    public function carregaEditarLogin(){
+        $UsersModel = new UsersModel($this->container);
+
+        $user = $UsersModel->find(['uuid'=>$_POST['uuid']]);
+
+        return json_encode($user);
+    }
 }

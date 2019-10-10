@@ -41,7 +41,14 @@ trait ModelTrait {
             foreach ($dados as $key => $row) {
                 $key_name = explode('.',$key);
                 $key_name = end($key_name);
-                $sqlArray[] = "{$key} = :{$key_name}";
+                if(is_array($row)){
+                    foreach ($row as $name => $value){
+                        $fullname = $key.$name;
+                        $sqlArray[] = "{$key} = :{$fullname}";
+                    }
+                }else{
+                    $sqlArray[] = "{$key} = :{$key_name}";
+                }
             }
             $sql = "SELECT * FROM {$this->table}
             WHERE ". implode(' OR ', $sqlArray);
@@ -51,7 +58,15 @@ trait ModelTrait {
             foreach ($dados as $key => $row) {
                 $key_name = explode('.',$key);
                 $key_name = end($key_name);
-                $stmt->bindValue(":{$key_name}", $row, \PDO::PARAM_STR);
+                if(is_array($row)){
+                    foreach ($row as $name => $value){
+                        $fullname = $key.$name;
+                        $stmt->bindValue(":{$fullname}", $value, \PDO::PARAM_STR);
+                    }
+                }
+                else{
+                    $stmt->bindValue(":{$key_name}", $row, \PDO::PARAM_STR);
+                }
             }
                 
             $stmt->execute();
