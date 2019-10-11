@@ -33,6 +33,50 @@ trait ModelTrait {
         }
     }
 
+    public function allOr(array $dados)
+    {
+        try{
+            if(count($dados)==0)
+                return false;
+            foreach ($dados as $key => $row) {
+                $key_name = explode('.',$key);
+                $key_name = end($key_name);
+                if(is_array($row)){
+                    foreach ($row as $name => $value){
+                        $fullname = $key.$name;
+                        $sqlArray[] = "{$key} = :{$fullname}";
+                    }
+                }else{
+                    $sqlArray[] = "{$key} = :{$key_name}";
+                }
+            }
+            $sql = "SELECT * FROM {$this->table}
+            WHERE ". implode(' OR ', $sqlArray);
+            
+            $stmt = $this->conn->prepare($sql);
+
+            foreach ($dados as $key => $row) {
+                $key_name = explode('.',$key);
+                $key_name = end($key_name);
+                if(is_array($row)){
+                    foreach ($row as $name => $value){
+                        $fullname = $key.$name;
+                        $stmt->bindValue(":{$fullname}", $value, \PDO::PARAM_STR);
+                    }
+                }
+                else{
+                    $stmt->bindValue(":{$key_name}", $row, \PDO::PARAM_STR);
+                }
+            }
+                
+            $stmt->execute();
+            
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        }catch(\PDOException $e){
+            throw $e;
+        }
+    }
+
     public function find(array $dados)
     {
         try{

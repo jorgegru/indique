@@ -46,12 +46,13 @@
                                     
                                 </li>
 
-
-                                <li>
-                                <a href="/editarLogin"><i class="fa fa-circle-o"></i>Editar</i></a>             
+                                <?php if($_SESSION['user']['user_type'] == 1 || $_SESSION['user']['user_type'] == 2){?>
+                                    <li>
+                                    <a href="/editaLogin"><i class="fa fa-circle-o"></i>Editar</i></a>             
                             
                                   
-                                </li>
+                                    </li>
+                                <?php }?>
                             </ul>
                         </li>
 
