@@ -115,7 +115,7 @@ class EditarLoginController
             
                 $UsersModel = new UsersModel($this->container);
 
-                $user = $UsersModel->validateUser(['email'=>$metadata['email'], 'cpf'=>$metadata['cpf'], 'uuid'=>$metadata['uuid']]);
+                $user = $UsersModel->validateUser(['email'=>$metadata['email'], 'cpf'=>$metadata['cpf'], 'uuid'=>$metadata['user_uuid']]);
 
                 if($user){
                     if($user['email'] == $metadata['email']){
@@ -163,10 +163,13 @@ class EditarLoginController
       	}
     }
     
-    public function carregaEditarLogin(){
+    public function carregaEditarLogin($request, $response, $args)
+    {
+        $metadata = $request->getParsedBody();
+     
         $UsersModel = new UsersModel($this->container);
 
-        $user = $UsersModel->find(['uuid'=>$_POST['uuid']]);
+        $user = $UsersModel->find(['uuid'=>$metadata['uuid']]);
 
         return json_encode($user);
     }
