@@ -53,6 +53,12 @@ return function (App $app) {
             $this->post('', Project\Controllers\CadastroCompaniaController::class . ':cadastrarCompania')->setName('cadastrarCompania');
         });  
 
+    // Editar Compania
+        $app->group('/editaCompania', function () {
+            $this->get('', Project\Controllers\EditarCompaniaController::class . ':editaCompania')->setName('editaCompania');
+            $this->post('', Project\Controllers\EditarCompaniaController::class . ':editarCompania')->setName('editarCompania');
+        });
+        $app->post('/carregaEditarCompania', Project\Controllers\EditarCompaniaController::class . ':carregaEditarCompania')->setName('carregaEditarCompania');
 
 
     $app->get('/[{name}]', function (Request $request, Response $response, array $args) use ($container) {
