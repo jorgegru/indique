@@ -20,6 +20,46 @@ class CadastroLoginControllerTest extends BaseTestCase
     protected $conn;
     protected $logger;
 
+    public function testGetCadastroDeslogado()
+    {
+        $response = $this->runApp('GET', '/cadastroLoginDeslogado');
+        //var_dump( $response );//die;
+        $this->assertEquals(200, $response->getStatusCode());
+        
+        //$this->assertStringContainsString('Acesso ao sistema', (string)$response->getBody());
+        $this->assertStringContainsString('name="name"', (string)$response->getBody());
+        $this->assertStringContainsString('name="email"', (string)$response->getBody());
+        $this->assertStringContainsString('name="password"', (string)$response->getBody());
+        $this->assertStringContainsString('name="confirm_password"', (string)$response->getBody());
+        $this->assertStringContainsString('name="cpf"', (string)$response->getBody());
+        $this->assertStringContainsString('name="company_uuid"', (string)$response->getBody());
+    }
+
+    public function testPostCadastroDeslogado()
+    {
+        $data['name'] = 'Teste Cadastro2';
+        $data['email'] = 'emailteste2@gmail.com';
+        $data['password'] = '123123';
+        $data['confirm_password'] = '123123';
+        $data['cpf'] = '88761565008';
+        $data['company_uuid'] = '878b5a1b-de92-11e9-be79-cdc05b889658';
+        
+        $response = $this->runApp('POST', '/cadastroLoginDeslogado', $data);
+
+        $response = $this->runApp('GET', '/cadastroLoginDeslogado');
+
+        $this->assertStringContainsString('Cadastrado com sucesso', (string)$response->getBody());
+
+        // deletar teste
+        $this->container = $this->app()->getContainer();
+        $this->conn = $this->container->get('conn');
+
+        $rs = $this->delete(['name'=>'Teste Cadastro2', 'cpf'=>'88761565008']);
+
+        //$location = $response->getHeader("location");
+       // $this->assertStringContainsString('dashboard', current($location));
+    }
+
     public function testGetCadastro()
     {
         $_SESSION['user']['id'] = "3c85ebd2-0d01-4910-a34c-2b0e64ab2789";
