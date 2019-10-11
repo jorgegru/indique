@@ -25,6 +25,7 @@ class CadastroCompaniaControllerTest extends BaseTestCase
         $_SESSION['user']['id'] = "3c85ebd2-0d01-4910-a34c-2b0e64ab2789";
         $_SESSION['user']['name'] = "teste123";
         $_SESSION['user']['email'] = "anlumira@gmail.com";
+        $_SESSION['user']['user_type'] = "1";
         $_SESSION['user']['company_id'] = "4191e2b5-21be-4afd-95b9-2e364b869bfd";
 
         $response = $this->runApp('GET', '/cadastroCompania');

@@ -23,20 +23,26 @@ class UsersModel extends Model
         try{
             if(count($dados)==0)
                 return false;
+            $field = false;    
             foreach ($dados as $key => $row) {
                 $key_name = explode('.',$key);
                 $key_name = end($key_name);
 
-                $firld = " ";
                 if($key!='uuid' && $key!='id') 
                     $sqlArray[] = "{$key} = :{$key_name}";
                 else{
                     $sqlArray2[] = "{$key} != :{$key_name}";
-                    $firld = "&&";
+                    $field = true;
                 }
             }
-            $sql = "SELECT * FROM {$this->table}
-            WHERE (". implode(' OR ', $sqlArray) .") ".$firld. " ". implode(' && ', $sqlArray2);
+
+            if($field){
+                $sql = "SELECT * FROM {$this->table}
+                WHERE (". implode(' OR ', $sqlArray) .") && ". implode(' && ', $sqlArray2);
+            }else{
+                $sql = "SELECT * FROM {$this->table}
+                WHERE ". implode(' OR ', $sqlArray);
+            }
             
             $stmt = $this->conn->prepare($sql);
 
