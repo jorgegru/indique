@@ -53,6 +53,11 @@ return function (App $app) {
             $this->post('', Project\Controllers\CadastroCompaniaController::class . ':cadastrarCompania')->setName('cadastrarCompania');
         });  
 
+    // Cadastro Indicacao
+        $app->group('/cadastroIndicacao', function () {
+            $this->get('', Project\Controllers\CadastroCompaniaController::class . ':cadastroIndicacao')->setName('cadastroIndicacao');
+            $this->post('', Project\Controllers\CadastroCompaniaController::class . ':cadastrarIndicacao')->setName('cadastrarIndicacao');
+        }); 
 
 
     $app->get('/[{name}]', function (Request $request, Response $response, array $args) use ($container) {
@@ -60,6 +65,6 @@ return function (App $app) {
         $container->get('logger')->info("Slim-Skeleton '/' route");
 
         // Render index view
-        return $container->get('renderer')->render($response, 'index.phtml', $args);
+        return $container->get('renderer')->render($response, 'indicacao/cadastroIndicacao.phtml', $args);
     });
 };
