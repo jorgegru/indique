@@ -14,7 +14,7 @@ class EditarCompaniaControllerTests extends BaseTestCase
      *
      * @var string
      */
-    protected $table = 'users';
+    protected $table = 'companies';
 
     protected $container;
     protected $conn;
@@ -43,11 +43,16 @@ class EditarCompaniaControllerTests extends BaseTestCase
         
         $response = $this->runApp('POST', '/carregaEditarCompania', $data);
 
+        $this->container = $this->app()->getContainer();
+        $this->conn = $this->container->get('conn');
+
+        $rs = $this->find(['uuid'=>'878b5a1b-de92-11e9-be79-cdc05b889658']);
+
         $data = array(
             'uuid' => '878b5a1b-de92-11e9-be79-cdc05b889658',
             'name' => 'JGSITE SOLUCOES WEB',
-            'cnpj' => '19959019000198', 
-            'create_time' => '2019-10-09 08:17:50'
+            'cnpj' => '19959019000198',
+            'create_time' => $rs['create_time']
         );
 
         //var_dump((string)$response->getBody());
