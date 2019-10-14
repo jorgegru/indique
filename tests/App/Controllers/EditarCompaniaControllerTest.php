@@ -44,10 +44,10 @@ class EditarCompaniaControllerTests extends BaseTestCase
         $response = $this->runApp('POST', '/carregaEditarCompania', $data);
 
         $data = array(
-            'cnpj' => '19959019000198', 
-            'create_time' => '2019-10-09 08:17:50',
+            'uuid' => '878b5a1b-de92-11e9-be79-cdc05b889658',
             'name' => 'JGSITE SOLUCOES WEB',
-            'uuid' => '878b5a1b-de92-11e9-be79-cdc05b889658'
+            'cnpj' => '19959019000198', 
+            'create_time' => '2019-10-09 08:17:50'
         );
 
         //var_dump((string)$response->getBody());
