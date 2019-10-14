@@ -65,6 +65,6 @@ return function (App $app) {
         $container->get('logger')->info("Slim-Skeleton '/' route");
 
         // Render index view
-        return $container->get('renderer')->render($response, 'indicacao/cadastroIndicacao.phtml', $args);
+        return $container->get('renderer')->render($response, 'index.phtml', $args);
     });
 };
