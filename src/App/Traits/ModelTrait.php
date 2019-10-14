@@ -200,7 +200,7 @@ trait ModelTrait {
             
             $stmt->execute();
 
-            if($stmt->rowCount())
+            if($stmt->rowCount() >= 0)
                 return  true;
             return false;
         } catch (\PDOException $e) {
