@@ -61,6 +61,12 @@ return function (App $app) {
             $this->get('', Project\Controllers\CadastroIndicacaoController::class . ':cadastroIndicacao')->setName('cadastroIndicacao');
             $this->post('', Project\Controllers\CadastroIndicacaoController::class . ':cadastrarIndicacao')->setName('cadastrarIndicacao');
         }); 
+    // Editar Compania
+        $app->group('/editaCompania', function () {
+            $this->get('', Project\Controllers\EditarCompaniaController::class . ':editaCompania')->setName('editaCompania');
+            $this->post('', Project\Controllers\EditarCompaniaController::class . ':editarCompania')->setName('editarCompania');
+        });
+        $app->post('/carregaEditarCompania', Project\Controllers\EditarCompaniaController::class . ':carregaEditarCompania')->setName('carregaEditarCompania');
 
 
     $app->get('/[{name}]', function (Request $request, Response $response, array $args) use ($container) {

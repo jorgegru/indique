@@ -23,13 +23,26 @@ class CompaniesModel extends Model
         try{
             if(count($dados)==0)
                 return false;
+            $field = false;        
             foreach ($dados as $key => $row) {
                 $key_name = explode('.',$key);
                 $key_name = end($key_name);
-                $sqlArray[] = "{$key} = :{$key_name}";
+                
+                if($key!='uuid' && $key!='id') 
+                    $sqlArray[] = "{$key} = :{$key_name}";
+                else{
+                    $sqlArray2[] = "{$key} != :{$key_name}";
+                    $field = true;
+                }
             }
-            $sql = "SELECT * FROM {$this->table}
-            WHERE ". implode(' OR ', $sqlArray);
+            
+            if($field){
+                $sql = "SELECT * FROM {$this->table}
+                WHERE (". implode(' OR ', $sqlArray) .") && ". implode(' && ', $sqlArray2);
+            }else{
+                $sql = "SELECT * FROM {$this->table}
+                WHERE ". implode(' OR ', $sqlArray);
+            }
             
             $stmt = $this->conn->prepare($sql);
 
