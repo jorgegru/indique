@@ -405,7 +405,7 @@
                     type: 'POST',
                     url: 'apiViaCEP',
                     dataType: 'json',
-                    data: 'id=2',
+                    data: 'id='+$("#txt_cep").val(),
                     success: function(resposta){
                         $("#txt_rua").val(resposta.logradouro);
                         $("#txt_complemento").val(resposta.complemento);
