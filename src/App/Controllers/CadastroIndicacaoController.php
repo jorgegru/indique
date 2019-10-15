@@ -207,18 +207,14 @@ class CadastroIndicacaoController
                                             'commission'=>$metadata['commission'],
                                             'user_uuid'=>$metadata['user_uuid']]);
                 if($indication){
-                    
+                    $this->container->flash->addMessage('success', 'Cadastrado com sucesso');
+                    return $response->withRedirect($this->container->router->pathFor('cadastroIndicacao'));
                 }
                 else{
                     $errors = $validator->getErrors();
                     $this->container->flash->addMessage('error', 'Falha no cadastro');
                     return $response->withRedirect($this->container->router->pathFor('cadastroIndicacao'));
                 }
-
-                $this->container->flash->addMessage('success', 'Cadastrado com sucesso');
-                //$response->write('Cadastrado com sucesso');
-                return $response->withRedirect($this->container->router->pathFor('cadastroIndicacao'));
-                //return $response->withRedirect('/cadastroLogin');
             
             }catch(\PDOException $e){
                 $this->container->flash->addMessage('error', 'Falha no Cadastro');
