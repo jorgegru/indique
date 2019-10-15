@@ -51,7 +51,7 @@ class LoginController
 					$_SESSION['user']['id'] = $user['uuid'];
 					$_SESSION['user']['name'] = $user['name'];
 					$_SESSION['user']['email'] = $user['email'];
-					$_SESSION['user']['company_id'] = $user['company_uuid'];
+					//$_SESSION['user']['company_id'] = $user['company_uuid'];
 					$_SESSION['user']['user_type'] = $user['user_type'];
 				}
 				else{

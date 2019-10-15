@@ -19,24 +19,24 @@ class CadastroLoginController
 
    public function cadastroLogin($request, $response, $args)
    {
-        $companiesModel = new CompaniesModel($this->container);
+        //$companiesModel = new CompaniesModel($this->container);
 
-        $companies = $companiesModel->all(["1"=>"1"]);
+        //$companies = $companiesModel->all(["1"=>"1"]);
 
         $message = $this->container->flash->getMessages();
 		
-        return $this->container->renderer->render($response, 'login/cadastroLogin.phtml',['message'=>$message,'companies'=>$companies]);
+        return $this->container->renderer->render($response, 'login/cadastroLogin.phtml',['message'=>$message/*,'companies'=>$companies*/]);
    }
 
    public function cadastroLoginDeslogado($request, $response, $args)
    {
-        $companiesModel = new CompaniesModel($this->container);
+        //$companiesModel = new CompaniesModel($this->container);
 
-        $companies = $companiesModel->all(["1"=>"1"]);
+        //$companies = $companiesModel->all(["1"=>"1"]);
 
         $message = $this->container->flash->getMessages();
 		
-        return $this->container->renderer->render($response, 'login/cadastro.phtml',['message'=>$message,'companies'=>$companies]);
+        return $this->container->renderer->render($response, 'login/cadastro.phtml',['message'=>$message/*,'companies'=>$companies*/]);
    }
 
    /**
@@ -97,12 +97,12 @@ class CadastroLoginController
                     'numeric' => 'Digite apenas números para o CPF',
                 ]
             ],
-            'company_uuid' => [
-                'rules' => V::notBlank(),
-                'messages' => [
-                    'notBlank' => 'Selecione uma compania',
-                ]
-            ],
+            // 'company_uuid' => [
+            //     'rules' => V::notBlank(),
+            //     'messages' => [
+            //         'notBlank' => 'Selecione uma compania',
+            //     ]
+            // ],
             'status' => [
                 'rules' => V::notBlank(),
                 'messages' => [
@@ -135,7 +135,7 @@ class CadastroLoginController
                                                 'password'=>$metadata['password'],
                                                 'cpf'=>$metadata['cpf'],
                                                 'name'=>$metadata['name'],
-                                                'company_uuid'=>$metadata['company_uuid'],
+                                                //'company_uuid'=>$metadata['company_uuid'],
                                                 'status'=>$metadata['status']]);
 
                     if($user){
@@ -207,12 +207,12 @@ class CadastroLoginController
                     'numeric' => 'Digite apenas números para o CPF',
                 ]
             ],
-            'company_uuid' => [
-                'rules' => V::notBlank(),
-                'messages' => [
-                    'notBlank' => 'Selecione uma compania',
-                ]
-            ],
+            // 'company_uuid' => [
+            //     'rules' => V::notBlank(),
+            //     'messages' => [
+            //         'notBlank' => 'Selecione uma compania',
+            //     ]
+            // ],
         ]);
         $uuid = uuid();// && \is_uuid($uuid)
 		if ($validator->isValid()) {
@@ -235,7 +235,7 @@ class CadastroLoginController
                                                 'password'=>$metadata['password'],
                                                 'cpf'=>$metadata['cpf'],
                                                 'name'=>$metadata['name'],
-                                                'company_uuid'=>$metadata['company_uuid'],
+                                                //'company_uuid'=>$metadata['company_uuid'],
                                                 'status'=>$metadata['status']]);
 
                     if($user){
