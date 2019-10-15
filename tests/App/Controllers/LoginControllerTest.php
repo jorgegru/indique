@@ -45,7 +45,7 @@ class LoginControllerTest extends BaseTestCase
         $data['password'] = '123123';
         
         $response = $this->runApp('POST', '/login', $data);
-
+var_dump((string)$response->getBody());
         $location = $response->getHeader("location");
         $this->assertStringContainsString('dashboard', current($location));
     }
