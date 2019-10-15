@@ -26,6 +26,9 @@ return function (App $app) {
     //Logout
        $app->get('/logout', Project\Controllers\LoginController::class . ':logout');
 
+    //API ViaCEP
+        $app->post('/apiViaCEP', Project\Services\APICep::class . ':getCEP');
+
     //Check Auth
         $app->add(new Project\Middleware\AuthMiddleware());
 

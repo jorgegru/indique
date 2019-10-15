@@ -130,7 +130,33 @@
                                                         
                                                         <select  id='opt_estado_name' name="estado" class="normal form-control select2" onchange="revisaCampos();">
                                                             <option value="">Selecione o Estado</option>
-                                                         
+                                                            <option value="AC">Acre</option>
+                                                            <option value="AL">Alagoas</option>
+                                                            <option value="AP">Amapá</option>
+                                                            <option value="AM">Amazonas</option>
+                                                            <option value="BA">Bahia</option>
+                                                            <option value="CE">Ceará</option>
+                                                            <option value="ES">Espírito Santo</option>
+                                                            <option value="DF">Distrito Federal</option>
+                                                            <option value="GO">Goiás</option>
+                                                            <option value="MA">Maranhão</option>
+                                                            <option value="MT">Mato Grosso</option>
+                                                            <option value="MS">Mato Grosso do Sul</option>
+                                                            <option value="MG">Minas Gerais</option>
+                                                            <option value="PR">Paraná</option>
+                                                            <option value="PB">Paraíba</option>
+                                                            <option value="PA">Pará</option>
+                                                            <option value="PE">Pernambuco</option>
+                                                            <option value="PI">Piauí</option>
+                                                            <option value="RN">Rio Grande do Norte</option>
+                                                            <option value="RS">Rio Grande do Sul</option>
+                                                            <option value="RJ">Rio de Janeiro</option>
+                                                            <option value="RO">Rondônia</option>
+                                                            <option value="RR">Roraima</option>
+                                                            <option value="SC">Santa Catarina</option>
+                                                            <option value="SE">Sergipe</option>
+                                                            <option value="SP">São Paulo</option>
+                                                            <option value="TO">Tocantins</option>
                                                         </select>
                                                     </div>
                                                     <label class="col-sm-1 control-label">Cidade:</label>
@@ -307,16 +333,6 @@
         $('.select2').select2();
 
         <?php if($user_type == 3 || $user_type == 4) echo('$("#div_admin").hide();');?>
-
-            $.ajax({//preenche os estados
-                type: 'GET',
-                url: 'http://www.geonames.org/childrenJSON?geonameId=3469034',
-                success: function(resposta){
-                    for(var i=0; i<resposta.totalResultsCount; i++){
-                        $("#opt_estado_name").append(new Option(resposta.geonames[i].toponymName, resposta.geonames[i].adminCodes1.ISO3166_2));
-                    }
-                }
-            });
        
             function revisaCampos(){
                 if($('#txt_name').val() == '' || 
@@ -386,8 +402,10 @@
 
             $("#txt_cep").focusout(function(){//API viacep
                 $.ajax({
-                    url: 'https://viacep.com.br/ws/'+$(this).val()+'/json/unicode/',
+                    type: 'POST',
+                    url: 'apiViaCEP',
                     dataType: 'json',
+                    data: 'id=2',
                     success: function(resposta){
                         $("#txt_rua").val(resposta.logradouro);
                         $("#txt_complemento").val(resposta.complemento);
