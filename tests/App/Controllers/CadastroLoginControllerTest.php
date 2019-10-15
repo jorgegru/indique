@@ -32,7 +32,7 @@ class CadastroLoginControllerTest extends BaseTestCase
         $this->assertStringContainsString('name="password"', (string)$response->getBody());
         $this->assertStringContainsString('name="confirm_password"', (string)$response->getBody());
         $this->assertStringContainsString('name="cpf"', (string)$response->getBody());
-        $this->assertStringContainsString('name="company_uuid"', (string)$response->getBody());
+        //$this->assertStringContainsString('name="company_uuid"', (string)$response->getBody());
     }
 
     public function testPostCadastroDeslogado()
@@ -42,7 +42,7 @@ class CadastroLoginControllerTest extends BaseTestCase
         $data['password'] = '123123';
         $data['confirm_password'] = '123123';
         $data['cpf'] = '88761565008';
-        $data['company_uuid'] = '878b5a1b-de92-11e9-be79-cdc05b889658';
+        //$data['company_uuid'] = '878b5a1b-de92-11e9-be79-cdc05b889658';
         
         $response = $this->runApp('POST', '/cadastroLoginDeslogado', $data);
 
@@ -65,7 +65,7 @@ class CadastroLoginControllerTest extends BaseTestCase
         $_SESSION['user']['id'] = "3c85ebd2-0d01-4910-a34c-2b0e64ab2789";
 				$_SESSION['user']['name'] = "teste123";
 				$_SESSION['user']['email'] = "anlumira@gmail.com";
-                $_SESSION['user']['company_id'] = "4191e2b5-21be-4afd-95b9-2e364b869bfd";
+                //$_SESSION['user']['company_id'] = "4191e2b5-21be-4afd-95b9-2e364b869bfd";
                 $_SESSION['user']['user_type'] = 1;
 
         $response = $this->runApp('GET', '/cadastroLogin');
@@ -78,7 +78,7 @@ class CadastroLoginControllerTest extends BaseTestCase
         $this->assertStringContainsString('name="password"', (string)$response->getBody());
         $this->assertStringContainsString('name="confirm_password"', (string)$response->getBody());
         $this->assertStringContainsString('name="cpf"', (string)$response->getBody());
-        $this->assertStringContainsString('name="company_uuid"', (string)$response->getBody());
+        //$this->assertStringContainsString('name="company_uuid"', (string)$response->getBody());
         $this->assertStringContainsString('name="user_type"', (string)$response->getBody());
         $this->assertStringContainsString('name="status"', (string)$response->getBody());
     }
@@ -91,7 +91,7 @@ class CadastroLoginControllerTest extends BaseTestCase
         $data['password'] = '123123';
         $data['confirm_password'] = '123123';
         $data['cpf'] = '78719080069';
-        $data['company_uuid'] = '878b5a1b-de92-11e9-be79-cdc05b889658';
+        //$data['company_uuid'] = '878b5a1b-de92-11e9-be79-cdc05b889658';
         $data['user_type'] = '1';
         $data['status'] = '1';
         
