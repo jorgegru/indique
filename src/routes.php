@@ -55,8 +55,8 @@ return function (App $app) {
 
     // Cadastro Indicacao
         $app->group('/cadastroIndicacao', function () {
-            $this->get('', Project\Controllers\CadastroCompaniaController::class . ':cadastroIndicacao')->setName('cadastroIndicacao');
-            $this->post('', Project\Controllers\CadastroCompaniaController::class . ':cadastrarIndicacao')->setName('cadastrarIndicacao');
+            $this->get('', Project\Controllers\CadastroIndicacaoController::class . ':cadastroIndicacao')->setName('cadastroIndicacao');
+            $this->post('', Project\Controllers\CadastroIndicacaoController::class . ':cadastrarIndicacao')->setName('cadastrarIndicacao');
         }); 
 
 
