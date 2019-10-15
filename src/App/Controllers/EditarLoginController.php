@@ -19,7 +19,7 @@ class EditarLoginController
 
    public function editaLogin($request, $response, $args)
    {
-        $companiesModel = new CompaniesModel($this->container);
+        //$companiesModel = new CompaniesModel($this->container);
         $usersModel = new UsersModel($this->container);
 
         if($_SESSION['user']['user_type'] == 1){
@@ -29,11 +29,11 @@ class EditarLoginController
             $users = $usersModel->allOr(["user_type"=>array("3","4")]);
         }
 
-        $companies = $companiesModel->all(["1"=>"1"]);
+        //$companies = $companiesModel->all(["1"=>"1"]);
 
         $message = $this->container->flash->getMessages();
 		
-        return $this->container->renderer->render($response, 'login/editaLogin.phtml',['message'=>$message,'companies'=>$companies, 'users'=>$users]);
+        return $this->container->renderer->render($response, 'login/editaLogin.phtml',['message'=>$message/*,'companies'=>$companies*/, 'users'=>$users]);
    }
 
    /**
@@ -94,12 +94,12 @@ class EditarLoginController
                     'numeric' => 'Digite apenas números para o CPF',
                 ]
             ],
-            'company_uuid' => [
-                'rules' => V::notBlank(),
-                'messages' => [
-                    'notBlank' => 'Selecione uma compania',
-                ]
-            ],
+            // 'company_uuid' => [
+            //     'rules' => V::notBlank(),
+            //     'messages' => [
+            //         'notBlank' => 'Selecione uma compania',
+            //     ]
+            // ],
             'status' => [
                 'rules' => V::notBlank(),
                 'messages' => [
@@ -137,7 +137,7 @@ class EditarLoginController
                                                 'password'=>$metadata['password'],
                                                 'cpf'=>$metadata['cpf'],
                                                 'name'=>$metadata['name'],
-                                                'company_uuid'=>$metadata['company_uuid'],
+                                                //'company_uuid'=>$metadata['company_uuid'],
                                                 'status'=>$metadata['status']]);
 
                     if($user){
