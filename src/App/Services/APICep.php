@@ -7,8 +7,8 @@ class APICep
     public function getCEP($request, $response, $args)
     {
         $ch = curl_init();  
-
-        $url = "https://viacep.com.br/ws/".$_POST['id']."/json/unicode/";
+        $metadata = $request->getParsedBody();
+        $url = "https://viacep.com.br/ws/".$metadata['id']."/json/unicode/";
     
         curl_setopt($ch,CURLOPT_URL,$url);
         curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);

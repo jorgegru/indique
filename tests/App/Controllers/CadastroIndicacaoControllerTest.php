@@ -86,4 +86,21 @@ class CadastroIndicacaoControllerTest extends BaseTestCase
         //$location = $response->getHeader("location");
        // $this->assertStringContainsString('dashboard', current($location));
     }
+
+    public function testGetCEP()
+    {
+        $data['id'] = "04184000";
+
+        $response = $this->runApp('POST', '/apiViaCEP', $data);
+        //var_dump( $response );die;
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $this->assertStringContainsString('cep', (string)$response->getBody());
+        $this->assertStringContainsString('logradouro', (string)$response->getBody());
+        $this->assertStringContainsString('complemento', (string)$response->getBody());
+        $this->assertStringContainsString('bairro', (string)$response->getBody());
+        $this->assertStringContainsString('localidade', (string)$response->getBody());
+        $this->assertStringContainsString('uf', (string)$response->getBody());
+
+    }
 }
