@@ -23,7 +23,7 @@ class UsersModelTest extends BaseTestCase
             'email'=>'jj@jgsite.com.br', 
             'password'=>'joyKd@8dH4a',
             'cpf'=>'36218640834',
-            'company_uuid'=>'878b5a1b-de92-11e9-be79-cdc05b889658',
+            //'company_uuid'=>'878b5a1b-de92-11e9-be79-cdc05b889658',
             'user_type'=>'4',
             'status'=>'2',
         ];
