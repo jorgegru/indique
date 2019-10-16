@@ -26,6 +26,9 @@ return function (App $app) {
     //Logout
        $app->get('/logout', Project\Controllers\LoginController::class . ':logout');
 
+    //API ViaCEP
+        $app->post('/apiViaCEP', Project\Services\APICep::class . ':getCEP');
+
     //Check Auth
         $app->add(new Project\Middleware\AuthMiddleware());
 
@@ -53,6 +56,19 @@ return function (App $app) {
             $this->post('', Project\Controllers\CadastroCompaniaController::class . ':cadastrarCompania')->setName('cadastrarCompania');
         });  
 
+    // Cadastro Indicacao
+        $app->group('/cadastroIndicacao', function () {
+            $this->get('', Project\Controllers\CadastroIndicacaoController::class . ':cadastroIndicacao')->setName('cadastroIndicacao');
+            $this->post('', Project\Controllers\CadastroIndicacaoController::class . ':cadastrarIndicacao')->setName('cadastrarIndicacao');
+        });
+        
+    // Editar Indicacao
+        $app->group('/editaIndicacao', function () {
+            $this->get('', Project\Controllers\EditarIndicacaoController::class . ':editaIndicacao')->setName('editaIndicacao');
+            $this->post('', Project\Controllers\EditarIndicacaoController::class . ':editarIndicacao')->setName('editarIndicacao');
+        });
+        $app->post('/carregaEditarIndicacao', Project\Controllers\EditarIndicacaoController::class . ':carregaEditarIndicacao')->setName('carregaEditarIndicacao');
+        
     // Editar Compania
         $app->group('/editaCompania', function () {
             $this->get('', Project\Controllers\EditarCompaniaController::class . ':editaCompania')->setName('editaCompania');

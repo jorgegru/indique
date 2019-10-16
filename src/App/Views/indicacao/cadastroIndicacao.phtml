@@ -1,0 +1,421 @@
+<?php
+    
+    $error = isset($message['error']) ? $message['error'] : '';//mensagem de erro
+    $success = isset($message['success']) ? $message['success'] : '';//mensagem de sucesso
+    //$companies = isset($companies) ? $companies : '';//uuids das companias
+    $services = isset($services) ? $services : '';//uuids dos servicos
+    $consultores = isset($consultores) ? $consultores : '';//uuids dos consultores
+    $validate = isset($message['validate']) ? $message['validate'] : '';//mensagem do validador dos campos
+    $user_type = $_SESSION['user']['user_type'];//tipo de usuario
+?>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>INDIQUE | Cadastro Indicação</title>
+        <!-- Tell the browser to be responsive to screen width -->
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <!-- Bootstrap 3.3.7 -->
+        <link rel="stylesheet" href="template/bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="template/bower_components/font-awesome/css/font-awesome.min.css">
+        <!-- Ionicons -->
+        <link rel="stylesheet" href="template/bower_components/Ionicons/css/ionicons.min.css">
+        <!-- Theme style -->
+        <link rel="stylesheet" href="template/dist/css/AdminLTE.min.css">
+        <!-- iCheck -->
+        <link rel="stylesheet" href="template/plugins/iCheck/square/blue.css">
+
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+        <link href="template/dist/css/skins/_all-skins.min.css" rel="stylesheet" type="text/css" />
+        
+        <link rel="stylesheet" href="template/bower_components/select2/dist/css/select2.min.css">
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <!-- Google Font -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+        <script>
+		   // $('.select2').select2();
+	    </script>
+    </head>
+
+    <body class="skin-blue sidebar-mini" style="height: auto; min-height: 100%;">
+        <div class="wrapper">
+
+            <?php include_once(__DIR__.'/../header.phtml'); ?>
+            
+            <?php include_once(__DIR__.'/../nav_menu.phtml'); ?>
+
+            <div id="corpoGeral" class="content-wrapper" style="min-height: 424px;">
+
+                <section class="content-header">
+                    <h1>
+                    Indicação
+                        <small></small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <!--<li><a href="#principal" onclick="atualizarPagina('principal.php','#retorno-content', null);"><i class="fa fa-dashboard"></i> Home</a></li>-->
+                       
+                    </ol>
+                </section>
+
+                <section class="content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- TABLE: LATEST ORDERS -->
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                <h3 class="box-title">Adicionar Indicação</h3>
+                                <div class="box-tools pull-right">
+                                    
+                                </div>
+                                </div><!-- /.box-header -->
+                                <div class="box-body">
+                                    <div class="row">
+                            
+
+                                        <form id="myForm" class="form-horizontal" action="cadastroIndicacao" method="post">
+                                            <div class="box-body">
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">Nome:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" id="txt_name" name="name" placeholder="Nome" onkeyup="revisaCampos();">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group has-feedback">
+                                                    <label class="col-sm-2 control-label">CPF_CNPJ:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" id="txt_cpf_cnpj" name="cpf_cnpj" placeholder="CPF_CNPJ" onkeyup="revisaCampos();" onchange="
+                                                            var cpf = document.getElementById('txt_cpf_cnpj').value;
+                                                            cpf = cpf.replace(/\D+/g, '');
+                                                            document.getElementById('txt_cpf_cnpj').value = cpf;
+                                                            revisaCampos();
+                                                        ">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group has-feedback">
+                                                    <label class="col-sm-2 control-label">Telefone:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" id="txt_telefone" name="telefone" placeholder="Telefone" onkeyup="revisaCampos();">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group has-feedback">
+                                                    <label class="col-sm-2 control-label">Nome Responsável:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" id="txt_name_responsavel" name="name_responsavel" placeholder="Nome Responsavel" onkeyup="revisaCampos();">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group has-feedback">
+                                                    <label class="col-sm-2 control-label">Email:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" id="txt_email" name="email" placeholder="email" onkeyup="revisaCampos();">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group has-feedback">
+                                                    <label class="col-sm-2 control-label">CEP:</label>
+                                                    <div class="col-sm-2">
+                                                        <input type="text" class="form-control" id="txt_cep" name="cep" placeholder="cep" onkeyup="revisaCampos();">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group has-feedback">
+                                                    <label class="col-sm-2 control-label">Estado:</label>
+                                                    <div class="col-sm-2">
+                                                        
+                                                        <select  id='opt_estado_name' name="estado" class="normal form-control select2" onchange="revisaCampos();">
+                                                            <option value="">Selecione o Estado</option>
+                                                            <option value="AC">Acre</option>
+                                                            <option value="AL">Alagoas</option>
+                                                            <option value="AP">Amapá</option>
+                                                            <option value="AM">Amazonas</option>
+                                                            <option value="BA">Bahia</option>
+                                                            <option value="CE">Ceará</option>
+                                                            <option value="ES">Espírito Santo</option>
+                                                            <option value="DF">Distrito Federal</option>
+                                                            <option value="GO">Goiás</option>
+                                                            <option value="MA">Maranhão</option>
+                                                            <option value="MT">Mato Grosso</option>
+                                                            <option value="MS">Mato Grosso do Sul</option>
+                                                            <option value="MG">Minas Gerais</option>
+                                                            <option value="PR">Paraná</option>
+                                                            <option value="PB">Paraíba</option>
+                                                            <option value="PA">Pará</option>
+                                                            <option value="PE">Pernambuco</option>
+                                                            <option value="PI">Piauí</option>
+                                                            <option value="RN">Rio Grande do Norte</option>
+                                                            <option value="RS">Rio Grande do Sul</option>
+                                                            <option value="RJ">Rio de Janeiro</option>
+                                                            <option value="RO">Rondônia</option>
+                                                            <option value="RR">Roraima</option>
+                                                            <option value="SC">Santa Catarina</option>
+                                                            <option value="SE">Sergipe</option>
+                                                            <option value="SP">São Paulo</option>
+                                                            <option value="TO">Tocantins</option>
+                                                        </select>
+                                                    </div>
+                                                    <label class="col-sm-1 control-label">Cidade:</label>
+                                                    <div class="col-sm-3">
+                                                     
+                                                        <input type="text" class="form-control" id="txt_cidade" name="cidade" placeholder="cidade" onkeyup="revisaCampos();">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group has-feedback">
+                                                    <label class="col-sm-2 control-label">Bairro:</label>
+                                                    <div class="col-sm-3">
+                                                        <input type="text" class="form-control" id="txt_bairro" name="bairro" placeholder="bairro" onkeyup="revisaCampos();">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group has-feedback">
+                                                    <label class="col-sm-2 control-label">Rua:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" id="txt_rua" name="rua" placeholder="rua" onkeyup="revisaCampos();">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group has-feedback">
+                                                    <label class="col-sm-2 control-label">Numero:</label>
+                                                    <div class="col-sm-1">
+                                                        <input type="text" class="form-control" style="padding-right:1px;" id="txt_numero" name="numero" placeholder="Nº" onkeyup="revisaCampos();">
+                                                    </div>
+                                                    <label class="col-sm-2 control-label">Complemento:</label>
+                                                    <div class="col-sm-3">
+                                                        <input type="text" maxlength="30" class="form-control" id="txt_complemento" name="complemento" placeholder="complemento" onkeyup="revisaCampos();">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group has-feedback">
+                                                    <label class="col-sm-2 control-label">Serviços:</label>
+                                                    <div class="col-sm-6">
+                                                        <select  id='opt_service_uuid' name="service_uuid" class="normal form-control select2" onchange="revisaCampos();">
+                                                            <option value="">Selecione um tipo de serviço</option>
+                                                            <?php
+                                                                foreach($services as $value){
+                                                                    echo("<option value='".$value["uuid"]."'>".$value["name"]."</option>");
+                                                                }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="form-group has-feedback">
+                                                    <label class="col-sm-2 control-label">Compania:</label>
+                                                    <div class="col-sm-6">
+                                                        <select  id='opt_company_uuid' name="company_uuid" class="normal form-control select2" onchange="revisaCampos();">
+                                                            <option value="">Selecione uma compania</option>
+                                                            <?php
+                                                                // foreach($companies as $value){
+                                                                //     echo("<option value='".$value["uuid"]."'>".$value["name"]."</option>");
+                                                                // }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div> -->
+                                                <!-- restrito para admin e super -->
+                                                <div id="div_admin">
+                                                    <div class="form-group has-feedback">
+                                                        <label class="col-sm-2 control-label">Status:</label>
+                                                        <div class="col-sm-6">
+                                                            <select  id='opt_status' name="status" class="normal form-control select2" onchange="revisaCampos();">
+                                                                <option value="">Selecione o status</option>
+                                                                <option value="1" selected>Pendente</option>
+                                                                <option value="2">Cliente contatado</option>
+                                                                <option value="3">Visita Realizada</option>
+                                                                <option value="4">Proposta Enviada</option>
+                                                                <option value="5">Negocio ganho</option>
+                                                                <option value="6">Negocio perdido</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group has-feedback">
+                                                        <label class="col-sm-2 control-label">Comissão:</label>
+                                                        <div class="col-sm-6">
+                                                            <select  id='opt_commission' name="commission" class="normal form-control select2" onchange="revisaCampos();">
+                                                                <option value="">Selecione o tipo de comissão</option>
+                                                                <option value="1" selected>Fixa</option>
+                                                                <option value="2">Recorrente</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group has-feedback">
+                                                        <label class="col-sm-2 control-label">Consultor:</label>
+                                                        <div class="col-sm-6">
+                                                            <select  id='opt_user_uuid' name="user_uuid" class="normal form-control select2" onchange="revisaCampos();">
+                                                                <option value="">Selecione o consultor responsável</option>
+                                                                <?php
+                                                                    foreach($consultores as $value){
+                                                                        echo("<option value='".$value["uuid"]."'>".$value["name"]."</option>");
+                                                                    }
+                                                                ?>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>    
+                                                
+                                                
+                                                <div class="form-group">
+                                                    <div class="col-sm-3 col-sm-offset-2">
+                                                        <button id="cadastrar" type="submit" class="btn btn-primary" onclick="" disabled="true">Cadastrar</button>
+                                                    </div>
+                                                </div>
+                                            </div>    
+                                        </form>
+                                    </div>
+                                </div><!--box-body-->
+                            </div>
+                        </div>    
+                    </div><!--row-->    
+                </section> <!--content-->   
+            </div><!--corpoGeral-->  
+            <?php include_once(__DIR__.'/../footer.phtml'); ?>
+        </div><!-- wrapper -->
+
+
+        <script src="template/bower_components/jquery/dist/jquery.min.js"></script>
+		<script src="template/bower_components/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+		 <!-- FastClick -->
+		<!-- <script src='plugins/fastclick/fastclick.min.js'></script> -->
+		<!-- AdminLTE App -->
+        <script src="template/dist/js/app.min.js" type="text/javascript"></script>
+ 
+	<!-- InputMask -->
+	    <script src="template/plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
+		<script src="template/plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
+		<script src="template/plugins/input-mask/jquery.inputmask.extensions.js" type="text/javascript"></script>
+		<!-- Sparkline -->
+		<script src="template/plugins/sparkline/jquery.sparkline.min.js" type="text/javascript"></script>
+		<!-- jvectormap -->
+		<script src="template/bower_components/jvectormap/jquery-jvectormap-1.2.2.min.js" type="text/javascript"></script>
+		<script src="template/bower_components/jvectormap/jquery-jvectormap-world-mill-en.js" type="text/javascript"></script>
+		<!-- jQuery Knob Chart -->
+		<script src="template/bower_components/jquery-knob/js/jquery.knob.js" type="text/javascript"></script>
+		<!-- daterangepicker -->
+		<script src="template/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+		<!-- datepicker -->
+		<script src="template/plugins/datepicker/bootstrap-datepicker.js" type="text/javascript"></script>
+	<!-- DATA TABES SCRIPT -->
+		<script src="template/bower_components/datatables.net/js/jquery.dataTables.js" type="text/javascript"></script>
+		 <script src="template/bower_components/datatables.net-bs/js/dataTables.bootstrap.js" type="text/javascript"></script>
+		<!-- iCheck -->
+		<script src="template/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
+		<!-- SlimScroll 1.3.0 -->
+		<script src="template/plugins/slimScroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+		<!-- ChartJS 1.0.1 -->
+		<script src="template/bower_components/chart.js/Chart.min.js" type="text/javascript"></script>
+	
+	
+		<script src="template/plugins/jQueryUI/jquery-ui.min.js" type="text/javascript"></script>
+
+		<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+		<!-- <script src="dist/js/pages/dashboard2.js" type="text/javascript"></script> -->
+
+        <script src="template/bower_components/select2/dist/js/select2.min.js"></script>
+        <script type="text/javascript" src="template/plugins/Highcharts/js/highcharts.js"></script>
+        <script type="text/javascript" src="template/plugins/Highcharts/js/highcharts-3d.js"></script>
+        <script type="text/javascript" src="template/plugins/Highcharts/js/modules/exporting.js"></script>
+        <!-- <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jspdf/0.9.0rc1/jspdf.min.js"></script> -->
+
+        <!--<script src="plugins/datepicker/bootstrap-datepicker.js"></script>-->
+        <script src="//cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        <!-- jQuery 3 -->
+        <!-- <script src="template/bower_components/jquery/dist/jquery.min.js"></script> -->
+        <!-- Bootstrap 3.3.7 -->
+        <!-- <script src="template/bower_components/bootstrap/dist/js/bootstrap.min.js"></script> -->
+        <!-- iCheck -->
+        <!-- <script src="template/plugins/iCheck/icheck.min.js"></script> -->
+
+        <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script> -->
+
+        <script>
+        $('.select2').select2();
+
+        <?php if($user_type == 3 || $user_type == 4) echo('$("#div_admin").hide();');?>
+       
+            function revisaCampos(){
+                if($('#txt_name').val() == '' || 
+                $('#txt_cpf_cnpj').val() == '' || 
+                $('#txt_telefone').val() == '' ||
+                $('#txt_name_responsavel').val() == '' ||
+                $('#txt_email').val() == '' ||
+                $('#txt_cep').val() == '' ||
+                $('#opt_estado_name').val() == '' ||
+                $('#txt_cidade').val() == '' ||
+                $('#txt_bairro').val() == '' ||
+                $('#txt_rua').val() == '' ||
+                $('#txt_numero').val() == '' ||
+                $('#opt_service_uuid').val() == '' ||
+                //$('#opt_company_uuid').val() == '' ||
+                $('#opt_status').val() == '' ||
+                $('#opt_commission').val() == '' ||
+                $('#opt_user_uuid').val() == ''){
+                    $("#cadastrar").attr("disabled","true");    
+                }
+                else{
+                    $("#cadastrar").removeAttr("disabled","false");    
+                }
+            }
+
+            $(function () {
+                $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' /* optional */
+                });
+            });
+            $(document).ready(function() {
+				
+				toastr.options = {
+                    "closeButton": false,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-bottom-right",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": "1000",
+                    "hideDuration": "1500",
+                    "timeOut": "9000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+                <?php 
+                    if(isset($validate[0])){
+                        foreach($validate[0] as $value){
+                            foreach($value as $mensagem){
+                                echo "toastr.error('{$mensagem}');";
+                            }
+                        }
+                    }
+                    else if(isset($success[0]))
+                        echo "toastr.success('".$success[0]."');";
+                    
+                    else if(isset($error[0]))
+                        echo "toastr.error('".$error[0]."');";    
+                 ?>
+			});
+
+            $("#txt_cep").focusout(function(){//API viacep
+                $.ajax({
+                    type: 'POST',
+                    url: 'apiViaCEP',
+                    dataType: 'json',
+                    data: 'id='+$("#txt_cep").val(),
+                    success: function(resposta){
+                        $("#txt_rua").val(resposta.logradouro);
+                        $("#txt_complemento").val(resposta.complemento);
+                        $("#txt_bairro").val(resposta.bairro);
+                        $("#txt_cidade").val(resposta.localidade);
+                        $("#opt_estado_name").val(resposta.uf);
+                        $('#opt_estado_name').trigger('change');
+                    }
+                });
+            });
+        </script>	
+    </body>
+</html>
