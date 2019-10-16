@@ -25,7 +25,7 @@ class CadastroIndicacaoControllerTest extends BaseTestCase
         $_SESSION['user']['id'] = "3c85ebd2-0d01-4910-a34c-2b0e64ab2789";
 				$_SESSION['user']['name'] = "teste123";
 				$_SESSION['user']['email'] = "anlumira@gmail.com";
-                $_SESSION['user']['company_id'] = "4191e2b5-21be-4afd-95b9-2e364b869bfd";
+                //$_SESSION['user']['company_id'] = "4191e2b5-21be-4afd-95b9-2e364b869bfd";
                 $_SESSION['user']['user_type'] = 1;
 
         $response = $this->runApp('GET', '/cadastroIndicacao');
@@ -44,7 +44,7 @@ class CadastroIndicacaoControllerTest extends BaseTestCase
         $this->assertStringContainsString('name="rua"', (string)$response->getBody());
         $this->assertStringContainsString('name="complemento"', (string)$response->getBody());
         $this->assertStringContainsString('name="service_uuid"', (string)$response->getBody());
-        $this->assertStringContainsString('name="company_uuid"', (string)$response->getBody());
+       // $this->assertStringContainsString('name="company_uuid"', (string)$response->getBody());
         $this->assertStringContainsString('name="status"', (string)$response->getBody());
         $this->assertStringContainsString('name="commission"', (string)$response->getBody());
         $this->assertStringContainsString('name="user_uuid"', (string)$response->getBody());
@@ -66,7 +66,7 @@ class CadastroIndicacaoControllerTest extends BaseTestCase
         $data['numero'] = '657';
         $data['complemento'] = 'ap 2';
         $data['service_uuid'] = 'ccf87abc-e91f-11e9-81b4-2a2ae2dbcce4';
-        $data['company_uuid'] = '878b5a1b-de92-11e9-be79-cdc05b889658';
+        //$data['company_uuid'] = '878b5a1b-de92-11e9-be79-cdc05b889658';
         $data['status'] = '1';
         $data['commission'] = '1';
         $data['user_uuid'] = '130c01d9-5c12-42c4-8ad0-5b6350cad1a9';

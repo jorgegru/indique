@@ -21,17 +21,17 @@ class CadastroIndicacaoController
 
    public function cadastroIndicacao($request, $response, $args)
    {
-        $companiesModel = new CompaniesModel($this->container);
+        //$companiesModel = new CompaniesModel($this->container);
         $usersModel = new UsersModel($this->container);
         $servicesModel = new ServicesModel($this->container);
 
         $consultores = $usersModel->all(["user_type"=>"3"]);
         $services = $servicesModel->all(["1"=>"1"]);
-        $companies = $companiesModel->all(["1"=>"1"]);
+        //$companies = $companiesModel->all(["1"=>"1"]);
 
         $message = $this->container->flash->getMessages();
 		
-        return $this->container->renderer->render($response, 'indicacao/cadastroIndicacao.phtml',['message'=>$message,'companies'=>$companies, 'consultores'=>$consultores, 'services'=>$services]);
+        return $this->container->renderer->render($response, 'indicacao/cadastroIndicacao.phtml',['message'=>$message/*,'companies'=>$companies*/, 'consultores'=>$consultores, 'services'=>$services]);
    }
 
 
@@ -144,12 +144,12 @@ class CadastroIndicacaoController
                     'notBlank' => 'Selecione o Serviço',
                 ]
             ],
-            'company_uuid' => [
-                'rules' => V::notBlank(),
-                'messages' => [
-                    'notBlank' => 'Selecione a Compania',
-                ]
-            ],
+            // 'company_uuid' => [
+            //     'rules' => V::notBlank(),
+            //     'messages' => [
+            //         'notBlank' => 'Selecione a Compania',
+            //     ]
+            // ],
             'status' => [
                 'rules' => V::notBlank()->numeric(),
                 'messages' => [
@@ -202,7 +202,7 @@ class CadastroIndicacaoController
                                             'numero'=>$metadata['numero'],
                                             'complemento'=>$metadata['complemento'],
                                             'service_uuid'=>$metadata['service_uuid'],
-                                            'company_uuid'=>$metadata['company_uuid'],
+                                            //'company_uuid'=>$metadata['company_uuid'],
                                             'status'=>$metadata['status'],
                                             'commission'=>$metadata['commission'],
                                             'user_uuid'=>$metadata['user_uuid']]);
