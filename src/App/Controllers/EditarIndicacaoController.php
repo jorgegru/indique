@@ -4,12 +4,12 @@ namespace Project\Controllers;
 
 use Project\Models\UsersModel;
 use Project\Models\CompaniesModel;
-use Project\Models\ServicesModel;
 use Project\Models\IndicationsModel;
+use Project\Models\ServicesModel;
 use \Psr\Container\ContainerInterface;
 use Respect\Validation\Validator as V;
 
-class CadastroIndicacaoController
+class EditarIndicacaoController
 {
    protected $container;
 
@@ -19,21 +19,22 @@ class CadastroIndicacaoController
        $this->container = $container;
    }
 
-   public function cadastroIndicacao($request, $response, $args)
+   public function editaIndicacao($request, $response, $args)
    {
         //$companiesModel = new CompaniesModel($this->container);
+        $indicationsModel = new IndicationsModel($this->container);
         $usersModel = new UsersModel($this->container);
         $servicesModel = new ServicesModel($this->container);
 
+        $indications = $indicationsModel->all(['1'=>'1']);
         $consultores = $usersModel->all(["user_type"=>"3"]);
         $services = $servicesModel->all(["1"=>"1"]);
         //$companies = $companiesModel->all(["1"=>"1"]);
 
         $message = $this->container->flash->getMessages();
 		
-        return $this->container->renderer->render($response, 'indicacao/cadastroIndicacao.phtml',['message'=>$message/*,'companies'=>$companies*/, 'consultores'=>$consultores, 'services'=>$services]);
+        return $this->container->renderer->render($response, 'indicacao/editaIndicacao.phtml',['message'=>$message/*,'companies'=>$companies*/,'consultores'=>$consultores, 'services'=>$services, 'indications'=>$indications]);
    }
-
 
    /**
 	* Autenticação de usuarios
@@ -43,10 +44,16 @@ class CadastroIndicacaoController
 	* @param [type] $args
 	* @return redirect
 	*/
-   public function cadastrarIndicacao($request, $response, $args)
-   {   
-        $metadata = $request->getParsedBody();
+   public function editarIndicacao($request, $response, $args)
+   {
+	   	$metadata = $request->getParsedBody();
         $validator = $this->container->validator->validate($request, [
+            'indication_uuid' => [
+                'rules' => V::notBlank(),
+                'messages' => [
+                    'notBlank' => 'Selecione uma indicação',
+                ]
+            ],
             'name' => [
                 'rules' => V::notBlank()->length(6, 100),
                 'messages' => [
@@ -171,24 +178,24 @@ class CadastroIndicacaoController
                 ]
             ],
         ]);
-        $uuid = uuid();// && \is_uuid($uuid)
+       
 		if ($validator->isValid()) {
-            try{               
+            try{
+                $indicationsModel = new IndicationsModel($this->container);
+
                 if($_SESSION['user']['user_type'] == 3 || $_SESSION['user']['user_type'] == 4){
                     $metadata['commission'] = 1;
                     $metadata['status'] = 1;
                 }
 
-                $IndicationsModel = new IndicationsModel($this->container);
-
-                $indication = $IndicationsModel->find(['cpf_cnpj'=>$metadata['cpf_cnpj']]);
+                $indication = $indicationsModel->validateCompanie(['cpf_cnpj'=>$metadata['cpf_cnpj'], 'uuid'=>$metadata['indication_uuid']]);
 
                 if($indication){
                     $this->container->flash->addMessage('error', 'Indicação com mesmo CPF_CNPJ já existe');
-                    return $response->withRedirect($this->container->router->pathFor('cadastroIndicacao'));
+                    return $response->withRedirect($this->container->router->pathFor('editaIndicacao'));
                 }
 
-                $indication = $IndicationsModel->set([  'uuid'=>$uuid,
+                $indication = $indicationsModel->update([  'uuid'=>$metadata['indication_uuid'],
                                             'name'=>$metadata['name'],
                                             'cpf_cnpj'=>$metadata['cpf_cnpj'], 
                                             'telefone'=>$metadata['telefone'],
@@ -206,24 +213,38 @@ class CadastroIndicacaoController
                                             'status'=>$metadata['status'],
                                             'commission'=>$metadata['commission'],
                                             'user_uuid'=>$metadata['user_uuid']]);
+
                 if($indication){
-                    $this->container->flash->addMessage('success', 'Cadastrado com sucesso');
-                    return $response->withRedirect($this->container->router->pathFor('cadastroIndicacao'));
+                    
                 }
                 else{
                     $errors = $validator->getErrors();
-                    $this->container->flash->addMessage('error', 'Falha no cadastro');
-                    return $response->withRedirect($this->container->router->pathFor('cadastroIndicacao'));
+                    $this->container->flash->addMessage('error', 'Falha na alteração');
+                    return $response->withRedirect($this->container->router->pathFor('editaIndicacao'));
                 }
-            
+
+                $this->container->flash->addMessage('success', 'Alterado com sucesso');
+                return $response->withRedirect($this->container->router->pathFor('editaIndicacao'));
+                
             }catch(\PDOException $e){
-                $this->container->flash->addMessage('error', 'Falha no Cadastro');
-			    return $response->withRedirect($this->container->router->pathFor('cadastroIndicacao'));
+                $this->container->flash->addMessage('error', 'Falha na Alteração');
+			    return $response->withRedirect($this->container->router->pathFor('editaIndicacao'));
             }
       	} else {
             $errors = $validator->getErrors();
             $this->container->flash->addMessage('validate', $errors);
-			return $response->withRedirect($this->container->router->pathFor('cadastroIndicacao'));
+			return $response->withRedirect($this->container->router->pathFor('editaIndicacao'));
       	}
+    }
+    
+    public function carregaEditarIndicacao($request, $response, $args)
+    {
+        $metadata = $request->getParsedBody();
+     
+        $indicationsModel = new IndicationsModel($this->container);
+
+        $indication = $indicationsModel->find(['uuid'=>$metadata['uuid']]);
+
+        return json_encode($indication);
     }
 }

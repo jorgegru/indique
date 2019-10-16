@@ -86,7 +86,7 @@
                                                 <div class="form-group has-feedback">
                                                     <label class="col-sm-2 control-label">Indicação:</label>
                                                     <div class="col-sm-6">
-                                                        <select  id='opt_user_uuid' name="user_uuid" class="normal form-control select2" onchange="carregaIndicacao();">
+                                                        <select  id='opt_indication_uuid' name="indication_uuid" class="normal form-control select2" onchange="carregaIndicacao();">
                                                             <option value="">Selecione uma indicação</option>
                                                             <?php
                                                                 foreach($indications as $value){
@@ -269,7 +269,7 @@
 
                                                 <div class="form-group">
                                                     <div class="col-sm-3 col-sm-offset-2">
-                                                        <button id="Editar" type="submit" class="btn btn-primary" onclick="" disabled="true">Editar</button>
+                                                        <button id="editar" type="submit" class="btn btn-primary" onclick="" disabled="true">Editar</button>
                                                     </div>
                                                 </div>
                                             </div>    
@@ -345,7 +345,7 @@
         $('.select2').select2();
        
             function carregaIndicacao(){
-                var uuid = $('#opt_user_uuid').val();
+                var uuid = $('#opt_indication_uuid').val();
                 $.ajax({
                     type: 'POST',
                     url: 'carregaEditarIndicacao',
@@ -353,17 +353,56 @@
                     dataType: 'json',
                     success: function (dados) {
                         $('#txt_name').val(dados['name']);
-                        $('#opt_user_type').val(dados['user_type']);
-                        $('#opt_user_type').trigger('change');
+                        $('#txt_cpf_cnpj').val(dados['cpf_cnpj']);
+                        $('#txt_telefone').val(dados['telefone']);
+                        $('#txt_name_responsavel').val(dados['name_responsavel']);
                         $('#txt_email').val(dados['email']);
-                        $('#txt_password').val(dados['password']);
-                        $('#txt_confirm_password').val(dados['password']);
-                        $('#txt_cpf').val(dados['cpf']);
-                        //$('#opt_company_uuid').val(dados['company_uuid']);
-                       // $('#opt_company_uuid').trigger('change');
+                        $('#txt_cep').val(dados['cep']);
+                        $('#opt_estado_name').val(dados['estado']);
+                        $('#opt_estado_name').trigger('change');
+                        $('#txt_cidade').val(dados['cidade']);
+                        $('#txt_bairro').val(dados['bairro']);
+                        $('#txt_rua').val(dados['rua']);
+                        $('#txt_numero').val(dados['numero']);
+                        $('#txt_complemento').val(dados['complemento']);
+                        $('#opt_service_uuid').val(dados['service_uuid']);
+                        $('#opt_service_uuid').trigger('change');
                         $('#opt_status').val(dados['status']);
                         $('#opt_status').trigger('change');
+                        $('#opt_commission').val(dados['commission']);
+                        $('#opt_commission').trigger('change');
+                        $('#opt_user_uuid').val(dados['user_uuid']);
+                        $('#opt_user_uuid').trigger('change');
+
+                    //     $('#opt_user_type').val(dados['user_type']);
+                    //     $('#opt_user_type').trigger('change');
+                    //     $('#txt_email').val(dados['email']);
+                    //     $('#txt_password').val(dados['password']);
+                    //     $('#txt_confirm_password').val(dados['password']);
+                    //     $('#txt_cpf').val(dados['cpf']);
+                    //     //$('#opt_company_uuid').val(dados['company_uuid']);
+                    //    // $('#opt_company_uuid').trigger('change');
+                    //     $('#opt_status').val(dados['status']);
+                    //     $('#opt_status').trigger('change');
                         revisaCampos();
+
+                        // 'name'=>$metadata['name'],
+                        //                     'cpf_cnpj'=>$metadata['cpf_cnpj'], 
+                        //                     'telefone'=>$metadata['telefone'],
+                        //                     'name_responsavel'=>$metadata['name_responsavel'],
+                        //                     'email'=>$metadata['email'],
+                        //                     'cep'=>$metadata['cep'],
+                        //                     'estado'=>$metadata['estado'],
+                        //                     'cidade'=>$metadata['cidade'],
+                        //                     'bairro'=>$metadata['bairro'],
+                        //                     'rua'=>$metadata['rua'],
+                        //                     'numero'=>$metadata['numero'],
+                        //                     'complemento'=>$metadata['complemento'],
+                        //                     'service_uuid'=>$metadata['service_uuid'],
+                        //                     //'company_uuid'=>$metadata['company_uuid'],
+                        //                     'status'=>$metadata['status'],
+                        //                     'commission'=>$metadata['commission'],
+                        //                     'user_uuid'=>$metadata['user_uuid']]);
                     },
                     error: function (dados){
                         toastr.error('Erro ao carregar Indicação');
@@ -388,20 +427,30 @@
                 $('#opt_status').val() == '' ||
                 $('#opt_commission').val() == '' ||
                 $('#opt_user_uuid').val() == ''){
-                    $("#cadastrar").attr("disabled","true");    
+                    $("#editar").attr("disabled","true");    
                 }
                 else{
-                    $("#cadastrar").removeAttr("disabled","false");    
+                    $("#editar").removeAttr("disabled","false");    
                 }
             }
 
-            $(function () {
-                $('input').iCheck({
-                checkboxClass: 'icheckbox_square-blue',
-                radioClass: 'iradio_square-blue',
-                increaseArea: '20%' /* optional */
+            $("#txt_cep").focusout(function(){//API viacep
+                $.ajax({
+                    type: 'POST',
+                    url: 'apiViaCEP',
+                    dataType: 'json',
+                    data: 'id='+$("#txt_cep").val(),
+                    success: function(resposta){
+                        $("#txt_rua").val(resposta.logradouro);
+                        $("#txt_complemento").val(resposta.complemento);
+                        $("#txt_bairro").val(resposta.bairro);
+                        $("#txt_cidade").val(resposta.localidade);
+                        $("#opt_estado_name").val(resposta.uf);
+                        $('#opt_estado_name').trigger('change');
+                    }
                 });
             });
+
             $(document).ready(function() {
 				
 				toastr.options = {
