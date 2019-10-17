@@ -32,8 +32,12 @@ class EditarLoginController
         //$companies = $companiesModel->all(["1"=>"1"]);
 
         $message = $this->container->flash->getMessages();
+
+        
+        if(isset($args)) $uuid = $args['uuid'];
+        else             $uuid = '';
 		
-        return $this->container->renderer->render($response, 'login/editaLogin.phtml',['message'=>$message/*,'companies'=>$companies*/, 'users'=>$users]);
+        return $this->container->renderer->render($response, 'login/editaLogin.phtml',['message'=>$message/*,'companies'=>$companies*/, 'users'=>$users, 'uuid'=>$uuid]);
    }
 
    /**

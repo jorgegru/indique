@@ -47,8 +47,11 @@ return function (App $app) {
         $app->group('/editaLogin', function () {
             $this->get('', Project\Controllers\EditarLoginController::class . ':editaLogin')->setName('editaLogin');
             $this->post('', Project\Controllers\EditarLoginController::class . ':editarLogin')->setName('editarLogin');
+            //$this->get('/{uuid}', Project\Controllers\EditarLoginController::class . ':editaLogin')->setName('editaLogin');
+
         });
         $app->post('/carregaEditarLogin', Project\Controllers\EditarLoginController::class . ':carregaEditarLogin')->setName('carregaEditarLogin');
+        $app->get('/editaLogin/{uuid}', Project\Controllers\EditarLoginController::class . ':editaLogin')->setName('editaLogin');
         
     // Listar usuarios
         $app->get('/listaUsers', function (Request $request, Response $response, array $args) use ($container) {

@@ -79,12 +79,12 @@
                                     <div class="row">
                             
 
-                                        <form id="myForm" class="form-horizontal" action="cadastroLogin" method="post">
+                                        <form id="myForm" class="form-horizontal" action="" method="get">
                                             <div class="box-body">
                                                 <div class="form-group" id="div_user">
                                                     <label class="col-sm-2 control-label">Usuários:</label>
                                                     <div class="col-sm-6">
-                                                        <select  id='opt_user' name="user" class="normal form-control select2" onchange="listaUsuario();">
+                                                        <select  id='opt_user' name="user" class="normal form-control select2" onchange="editarUsuario($('#opt_user').val());">
                                                             <option value="">Selecione o Usuário</option>
                                                             <?php
                                                                 foreach($users as $value){
@@ -145,7 +145,7 @@
                                                     </div>
                                                 </div>
                                             </div>    
-                                        </form>
+                                        
                                     </div>
                                 </div><!--box-body-->
                             </div>
@@ -172,7 +172,7 @@
                                                             <table id="tbUsuario" class="table table-bordered table-striped">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th>Nome</th>
+                                                                        <th width="300">Nome</th>
                                                                         <th>Email</th>
                                                                         <th>CPF</th>
                                                                         <th>Tipo</th>
@@ -320,9 +320,9 @@
                                 tabela += '<td>'+resposta[i]['name']+'</td>';
                                 tabela += '<td>'+resposta[i]['email']+'</td>';
                                 tabela += '<td>'+resposta[i]['cpf']+'</td>';
-                                tabela += '<td>'+resposta[i]['user_type']+'</td>';
+                                tabela += '<td>'+tipo+'</td>';
                                 tabela += status+'</td>';
-                                tabela += "<td><button onclick='editarUsuario("+resposta[i]['uuid']+");' type='button' class='btn btn-default btn-xs'><i class='fa fa-edit'></i></button></td>";
+                                tabela += '<td><button onclick="editarUsuario(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
                                 tabela += '</tr>';
                             }
                             $('#tbUsuarioBody').html(tabela);
@@ -351,9 +351,9 @@
                                 tabela += '<td>'+resposta[i]['name']+'</td>';
                                 tabela += '<td>'+resposta[i]['email']+'</td>';
                                 tabela += '<td>'+resposta[i]['cpf']+'</td>';
-                                tabela += '<td>'+resposta[i]['user_type']+'</td>';
+                                tabela += '<td>'+tipo+'</td>';
                                 tabela += status+'</td>';
-                                tabela += "<td><button onclick='editarUsuario("+resposta[i]['uuid']+");' type='button' class='btn btn-default btn-xs'><i class='fa fa-edit'></i></button></td>";
+                                tabela += '<td><button onclick="editarUsuario(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
                                 tabela += '</tr>';
                             }
                             $('#tbUsuarioBody').html(tabela);
@@ -367,7 +367,8 @@
             }
 
             function editarUsuario(uuid){
-
+                $("#myForm").attr("action","editaLogin/"+uuid);    
+                $("#myForm").submit();
             }
 
             $(document).ready(function() {

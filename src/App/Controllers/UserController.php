@@ -19,9 +19,17 @@ class UserController
    {
 		$metadata = $request->getParsedBody();
 		
-		$usersModel = new UsersModel($this->container);
-
-		$users = $usersModel->allLike([$metadata['nome']=>$metadata['valor']]);
+        $usersModel = new UsersModel($this->container);
+        
+        
+            $tipo = $_SESSION['user']['user_type'];
+            
+            if($tipo == 1){
+                $users = $usersModel->allLike([$metadata['nome']=>$metadata['valor']], ["user_type"=>array("2","3","4")]);
+            }
+            else if($tipo == 2){
+                $users = $usersModel->allLike([$metadata['nome']=>$metadata['valor']], ["user_type"=>array("3","4")]);
+            }
 
 		return json_encode($users);
     }

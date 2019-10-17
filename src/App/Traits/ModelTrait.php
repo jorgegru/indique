@@ -77,7 +77,7 @@ trait ModelTrait {
         }
     }
 
-    public function allLike(array $dados)
+    public function allLike(array $dados, array $type)
     {
         try{
             if(count($dados)==0)
@@ -87,8 +87,12 @@ trait ModelTrait {
                 $key_name = end($key_name);
                 $sqlArray[] = "{$key} LIKE CONCAT('%', :{$key_name}, '%')";
             }
+            foreach ($type['user_type'] as $key) {
+                $sqlArray2[] = "user_type = $key";
+            }
+
             $sql = "SELECT * FROM {$this->table}
-            WHERE ". implode(' AND ', $sqlArray);
+            WHERE ". implode(' AND ', $sqlArray). "AND (" . implode(' OR ', $sqlArray2).")";
 
             $stmt = $this->conn->prepare($sql);
 
