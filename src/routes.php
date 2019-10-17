@@ -50,6 +50,15 @@ return function (App $app) {
         });
         $app->post('/carregaEditarLogin', Project\Controllers\EditarLoginController::class . ':carregaEditarLogin')->setName('carregaEditarLogin');
         
+    // Listar usuarios
+        $app->get('/listaUsers', function (Request $request, Response $response, array $args) use ($container) {
+            // Sample log message
+            $container->get('logger')->info("Slim-Skeleton '/' route");
+
+            // Render index view
+            return $container->get('renderer')->render($response, 'login/listaUser.phtml', $args);
+        });
+
     // Filto Login Lista
         $app->post('/filtroUserLista', Project\Controllers\UserController::class . ':filtroLista')->setName('filtroUserLista');
 

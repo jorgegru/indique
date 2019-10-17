@@ -85,11 +85,11 @@ trait ModelTrait {
             foreach ($dados as $key => $row) {
                 $key_name = explode('.',$key);
                 $key_name = end($key_name);
-                $sqlArray[] = "{$key} = :{$key_name}";
+                $sqlArray[] = "{$key} LIKE CONCAT('%', :{$key_name}, '%')";
             }
             $sql = "SELECT * FROM {$this->table}
             WHERE ". implode(' AND ', $sqlArray);
-            
+
             $stmt = $this->conn->prepare($sql);
 
             foreach ($dados as $key => $row) {

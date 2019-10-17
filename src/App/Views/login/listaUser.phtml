@@ -84,14 +84,14 @@
                                                 <div class="form-group" id="div_user">
                                                     <label class="col-sm-2 control-label">Usuários:</label>
                                                     <div class="col-sm-6">
-                                                        <select  id='opt_user' name="user" class="normal form-control select2" onchange="listaUsuarios();">
+                                                        <select  id='opt_user' name="user" class="normal form-control select2" onchange="listaUsuario();">
                                                             <option value="">Selecione o Usuário</option>
                                                             <?php
                                                                 foreach($users as $value){
                                                                     echo("<option value='".$value["uuid"]."'>".$value["name"]."</option>");
                                                                 }
                                                             ?>
-                                                        </select>
+                                                        </select> 
                                                     </div>    
                                                 </div>
                                                 <div class="form-group" id="div_busca">
@@ -141,7 +141,7 @@
 
                                                 <div class="form-group">
                                                     <div class="col-sm-3 col-sm-offset-2">
-                                                        <button id="cadastrar" type="submit" class="btn btn-primary" onclick="" disabled="true">Cadastrar</button>
+                                                        <button id="buscar" type="button" class="btn btn-primary" onclick="listaUsuarios()">Buscar</button>
                                                     </div>
                                                 </div>
                                             </div>    
@@ -151,6 +151,51 @@
                             </div>
                         </div>    
                     </div><!--row-->    
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- TABLE: LATEST ORDERS -->
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                <h3 class="box-title">Lista de Usuários</h3>
+                                <div class="box-tools pull-right">
+                                    
+                                </div>
+                                </div><!-- /.box-header -->
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-xs-6">
+                                            <div class="description-block">
+                                                <div id="div_lista">
+                                                    <div class="table-responsive">
+                                                        <div id="id_tabela" style="max-height: 500px;overflow-y: auto;">
+                                                            <table id="tbUsuario" class="table table-bordered table-striped">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Nome</th>
+                                                                        <th>Email</th>
+                                                                        <th>CPF</th>
+                                                                        <th>Tipo</th>
+                                                                        <th>Status</th>  
+                                                                        <th width="10"><i class="fa fa-edit"></i></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody  id="tbUsuarioBody">
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>	
+                                                </div><!-- Fim his_buscas -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- /.box-body -->
+                        </div><!-- /.box -->
+                    </div><!-- /.col -->
+
+
                 </section> <!--content-->   
             </div><!--corpoGeral-->  
             <?php include_once(__DIR__.'/../footer.phtml'); ?>
@@ -242,11 +287,87 @@
                     data: 'nome='+nome+'&valor='+valor,
                     success: function(resposta){
                         $('#opt_user').empty();
+                        $("#opt_user").append(new Option('Selecione um usuário', ''));
                         for(var i=0; i<resposta.length;i++){
                             $("#opt_user").append(new Option(resposta[i]['name'], resposta[i]['uuid']));
                         }
                     }
                 });
+            }
+
+            function listaUsuarios(){
+                var tabela = '';
+                var status = '';
+                var tipo = '';
+                if($('#opt_busca').val() == 1 && $('#txt_email').val() != ''){
+                    $.ajax({
+                        type: 'POST',
+                        url: 'filtroUserLista',
+                        dataType: 'json',
+                        data: 'nome=email&valor='+$('#txt_email').val(),
+                        success: function(resposta){
+                            for(var i=0; i<resposta.length;i++){
+                                if(resposta[i]['status'] == 1) status = "<td style='color:green'><b>Ativado</b>";
+                                else if(resposta[i]['status'] == 2) status = "<td style='color:yellow'><b>Pendente</b>";
+                                else status = "<td style='color:red'><b>Desativado</b>";
+                                
+                                if(resposta[i]['user_type'] == 1) tipo = "Super";
+                                else if(resposta[i]['user_type'] == 2) tipo = "Admin";
+                                else if(resposta[i]['user_type'] == 3) tipo = "Consultor";
+                                else tipo = "Usuário";
+
+                                tabela += '<tr>';
+                                tabela += '<td>'+resposta[i]['name']+'</td>';
+                                tabela += '<td>'+resposta[i]['email']+'</td>';
+                                tabela += '<td>'+resposta[i]['cpf']+'</td>';
+                                tabela += '<td>'+resposta[i]['user_type']+'</td>';
+                                tabela += status+'</td>';
+                                tabela += "<td><button onclick='editarUsuario("+resposta[i]['uuid']+");' type='button' class='btn btn-default btn-xs'><i class='fa fa-edit'></i></button></td>";
+                                tabela += '</tr>';
+                            }
+                            $('#tbUsuarioBody').html(tabela);
+                        }
+                    });
+                    
+                }
+                else if($('#opt_busca').val() == 2 && $('#txt_cpf').val() != ''){
+                    $.ajax({
+                        type: 'POST',
+                        url: 'filtroUserLista',
+                        dataType: 'json',
+                        data: 'nome=cpf&valor='+$('#txt_cpf').val(),
+                        success: function(resposta){
+                            for(var i=0; i<resposta.length;i++){
+                                if(resposta[i]['status'] == 1) status = "<td style='color:green'><b>Ativado</b>";
+                                else if(resposta[i]['status'] == 2) status = "<td style='color:yellow'><b>Pendente</b>";
+                                else status = "<td style='color:red'><b>Desativado</b>";
+                                
+                                if(resposta[i]['user_type'] == 1) tipo = "Super";
+                                else if(resposta[i]['user_type'] == 2) tipo = "Admin";
+                                else if(resposta[i]['user_type'] == 3) tipo = "Consultor";
+                                else tipo = "Usuário";
+
+                                tabela += '<tr>';
+                                tabela += '<td>'+resposta[i]['name']+'</td>';
+                                tabela += '<td>'+resposta[i]['email']+'</td>';
+                                tabela += '<td>'+resposta[i]['cpf']+'</td>';
+                                tabela += '<td>'+resposta[i]['user_type']+'</td>';
+                                tabela += status+'</td>';
+                                tabela += "<td><button onclick='editarUsuario("+resposta[i]['uuid']+");' type='button' class='btn btn-default btn-xs'><i class='fa fa-edit'></i></button></td>";
+                                tabela += '</tr>';
+                            }
+                            $('#tbUsuarioBody').html(tabela);
+                        }
+                    });
+                    
+                }
+                else{
+                    toastr.warning('Digite um valor para a busca');
+                }
+            }
+
+            function editarUsuario(uuid){
+
             }
 
             $(document).ready(function() {
@@ -268,6 +389,22 @@
                     "showMethod": "fadeIn",
                     "hideMethod": "fadeOut"
                 }
+                
+                $.ajax({
+                    type: 'POST',
+                    url: 'filtroUserLista',
+                    dataType: 'json',
+                    data: 'nome=email&valor=@',
+                    success: function(resposta){
+                        $('#opt_user').empty();
+                        $("#opt_user").append(new Option('Selecione um usuário', ''));
+                        for(var i=0; i<resposta.length;i++){
+                            $("#opt_user").append(new Option(resposta[i]['name'], resposta[i]['uuid']));
+                        }
+                    }
+                });
+                
+
                 <?php 
                     if(isset($validate[0])){
                         foreach($validate[0] as $value){

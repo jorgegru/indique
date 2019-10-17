@@ -21,7 +21,7 @@ class UserController
 		
 		$usersModel = new UsersModel($this->container);
 
-		$users = $usersModel->all([$metadata['nome']=>$metadata['valor']]);
+		$users = $usersModel->allLike([$metadata['nome']=>$metadata['valor']]);
 
 		return json_encode($users);
     }
