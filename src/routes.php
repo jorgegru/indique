@@ -50,6 +50,9 @@ return function (App $app) {
         });
         $app->post('/carregaEditarLogin', Project\Controllers\EditarLoginController::class . ':carregaEditarLogin')->setName('carregaEditarLogin');
         
+    // Filto Login Lista
+        $app->post('/filtroUserLista', Project\Controllers\UserController::class . ':filtroLista')->setName('filtroUserLista');
+
     // Cadastro Compania
         $app->group('/cadastroCompania', function () {
             $this->get('', Project\Controllers\CadastroCompaniaController::class . ':cadastroCompania')->setName('cadastroCompania');
