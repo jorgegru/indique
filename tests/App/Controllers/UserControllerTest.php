@@ -36,6 +36,7 @@ class UserControllerTest extends BaseTestCase
         $this->assertStringContainsString('name="busca"', (string)$response->getBody());
         $this->assertStringContainsString('name="email"', (string)$response->getBody());
         $this->assertStringContainsString('name="cpf"', (string)$response->getBody());
+        $this->assertStringContainsString('name="status"', (string)$response->getBody());
         $this->assertStringContainsString('id="tbUsuarioBody"', (string)$response->getBody());
     }
 
