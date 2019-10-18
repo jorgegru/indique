@@ -63,30 +63,9 @@ class EditarIndicacaoControllerTests extends BaseTestCase
 
         $rs = $this->find(['uuid'=>'c13b77c2-0ade-4733-9e42-dc3782ba40a7']);
 
-        $data = array(
-            'uuid' => $rs['uuid'],
-            'cpf_cnpj' => $rs['cpf_cnpj'],
-            'name' => $rs['name'],
-            'telefone' => $rs['telefone'],
-            'name_responsavel' => $rs['name_responsavel'],
-            'email' => $rs['email'],
-            'cep' => $rs['cep'],
-            'estado' => $rs['estado'],
-            'cidade' => $rs['cidade'],
-            'bairro' => $rs['bairro'],
-            'rua' => $rs['rua'],
-            'numero' => $rs['numero'],
-            'status' => $rs['status'],
-            'commission' => $rs['commission'],
-            'complemento' => $rs['complemento'],
-            'create_time' => $rs['create_time'],
-            'service_uuid' => $rs['service_uuid'],
-            'user_uuid' => $rs['user_uuid']
-        );
-
         $this->assertJsonStringEqualsJsonString(
             (string)$response->getBody(),
-            json_encode($data)
+            json_encode($rs)
         );
     }
 

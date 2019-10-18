@@ -77,6 +77,39 @@ trait ModelTrait {
         }
     }
 
+    public function allLike(array $dados, array $type)
+    {
+        try{
+            if(count($dados)==0)
+                return false;
+            foreach ($dados as $key => $row) {
+                $key_name = explode('.',$key);
+                $key_name = end($key_name);
+                $sqlArray[] = "{$key} LIKE CONCAT('%', :{$key_name}, '%')";
+            }
+            foreach ($type['user_type'] as $key) {
+                $sqlArray2[] = "user_type = $key";
+            }
+
+            $sql = "SELECT * FROM {$this->table}
+            WHERE ". implode(' AND ', $sqlArray). "AND (" . implode(' OR ', $sqlArray2).")";
+
+            $stmt = $this->conn->prepare($sql);
+
+            foreach ($dados as $key => $row) {
+                $key_name = explode('.',$key);
+                $key_name = end($key_name);
+                $stmt->bindValue(":{$key_name}", $row, \PDO::PARAM_STR);
+            }
+                
+            $stmt->execute();
+            
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        }catch(\PDOException $e){
+            throw $e;
+        }
+    }
+
     public function find(array $dados)
     {
         try{

@@ -47,9 +47,24 @@ return function (App $app) {
         $app->group('/editaLogin', function () {
             $this->get('', Project\Controllers\EditarLoginController::class . ':editaLogin')->setName('editaLogin');
             $this->post('', Project\Controllers\EditarLoginController::class . ':editarLogin')->setName('editarLogin');
+            //$this->get('/{uuid}', Project\Controllers\EditarLoginController::class . ':editaLogin')->setName('editaLogin');
+
         });
         $app->post('/carregaEditarLogin', Project\Controllers\EditarLoginController::class . ':carregaEditarLogin')->setName('carregaEditarLogin');
+        $app->get('/editaLogin/{uuid}', Project\Controllers\EditarLoginController::class . ':editaLogin')->setName('editaLogin');
         
+    // Listar usuarios
+        $app->get('/listaUsers', function (Request $request, Response $response, array $args) use ($container) {
+            // Sample log message
+            $container->get('logger')->info("Slim-Skeleton '/' route");
+
+            // Render index view
+            return $container->get('renderer')->render($response, 'login/listaUser.phtml', $args);
+        });
+
+    // Filto Login Lista
+        $app->post('/filtroUserLista', Project\Controllers\UserController::class . ':filtroLista')->setName('filtroUserLista');
+
     // Cadastro Compania
         $app->group('/cadastroCompania', function () {
             $this->get('', Project\Controllers\CadastroCompaniaController::class . ':cadastroCompania')->setName('cadastroCompania');

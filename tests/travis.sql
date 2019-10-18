@@ -85,3 +85,6 @@ INSERT INTO indications (uuid, cpf_cnpj, name, telefone, name_responsavel, email
 INSERT INTO indications (uuid, cpf_cnpj, name, telefone, name_responsavel, email, cep, estado, cidade ,bairro, rua, numero, complemento, status, commission, service_uuid, user_uuid/*, company_uuid*/) VALUES ("62c2f6c6-78a9-4a9b-a6e0-0188eba2795c","217.632.078-52","Ramon","1402-6547","Ramon2","ramon@gmail.com","01357-614","Alagoas","Alagoas","bairro Lago","rua Lagoas", "412", "Barco 5", 4, 1, "ccf8849e-e91f-11e9-81b4-2a2ae2dbcce4", "ec920dd9-ae92-4137-ab41-13884c2c215f"/*,"1176d247-d2b4-43b6-9f75-5421a0459cb9"*/);
 
 INSERT INTO indications (uuid, cpf_cnpj, name, telefone, name_responsavel, email, cep, estado, cidade ,bairro, rua, numero, complemento, status, commission, service_uuid, user_uuid/*, company_uuid*/) VALUES ("c908976a-5cba-4449-9f8d-ee72ddedece5","185.038.517-59","Gio","8147-9475","Gio2","gio@gmail.com","57964-027","Ceara","Ceara","bairro Ceara","rua Ceara", "547", "ceara 1", 5, 2, "ccf885ca-e91f-11e9-81b4-2a2ae2dbcce4", "ec920dd9-ae92-4137-ab41-13884c2c215f"/*,"edfa7b0d-7934-4541-904b-a245d62ee677"*/);
+
+
+UPDATE users SET status = 3 WHERE status = 0;
