@@ -23,12 +23,26 @@ class UserController
         
         
             $tipo = $_SESSION['user']['user_type'];
+
             
-            if($tipo == 1){
-                $users = $usersModel->allLike([$metadata['nome']=>$metadata['valor']], ["user_type"=>array("2","3","4")]);
+            if(isset($metadata['nome']))$data[$metadata['nome']] = $metadata['valor'];
+            if(isset($metadata['status']))  $data['status'] = $metadata['status'];
+            
+            if(isset($metadata['status'])){   
+                if($tipo == 1){
+                    $users = $usersModel->allLike($data, ["user_type"=>array("2","3","4")]);
+                }
+                else if($tipo == 2){
+                    $users = $usersModel->allLike($data, ["user_type"=>array("3","4")]);
+                }
             }
-            else if($tipo == 2){
-                $users = $usersModel->allLike([$metadata['nome']=>$metadata['valor']], ["user_type"=>array("3","4")]);
+            else{
+                if($tipo == 1){
+                    $users = $usersModel->allLike([$metadata['nome']=>$metadata['valor']], ["user_type"=>array("2","3","4")]);
+                }
+                else if($tipo == 2){
+                    $users = $usersModel->allLike([$metadata['nome']=>$metadata['valor']], ["user_type"=>array("3","4")]);
+                }
             }
 
 		return json_encode($users);

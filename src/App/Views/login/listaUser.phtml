@@ -128,11 +128,17 @@
                                                             atualizaUsuario('cpf',$('#txt_cpf').val());">
                                                     </div>
                                                 </div>
-                                                
-                                                
-                                                
-                                                
-                                                
+                                                <div class="form-group" id="div_busca">
+                                                    <label class="col-sm-2 control-label">Status:</label>
+                                                    <div class="col-sm-6">
+                                                        <select  id='opt_status' name="status" class="normal form-control select2" onchange="">
+                                                            <option value="">Selecione o Status</option>
+                                                            <option value="1">Ativo</option>
+                                                            <option value="2">Pendente</option>
+                                                            <option value="3">Desativado</option>
+                                                        </select>
+                                                    </div>    
+                                                </div>
 
                                                 <div class="form-group">
                                                     <div class="col-sm-3 col-sm-offset-2">
@@ -255,24 +261,6 @@
 
         <script>
         $('.select2').select2();
-       
-        <?php if($user_type == 3 || $user_type == 4) echo('$("#div_status").hide();'); ?>
-        <?php if($user_type == 3 || $user_type == 4) echo('$("#div_user").hide();'); ?>
-            function revisaCampos(){
-                if($('#txt_name').val() == '' || 
-                $('#opt_user_type').val() == '' || 
-                $('#txt_email').val() == '' ||
-                $('#txt_password').val() == '' ||
-                $('#txt_confirm_password').val() == '' ||
-                $('#txt_cpf').val() == '' ||
-                //$('#opt_company_uuid').val() == '' ||
-                $('#opt_status').val() == ''){
-                    $("#cadastrar").attr("disabled","true");    
-                }
-                else{
-                    $("#cadastrar").removeAttr("disabled","false");    
-                }
-            }
 
             function atualizaUsuario(nome,valor){
                 $.ajax({
@@ -297,24 +285,32 @@
                 var nome = '';
                 var valor = '';
 
-                if($('#opt_busca').val() == 1 && $('#txt_email').val() != ''){
-                    var nome = 'email';
-                    var valor = $('#txt_email').val();
-                }
-                else if($('#opt_busca').val() == 2 && $('#txt_cpf').val() != ''){
-                    var nome = 'cpf';
-                    var valor = $('#txt_cpf').val();
-                }
-                else{
+                if($('#txt_cpf').val() == '' && $('#txt_email').val() == '' && $('#opt_status').val() == ''){
                     toastr.warning('Digite um valor para a busca');
                     return false;
                 }
+
+                if($('#opt_status').val() != '')  status = 'status='+$('#opt_status').val();
+
+                if($('#opt_busca').val() == 1 && $('#txt_email').val() != ''){
+                    var nome = 'nome=email';
+                    var valor = '&valor='+$('#txt_email').val();
+                    if($('#opt_status').val() != '')  status = '&status='+$('#opt_status').val();
+                }
+                else if($('#opt_busca').val() == 2 && $('#txt_cpf').val() != ''){
+                    var nome = 'nome=cpf';
+                    var valor = '&valor='+$('#txt_cpf').val();
+                    if($('#opt_status').val() != '')  status = '&status='+$('#opt_status').val();
+                }
+                
+
+                
 
                 $.ajax({
                     type: 'POST',
                     url: 'filtroUserLista',
                     dataType: 'json',
-                    data: 'nome='+nome+'&valor='+valor,
+                    data: nome+valor+status,
                     success: function(resposta){
                         for(var i=0; i<resposta.length;i++){
                             if(resposta[i]['status'] == 1) status = "<td style='color:green'><b>Ativado</b>";
