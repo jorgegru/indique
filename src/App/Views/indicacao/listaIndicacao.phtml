@@ -125,7 +125,7 @@
                                                             }
                                                         ">
                                                             <option value="">Selecione o tipo de busca</option>
-                                                            <option value="1">CPF_CNPJ</option>
+                                                            <option value="1">CPF/CNPJ</option>
                                                             <option value="2">Telefone</option>
                                                             <option value="3">Email</option>
                                                             <option value="4">Nome Responsável</option>
@@ -139,19 +139,13 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group" id="div_cpf_cnpj" style="display:none">
-                                                    <label class="col-sm-2 control-label">CPF_CNPJ:</label>
+                                                    <label class="col-sm-2 control-label">CPF/CNPJ:</label>
                                                     <div class="col-sm-6">
-                                                        <input type="text" class="form-control" id="txt_cpf" name="cpf" placeholder="CPF" onkeyup="
-                                                            var cpf = document.getElementById('txt_cpf').value;
+                                                        <input type="text" class="form-control" id="txt_cpf_cnpj" name="cpf_cnpj" placeholder="CPF" onkeyup="
+                                                            var cpf = document.getElementById('txt_cpf_cnpj').value;
                                                             cpf = cpf.replace(/\D+/g, '');
-                                                            document.getElementById('txt_cpf').value = cpf;
+                                                            document.getElementById('txt_cpf_cnpj').value = cpf;
                                                             //atualizaUsuario('cpf',$('#txt_cpf').val());">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group" id="div_telefone" style="display:none">
-                                                    <label class="col-sm-2 control-label">Telefone:</label>
-                                                    <div class="col-sm-6">
-                                                        <input type="text" class="form-control" id="txt_telefone" name="telefone" placeholder="Telefone" onkeyup="//atualizaUsuario('email',$('#txt_email').val());">
                                                     </div>
                                                 </div>
                                                 <div class="form-group" id="div_telefone" style="display:none">
