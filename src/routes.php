@@ -84,6 +84,17 @@ return function (App $app) {
         });
         $app->post('/carregaEditarIndicacao', Project\Controllers\EditarIndicacaoController::class . ':carregaEditarIndicacao')->setName('carregaEditarIndicacao');
         
+    // Listar Indicacao
+        $app->get('/listaIndicacoes', function (Request $request, Response $response, array $args) use ($container) {
+            // Sample log message
+            $container->get('logger')->info("Slim-Skeleton '/' route");
+
+            // Render index view
+            return $container->get('renderer')->render($response, 'indicacao/listaIndicacao.phtml', $args);
+        });
+    // Filto Indicacao Lista
+        $app->post('/filtroIndicacaoLista', Project\Controllers\IndicationController::class . ':filtroLista')->setName('filtroUserLista');
+
     // Editar Compania
         $app->group('/editaCompania', function () {
             $this->get('', Project\Controllers\EditarCompaniaController::class . ':editaCompania')->setName('editaCompania');
