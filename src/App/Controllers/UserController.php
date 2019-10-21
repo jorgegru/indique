@@ -30,18 +30,18 @@ class UserController
             
             if(isset($metadata['status'])){   
                 if($tipo == 1){
-                    $users = $usersModel->allLike($data, ["user_type"=>array("2","3","4")]);
+                    $users = $usersModel->allLikeUser($data, ["user_type"=>array("2","3","4")]);
                 }
                 else if($tipo == 2){
-                    $users = $usersModel->allLike($data, ["user_type"=>array("3","4")]);
+                    $users = $usersModel->allLikeUser($data, ["user_type"=>array("3","4")]);
                 }
             }
             else{
                 if($tipo == 1){
-                    $users = $usersModel->allLike([$metadata['nome']=>$metadata['valor']], ["user_type"=>array("2","3","4")]);
+                    $users = $usersModel->allLikeUser([$metadata['nome']=>$metadata['valor']], ["user_type"=>array("2","3","4")]);
                 }
                 else if($tipo == 2){
-                    $users = $usersModel->allLike([$metadata['nome']=>$metadata['valor']], ["user_type"=>array("3","4")]);
+                    $users = $usersModel->allLikeUser([$metadata['nome']=>$metadata['valor']], ["user_type"=>array("3","4")]);
                 }
             }
 

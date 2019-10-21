@@ -51,7 +51,7 @@ class UserControllerTest extends BaseTestCase
         $this->container = $this->app()->getContainer();
         $this->conn = $this->container->get('conn');
 
-        $rs = $this->allLike(['email'=>'sergio@gmail.com'], ["user_type"=>array("2","3","4")]);
+        $rs = $this->allLikeUser(['email'=>'sergio@gmail.com'], ["user_type"=>array("2","3","4")]);
         
         $this->assertJsonStringEqualsJsonString(
             (string)$response->getBody(),
