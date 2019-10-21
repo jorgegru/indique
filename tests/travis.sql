@@ -90,19 +90,28 @@ INSERT INTO indications (uuid, cpf_cnpj, name, telefone, name_responsavel, email
 UPDATE users SET status = 3 WHERE status = 0;
 
 UPDATE indications SET status = 1 WHERE uuid = '6d9a13fb-a3fe-4bf5-9a53-06cdad5a33bc';
+UPDATE indications SET estado = 'SP' WHERE uuid = '6d9a13fb-a3fe-4bf5-9a53-06cdad5a33bc';
 
 UPDATE indications SET status = 2 WHERE uuid = '3c27ee78-cee1-4766-a3cb-a30c55bc6ca6';
+UPDATE indications SET estado = 'SP' WHERE uuid = '3c27ee78-cee1-4766-a3cb-a30c55bc6ca6';
 
 UPDATE indications SET status = 3 WHERE uuid = '42abbd55-e3d6-450e-b7bc-2884cc13284a';
+UPDATE indications SET estado = 'MG' WHERE uuid = '42abbd55-e3d6-450e-b7bc-2884cc13284a';
 
 UPDATE indications SET status = 4 WHERE uuid = 'dfdd90aa-5959-43b0-9c66-d9aa58bb306d';
+UPDATE indications SET estado = 'AC' WHERE uuid = 'dfdd90aa-5959-43b0-9c66-d9aa58bb306d';
 
 UPDATE indications SET status = 5 WHERE uuid = '982ad4fd-2ba5-45e2-bf31-38d8913b672b';
+UPDATE indications SET estado = 'AM' WHERE uuid = '982ad4fd-2ba5-45e2-bf31-38d8913b672b';
 
 UPDATE indications SET status = 6 WHERE uuid = '4093daef-b00f-4e62-82e5-1d927e339ecf';
+UPDATE indications SET estado = 'RJ' WHERE uuid = '4093daef-b00f-4e62-82e5-1d927e339ecf';
 
 UPDATE indications SET status = 2 WHERE uuid = 'bda860b8-a08a-4d02-9b4f-37c8e0c15536';
+UPDATE indications SET estado = 'RS' WHERE uuid = 'bda860b8-a08a-4d02-9b4f-37c8e0c15536';
 
 UPDATE indications SET status = 3 WHERE uuid = '62c2f6c6-78a9-4a9b-a6e0-0188eba2795c';
+UPDATE indications SET estado = 'BA' WHERE uuid = '62c2f6c6-78a9-4a9b-a6e0-0188eba2795c';
 
 UPDATE indications SET status = 5 WHERE uuid = 'c908976a-5cba-4449-9f8d-ee72ddedece5';
+UPDATE indications SET estado = 'GO' WHERE uuid = 'c908976a-5cba-4449-9f8d-ee72ddedece5';

@@ -83,7 +83,8 @@ return function (App $app) {
             $this->post('', Project\Controllers\EditarIndicacaoController::class . ':editarIndicacao')->setName('editarIndicacao');
         });
         $app->post('/carregaEditarIndicacao', Project\Controllers\EditarIndicacaoController::class . ':carregaEditarIndicacao')->setName('carregaEditarIndicacao');
-        
+        $app->get('/editaIndicacao/{uuid}', Project\Controllers\EditarIndicacaoController::class . ':editaIndicacao')->setName('editaIndicacao');
+
     // Listar Indicacao
         $app->get('/listaIndicacoes', function (Request $request, Response $response, array $args) use ($container) {
             // Sample log message

@@ -32,8 +32,11 @@ class EditarIndicacaoController
         //$companies = $companiesModel->all(["1"=>"1"]);
 
         $message = $this->container->flash->getMessages();
+
+        if(isset($args)) $uuid = $args['uuid'];
+        else             $uuid = '';
 		
-        return $this->container->renderer->render($response, 'indicacao/editaIndicacao.phtml',['message'=>$message/*,'companies'=>$companies*/,'consultores'=>$consultores, 'services'=>$services, 'indications'=>$indications]);
+        return $this->container->renderer->render($response, 'indicacao/editaIndicacao.phtml',['message'=>$message/*,'companies'=>$companies*/,'consultores'=>$consultores, 'services'=>$services, 'indications'=>$indications, 'uuid'=>$uuid]);
    }
 
    /**

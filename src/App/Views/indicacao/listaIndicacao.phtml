@@ -366,10 +366,10 @@
                     data: nome+valor+status,
                     success: function(resposta){
                         for(var i=0; i<resposta.length;i++){
-                            if(resposta[i]['status'] == 1) status = "<td style='color:yellow'><b>Pendente</b>";
-                            else if(resposta[i]['status'] == 2) status = "<td style='color:green'><b>Cliente contatado</b>";
-                            else if(resposta[i]['status'] == 3) status = "<td style='color:green'><b>Visita Realizada</b>";
-                            else if(resposta[i]['status'] == 4) status = "<td style='color:green'><b>Proposta Enviada</b>";
+                            if(resposta[i]['status'] == 1) status = "<td style='color:orange'><b>Pendente</b>";
+                            else if(resposta[i]['status'] == 2) status = "<td><b>Cliente contatado</b>";
+                            else if(resposta[i]['status'] == 3) status = "<td><b>Visita Realizada</b>";
+                            else if(resposta[i]['status'] == 4) status = "<td><b>Proposta Enviada</b>";
                             else if(resposta[i]['status'] == 5) status = "<td style='color:green'><b>Negócio ganho</b>";
                             else if(resposta[i]['status'] == 6) status = "<td style='color:red'><b>Negócio perdido</b>";
                             else status = "<td style='color:red'><b>Cancelado</b>";
@@ -395,7 +395,7 @@
             }
 
             function editarIndicacao(uuid){
-                $("#myForm").attr("action","editaLogin/"+uuid);    
+                $("#myForm").attr("action","editaIndicacao/"+uuid);    
                 $("#myForm").submit();
             }
 
