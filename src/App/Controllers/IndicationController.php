@@ -25,12 +25,15 @@ class IndicationController
             $tipo = $_SESSION['user']['user_type'];
 
             
-            if(isset($metadata['nome']))$data[$metadata['nome']] = $metadata['valor'];
+            if(isset($metadata['nome']))$data[$metadata['nome']] = '%'.$metadata['valor'].'%';
             if(isset($metadata['status']))  $data['status'] = $metadata['status'];
             
             // if(isset($metadata['status'])){   
             //     if($tipo == 1){
-                     $indication = $indicationsModel->allLike($data);
+                    $join['users']['campo'] = 'uuid';
+                    $join['users']['campo2'] = 'indications.user_uuid';
+                    $campos = "indications.*, users.name as user_name";
+                    $indication = $indicationsModel->allLikeLeftJoin($data,$join,$campos);
             //     }
             //     else if($tipo == 2){
             //         $indication = $indicationsModel->allLike($data, ["user_type"=>array("3","4")]);

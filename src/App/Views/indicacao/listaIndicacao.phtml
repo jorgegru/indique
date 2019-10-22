@@ -165,12 +165,13 @@
                                                     <div class="col-sm-6">
                                                         <select  id='opt_status' name="status" class="normal form-control select2" onchange="">
                                                             <option value="">Selecione o Status</option>
+                                                            <option value="7">Sem Consultor</option>
                                                             <option value="1">Pendente</option>
-                                                            <option value="2">Cliente contatado</option>
+                                                            <option value="2">Cliente Contatado</option>
                                                             <option value="3">Visita Realizada</option>
                                                             <option value="4">Proposta Enviada</option>
-                                                            <option value="5">Negócio ganho</option>
-                                                            <option value="6">Negócio perdido</option>
+                                                            <option value="5">Negócio Ganho</option>
+                                                            <option value="6">Negócio Perdido</option>
                                                         </select>
                                                     </div>    
                                                 </div>
@@ -215,6 +216,7 @@
                                                                         <th>Email</th>
                                                                         <th>Status</th> 
                                                                         <th>Comissao</th>  
+                                                                        <th>Consultor</th>
                                                                         <th width="10"><i class="fa fa-edit"></i></th>
                                                                     </tr>
                                                                 </thead>
@@ -321,6 +323,7 @@
                 var nome = '';
                 var valor = '';
                 var comissao = '';
+                var consultor= '';
 
                 if($('#opt_busca').val() == '' && $('#opt_status').val() == ''){
                     toastr.warning('Digite um valor para a busca');
@@ -366,11 +369,15 @@
                             else if(resposta[i]['status'] == 4) status = "<td><b>Proposta Enviada</b>";
                             else if(resposta[i]['status'] == 5) status = "<td style='color:green'><b>Negócio ganho</b>";
                             else if(resposta[i]['status'] == 6) status = "<td style='color:red'><b>Negócio perdido</b>";
+                            else if(resposta[i]['status'] == 7) status = "<td style='color:red'><b>Sem Consultor</b>";
                             else status = "<td style='color:red'><b>Cancelado</b>";
                             
-                           if(resposta[i]['commission'] == 1)   comissao = "<td>Fixa";
-                           else                                 comissao = "<td>Recorrente";
+                            if(resposta[i]['commission'] == 1)   comissao = "<td>Fixa";
+                            else                                 comissao = "<td>Recorrente";
                             
+                            if(resposta[i]['user_uuid'] == '')   consultor = "<td>Sem Consultor";
+                            else                                 consultor = "<td>"+resposta[i]['user_name'];
+
                             tabela += '<tr>';
                             tabela += '<td>'+resposta[i]['name']+'</td>';
                             tabela += '<td>'+resposta[i]['cpf_cnpj']+'</td>';
@@ -379,7 +386,7 @@
                             tabela += '<td>'+resposta[i]['email']+'</td>';
                             tabela += status+'</td>';
                             tabela += comissao+'</td>';
-                            
+                            tabela += consultor+'</td>';
                             tabela += '<td><button onclick="editarIndicacao(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
                             tabela += '</tr>';
                         }
