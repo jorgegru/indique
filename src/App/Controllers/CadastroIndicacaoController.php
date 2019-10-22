@@ -25,7 +25,7 @@ class CadastroIndicacaoController
         $usersModel = new UsersModel($this->container);
         $servicesModel = new ServicesModel($this->container);
 
-        $consultores = $usersModel->all(["user_type"=>"3"]);
+        $consultores = $usersModel->all(["user_type"=>"3","status"=>"1"]);
         $services = $servicesModel->all(["1"=>"1"]);
         //$companies = $companiesModel->all(["1"=>"1"]);
 
@@ -162,12 +162,6 @@ class CadastroIndicacaoController
                 'messages' => [
                     'numeric' => 'Comissão inválida',
                     'notBlank' => 'Selecione a Comissão',
-                ]
-            ],
-            'user_uuid' => [
-                'rules' => V::notBlank(),
-                'messages' => [
-                    'notBlank' => 'Selecione um consultor',
                 ]
             ],
         ]);
