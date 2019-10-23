@@ -27,7 +27,7 @@ class EditarIndicacaoController
         $servicesModel = new ServicesModel($this->container);
 
         $indications = $indicationsModel->all(['1'=>'1']);
-        $consultores = $usersModel->all(["user_type"=>"3"]);
+        $consultores = $usersModel->all(["user_type"=>"3","status"=>"1"]);
         $services = $servicesModel->all(["1"=>"1"]);
         //$companies = $companiesModel->all(["1"=>"1"]);
 
@@ -172,12 +172,6 @@ class EditarIndicacaoController
                 'messages' => [
                     'numeric' => 'Comissão inválida',
                     'notBlank' => 'Selecione a Comissão',
-                ]
-            ],
-            'user_uuid' => [
-                'rules' => V::notBlank(),
-                'messages' => [
-                    'notBlank' => 'Selecione um consultor',
                 ]
             ],
         ]);

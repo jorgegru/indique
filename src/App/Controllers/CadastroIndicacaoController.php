@@ -25,7 +25,7 @@ class CadastroIndicacaoController
         $usersModel = new UsersModel($this->container);
         $servicesModel = new ServicesModel($this->container);
 
-        $consultores = $usersModel->all(["user_type"=>"3"]);
+        $consultores = $usersModel->all(["user_type"=>"3","status"=>"1"]);
         $services = $servicesModel->all(["1"=>"1"]);
         //$companies = $companiesModel->all(["1"=>"1"]);
 
@@ -164,19 +164,13 @@ class CadastroIndicacaoController
                     'notBlank' => 'Selecione a Comissão',
                 ]
             ],
-            'user_uuid' => [
-                'rules' => V::notBlank(),
-                'messages' => [
-                    'notBlank' => 'Selecione um consultor',
-                ]
-            ],
         ]);
         $uuid = uuid();// && \is_uuid($uuid)
 		if ($validator->isValid()) {
             try{               
                 if($_SESSION['user']['user_type'] == 3 || $_SESSION['user']['user_type'] == 4){
                     $metadata['commission'] = 1;
-                    $metadata['status'] = 1;
+                    $metadata['status'] = 7;
                 }
 
                 $IndicationsModel = new IndicationsModel($this->container);
