@@ -47,10 +47,13 @@
                                   
                                     </li>
                                 <?php }?>
+                                
+                                <?php if($_SESSION['user']['user_type'] == 1 || $_SESSION['user']['user_type'] == 2){?>
                                 <li>
                                     <a href="/listaUsers"><i class="fa fa-circle-o"></i>Listar</i></a>
                                     
                                 </li>
+                                <?php }?>
                             </ul>
                         </li>
 

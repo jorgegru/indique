@@ -81,51 +81,35 @@
 
                                         <form id="myForm" class="form-horizontal" action="" method="get">
                                             <div class="box-body">
-                                                <div class="form-group" id="div_user">
-                                                    <label class="col-sm-2 control-label">Usuários:</label>
-                                                    <div class="col-sm-6">
-                                                        <select  id='opt_user' name="user" class="normal form-control select2" onchange="editarUsuario($('#opt_user').val());">
-                                                            <option value="">Selecione o Usuário</option>
-                                                        </select> 
-                                                    </div>    
-                                                </div>
                                                 <div class="form-group" id="div_busca">
                                                     <label class="col-sm-2 control-label">Tipo de busca:</label>
                                                     <div class="col-sm-6">
                                                         <select  id='opt_busca' name="busca" class="normal form-control select2" onchange="
-                                                            if($('#opt_busca').val() == 1){
-                                                                $('#div_email').show();
-                                                                $('#div_cpf').hide();
-                                                            }
-                                                            else if($('#opt_busca').val() == 2){
-                                                                $('#div_email').hide();
-                                                                $('#div_cpf').show();
-                                                            }
-                                                            else{
-                                                                $('#div_email').hide();
-                                                                $('#div_cpf').hide();
-                                                            }
+                                                            $('#lbl_dado').html($('#opt_busca option:selected').html()+':');
+                                                            if($('#opt_busca').val() != '')
+                                                                $('#div_dado').show();
+                                                            else
+                                                                $('#div_dado').hide();
+
+                                                            $('#txt_dado').val('');
                                                         ">
                                                             <option value="">Selecione o tipo de busca</option>
                                                             <option value="1">E-mail</option>
                                                             <option value="2">CPF</option>
+                                                            <option value="3">Nome</option>
                                                         </select>
                                                     </div>    
                                                 </div>
-                                                <div class="form-group" id="div_email" style="display:none">
-                                                    <label class="col-sm-2 control-label">Email:</label>
+                                                <div class="form-group" id="div_dado" style="display:none">
+                                                    <label class="col-sm-2 control-label" id="lbl_dado"></label>
                                                     <div class="col-sm-6">
-                                                        <input type="text" class="form-control" id="txt_email" name="email" placeholder="Email" onkeyup="//atualizaUsuario('email',$('#txt_email').val());">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group" id="div_cpf" style="display:none">
-                                                    <label class="col-sm-2 control-label">CPF:</label>
-                                                    <div class="col-sm-6">
-                                                        <input type="text" class="form-control" id="txt_cpf" name="cpf" placeholder="CPF" onkeyup="
-                                                            var cpf = document.getElementById('txt_cpf').value;
-                                                            cpf = cpf.replace(/\D+/g, '');
-                                                            document.getElementById('txt_cpf').value = cpf;
-                                                            //atualizaUsuario('cpf',$('#txt_cpf').val());">
+                                                        <input type="text" class="form-control" id="txt_dado" name="dado" onkeyup="
+                                                            if($('#opt_busca').val() == '2'){
+                                                                var cpf = $('#txt_dado').val();
+                                                                cpf = cpf.replace(/\D+/g, '');
+                                                                $('#txt_dado').val(cpf);
+                                                            }
+                                                        ">
                                                     </div>
                                                 </div>
                                                 <div class="form-group" id="div_busca">
@@ -178,7 +162,10 @@
                                                                         <th>CPF</th>
                                                                         <th>Tipo</th>
                                                                         <th>Status</th>  
-                                                                        <th width="10"><i class="fa fa-edit"></i></th>
+
+                                                                        <?php if($user_type == 1 || $user_type == 2){?>
+                                                                            <th width="10"><i class="fa fa-edit"></i></th>
+                                                                        <?php }?>    
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody  id="tbUsuarioBody">
@@ -285,24 +272,29 @@
                 var nome = '';
                 var valor = '';
 
-                if($('#txt_cpf').val() == '' && $('#txt_email').val() == '' && $('#opt_status').val() == ''){
+                if($('#txt_dado').val() == '' && $('#opt_busca').val() != '' && $('#opt_status').val() == '' ||
+                $('#opt_busca').val() == '' && $('#opt_status').val() == ''
+                ){
                     toastr.warning('Digite um valor para a busca');
                     return false;
                 }
 
                 if($('#opt_status').val() != '')  status = 'status='+$('#opt_status').val();
 
-                if($('#opt_busca').val() == 1 && $('#txt_email').val() != ''){
+                if($('#opt_busca').val() == 1){
                     var nome = 'nome=email';
-                    var valor = '&valor='+$('#txt_email').val();
-                    if($('#opt_status').val() != '')  status = '&status='+$('#opt_status').val();
+                    if($('#opt_status').val() != '')  status = '&'+status;
                 }
-                else if($('#opt_busca').val() == 2 && $('#txt_cpf').val() != ''){
+                else if($('#opt_busca').val() == 2){
                     var nome = 'nome=cpf';
-                    var valor = '&valor='+$('#txt_cpf').val();
-                    if($('#opt_status').val() != '')  status = '&status='+$('#opt_status').val();
+                    if($('#opt_status').val() != '')  status = '&'+status;
+                }
+                else if($('#opt_busca').val() == 3){
+                    var nome = 'nome=cpf';
+                    if($('#opt_status').val() != '')  status = '&'+status;
                 }
                 
+                var valor = '&valor='+$('#txt_dado').val();
 
                 
 
@@ -312,26 +304,31 @@
                     dataType: 'json',
                     data: nome+valor+status,
                     success: function(resposta){
-                        for(var i=0; i<resposta.length;i++){
-                            if(resposta[i]['status'] == 1) status = "<td style='color:green'><b>Ativado</b>";
-                            else if(resposta[i]['status'] == 2) status = "<td style='color:yellow'><b>Pendente</b>";
-                            else status = "<td style='color:red'><b>Desativado</b>";
-                            
-                            if(resposta[i]['user_type'] == 1) tipo = "Super";
-                            else if(resposta[i]['user_type'] == 2) tipo = "Admin";
-                            else if(resposta[i]['user_type'] == 3) tipo = "Consultor";
-                            else tipo = "Usuário";
+                        if(resposta == null) toastr.warning('Nenhum dado encontrado!');
+                        else{
+                            for(var i=0; i<resposta.length;i++){
+                                if(resposta[i]['status'] == 1) status = "<td style='color:green'><b>Ativado</b>";
+                                else if(resposta[i]['status'] == 2) status = "<td style='color:orange'><b>Pendente</b>";
+                                else status = "<td style='color:red'><b>Desativado</b>";
+                                
+                                if(resposta[i]['user_type'] == 1) tipo = "Super";
+                                else if(resposta[i]['user_type'] == 2) tipo = "Admin";
+                                else if(resposta[i]['user_type'] == 3) tipo = "Consultor";
+                                else tipo = "Usuário";
 
-                            tabela += '<tr>';
-                            tabela += '<td>'+resposta[i]['name']+'</td>';
-                            tabela += '<td>'+resposta[i]['email']+'</td>';
-                            tabela += '<td>'+resposta[i]['cpf']+'</td>';
-                            tabela += '<td>'+tipo+'</td>';
-                            tabela += status+'</td>';
-                            tabela += '<td><button onclick="editarUsuario(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
-                            tabela += '</tr>';
-                        }
-                        $('#tbUsuarioBody').html(tabela);
+                                tabela += '<tr>';
+                                tabela += '<td>'+resposta[i]['name']+'</td>';
+                                tabela += '<td>'+resposta[i]['email']+'</td>';
+                                tabela += '<td>'+resposta[i]['cpf']+'</td>';
+                                tabela += '<td>'+tipo+'</td>';
+                                tabela += status+'</td>';
+                                <?php if($user_type == 1 || $user_type == 2){?>
+                                    tabela += '<td><button onclick="editarUsuario(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
+                                <?php }?>
+                                tabela += '</tr>';
+                            }
+                            $('#tbUsuarioBody').html(tabela);
+                        }    
                     }
                 });
             }
@@ -361,19 +358,19 @@
                     "hideMethod": "fadeOut"
                 }
                 
-                $.ajax({
-                    type: 'POST',
-                    url: 'filtroUserLista',
-                    dataType: 'json',
-                    data: 'nome=email&valor=@',
-                    success: function(resposta){
-                        $('#opt_user').empty();
-                        $("#opt_user").append(new Option('Selecione um usuário', ''));
-                        for(var i=0; i<resposta.length;i++){
-                            $("#opt_user").append(new Option(resposta[i]['name'], resposta[i]['uuid']));
-                        }
-                    }
-                });
+                // $.ajax({
+                //     type: 'POST',
+                //     url: 'filtroUserLista',
+                //     dataType: 'json',
+                //     data: 'nome=email&valor=@',
+                //     success: function(resposta){
+                //         $('#opt_user').empty();
+                //         $("#opt_user").append(new Option('Selecione um usuário', ''));
+                //         for(var i=0; i<resposta.length;i++){
+                //             $("#opt_user").append(new Option(resposta[i]['name'], resposta[i]['uuid']));
+                //         }
+                //     }
+                // });
                 
 
                 <?php 
