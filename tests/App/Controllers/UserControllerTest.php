@@ -32,10 +32,8 @@ class UserControllerTest extends BaseTestCase
         //var_dump( $response );//die;
         $this->assertEquals(200, $response->getStatusCode());
         
-        $this->assertStringContainsString('name="user"', (string)$response->getBody());
+        $this->assertStringContainsString('name="dado"', (string)$response->getBody());
         $this->assertStringContainsString('name="busca"', (string)$response->getBody());
-        $this->assertStringContainsString('name="email"', (string)$response->getBody());
-        $this->assertStringContainsString('name="cpf"', (string)$response->getBody());
         $this->assertStringContainsString('name="status"', (string)$response->getBody());
         $this->assertStringContainsString('id="tbUsuarioBody"', (string)$response->getBody());
     }
