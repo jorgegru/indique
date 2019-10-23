@@ -32,12 +32,12 @@ class IndicationControllerTest extends BaseTestCase
         //var_dump( $response );//die;
         $this->assertEquals(200, $response->getStatusCode());
         
-        $this->assertStringContainsString('name="indication"', (string)$response->getBody());
         $this->assertStringContainsString('name="busca"', (string)$response->getBody());
         $this->assertStringContainsString('name="email"', (string)$response->getBody());
         $this->assertStringContainsString('name="cpf_cnpj"', (string)$response->getBody());
         $this->assertStringContainsString('name="telefone"', (string)$response->getBody());
         $this->assertStringContainsString('name="nome_responsavel"', (string)$response->getBody());
+        $this->assertStringContainsString('name="nome"', (string)$response->getBody());
         $this->assertStringContainsString('name="status"', (string)$response->getBody());
         $this->assertStringContainsString('id="tbIndicacaoBody"', (string)$response->getBody());
     }
@@ -53,9 +53,13 @@ class IndicationControllerTest extends BaseTestCase
         $this->container = $this->app()->getContainer();
         $this->conn = $this->container->get('conn');
 
-        $data2['email'] = 'anlumira@gmail.com';
+        $data2['email'] = '%anlumira@gmail.com%';
 
-        $rs = $this->allLike($data2);
+        $join['users']['campo'] = 'uuid';
+        $join['users']['campo2'] = 'indications.user_uuid';
+        $campos = "indications.*, users.name as user_name";
+        $rs = $this->allLikeLeftJoin($data2,$join,$campos);
+        //$rs = $this->allLike($data2);
         
         $this->assertJsonStringEqualsJsonString(
             (string)$response->getBody(),
