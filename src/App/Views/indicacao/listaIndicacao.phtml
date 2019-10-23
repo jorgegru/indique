@@ -81,14 +81,14 @@
 
                                         <form id="myForm" class="form-horizontal" action="" method="get">
                                             <div class="box-body">
-                                                <div class="form-group" id="div_user">
+                                                <!-- <div class="form-group" id="div_user">
                                                     <label class="col-sm-2 control-label">Indicação:</label>
                                                     <div class="col-sm-6">
                                                         <select  id='opt_indication' name="indication" class="normal form-control select2" onchange="editarIndicacao($('#opt_user').val());">
                                                             <option value="">Selecione a Indicação</option>
                                                         </select> 
                                                     </div>    
-                                                </div>
+                                                </div> -->
                                                 <div class="form-group" id="div_busca">
                                                     <label class="col-sm-2 control-label">Tipo de busca:</label>
                                                     <div class="col-sm-6">
@@ -98,30 +98,42 @@
                                                                 $('#div_email').hide();
                                                                 $('#div_telefone').hide();
                                                                 $('#div_nome_responsavel').hide();
+                                                                $('#div_nome').hide();
                                                             }
                                                             else if($('#opt_busca').val() == 2){
                                                                 $('#div_telefone').show();
                                                                 $('#div_cpf_cnpj').hide();
                                                                 $('#div_email').hide();
                                                                 $('#div_nome_responsavel').hide();
+                                                                $('#div_nome').hide();
                                                             }
                                                             else if($('#opt_busca').val() == 3){
                                                                 $('#div_email').show();
                                                                 $('#div_cpf_cnpj').hide();
                                                                 $('#div_telefone').hide();
                                                                 $('#div_nome_responsavel').hide();
+                                                                $('#div_nome').hide();
                                                             }
                                                             else if($('#opt_busca').val() == 4){
                                                                 $('#div_email').hide();
                                                                 $('#div_cpf_cnpj').hide();
                                                                 $('#div_telefone').hide();
                                                                 $('#div_nome_responsavel').show();
+                                                                $('#div_nome').hide();
+                                                            }
+                                                            else if($('#opt_busca').val() == 5){
+                                                                $('#div_email').hide();
+                                                                $('#div_cpf_cnpj').hide();
+                                                                $('#div_telefone').hide();
+                                                                $('#div_nome_responsavel').hide();
+                                                                $('#div_nome').show();
                                                             }
                                                             else{
                                                                 $('#div_email').hide();
                                                                 $('#div_cpf_cnpj').hide();
                                                                 $('#div_nome_responsavel').hide();
                                                                 $('#div_telefone').hide();
+                                                                $('#div_nome').hide();
                                                             }
                                                         ">
                                                             <option value="">Selecione o tipo de busca</option>
@@ -129,6 +141,7 @@
                                                             <option value="2">Telefone</option>
                                                             <option value="3">Email</option>
                                                             <option value="4">Nome Responsável</option>
+                                                            <option value="5">Nome Indicação</option>
                                                         </select>
                                                     </div>    
                                                 </div>
@@ -157,7 +170,13 @@
                                                 <div class="form-group" id="div_nome_responsavel" style="display:none">
                                                     <label class="col-sm-2 control-label">Nome Responsável:</label>
                                                     <div class="col-sm-6">
-                                                        <input type="text" class="form-control" id="txt_nome_responsavel" name="nome_responsavel" placeholder="Telefone" onkeyup="//atualizaUsuario('email',$('#txt_email').val());">
+                                                        <input type="text" class="form-control" id="txt_nome_responsavel" name="nome_responsavel" placeholder="Nome Responsável" onkeyup="//atualizaUsuario('email',$('#txt_email').val());">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" id="div_nome" style="display:none">
+                                                    <label class="col-sm-2 control-label">Nome:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" id="txt_nome" name="nome" placeholder="Nome" onkeyup="//atualizaUsuario('email',$('#txt_email').val());">
                                                     </div>
                                                 </div>
                                                 <div class="form-group" id="div_busca">
@@ -217,7 +236,10 @@
                                                                         <th>Status</th> 
                                                                         <th>Comissao</th>  
                                                                         <th>Consultor</th>
-                                                                        <th width="10"><i class="fa fa-edit"></i></th>
+                                                                       
+                                                                        <?php if($user_type == 1 || $user_type == 2){?>
+                                                                            <th width="10"><i class="fa fa-edit"></i></th>
+                                                                        <?php }?>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody  id="tbIndicacaoBody">
@@ -332,24 +354,49 @@
                 
                 if($('#opt_status').val() != '')  status = 'status='+$('#opt_status').val();
 
-                if($('#opt_busca').val() == 1 && $('#txt_cpf_cnpj').val() != ''){
+                if($('#opt_busca').val() == 1){
+                    if($('#txt_cpf_cnpj').val() == ''){
+                        toastr.warning('Digite um valor para a busca');
+                        return false;
+                    }
                     var nome = 'nome=cpf_cnpj';
                     var valor = '&valor='+$('#txt_cpf_cnpj').val();
                     if($('#opt_status').val() != '')  status = '&status='+$('#opt_status').val();
                 }
-                else if($('#opt_busca').val() == 2 && $('#txt_telefone').val() != ''){
+                else if($('#opt_busca').val() == 2){
+                    if($('#txt_telefone').val() == ''){
+                        toastr.warning('Digite um valor para a busca');
+                        return false;
+                    }
                     var nome = 'nome=telefone';
                     var valor = '&valor='+$('#txt_telefone').val();
                     if($('#opt_status').val() != '')  status = '&status='+$('#opt_status').val();
                 }
-                else if($('#opt_busca').val() == 3 && $('#txt_email').val() != ''){
+                else if($('#opt_busca').val() == 3){
+                    if($('#txt_email').val() == ''){
+                        toastr.warning('Digite um valor para a busca');
+                        return false;
+                    }
                     var nome = 'nome=email';
                     var valor = '&valor='+$('#txt_email').val();
                     if($('#opt_status').val() != '')  status = '&status='+$('#opt_status').val();
                 }
-                else if($('#opt_busca').val() == 4 && $('#txt_nome_responsavel').val() != ''){
-                    var nome = 'nome=nome_responsavel';
+                else if($('#opt_busca').val() == 4){
+                    if($('#txt_nome_responsavel').val() == ''){
+                        toastr.warning('Digite um valor para a busca');
+                        return false;
+                    }
+                    var nome = 'nome=name_responsavel';
                     var valor = '&valor='+$('#txt_nome_responsavel').val();
+                    if($('#opt_status').val() != '')  status = '&status='+$('#opt_status').val();
+                }
+                else if($('#opt_busca').val() == 5){
+                    if($('#txt_nome').val() == ''){
+                        toastr.warning('Digite um valor para a busca');
+                        return false;
+                    }
+                    var nome = 'nome=name';
+                    var valor = '&valor='+$('#txt_nome').val();
                     if($('#opt_status').val() != '')  status = '&status='+$('#opt_status').val();
                 }
                 
@@ -387,7 +434,10 @@
                             tabela += status+'</td>';
                             tabela += comissao+'</td>';
                             tabela += consultor+'</td>';
-                            tabela += '<td><button onclick="editarIndicacao(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
+
+                            <?php if($user_type == 1 || $user_type == 2){?>
+                                tabela += '<td><button onclick="editarIndicacao(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
+                            <?php }?>
                             tabela += '</tr>';
                         }
                         $('#tbIndicacaoBody').html(tabela);
@@ -420,19 +470,19 @@
                     "hideMethod": "fadeOut"
                 }
                 
-                $.ajax({
-                    type: 'POST',
-                    url: 'filtroIndicacaoLista',
-                    dataType: 'json',
-                    data: 'nome=email&valor=@',
-                    success: function(resposta){
-                        $('#opt_indication').empty();
-                        $("#opt_indication").append(new Option('Selecione uma Indicação', ''));
-                        for(var i=0; i<resposta.length;i++){
-                            $("#opt_indication").append(new Option(resposta[i]['name'], resposta[i]['uuid']));
-                        }
-                    }
-                });
+                // $.ajax({
+                //     type: 'POST',
+                //     url: 'filtroIndicacaoLista',
+                //     dataType: 'json',
+                //     data: 'nome=email&valor=@',
+                //     success: function(resposta){
+                //         $('#opt_indication').empty();
+                //         $("#opt_indication").append(new Option('Selecione uma Indicação', ''));
+                //         for(var i=0; i<resposta.length;i++){
+                //             $("#opt_indication").append(new Option(resposta[i]['name'], resposta[i]['uuid']));
+                //         }
+                //     }
+                // });
                 
 
                 <?php 

@@ -3,7 +3,7 @@
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
             <!-- Sidebar user panel -->
-            <div class="user-panel">
+            <div class="user-panel" style="height: 35px;">
                 <!-- <div class="pull-left image"> -->
                     <!-- <div class="img-circle" style="background:url('<?php //echo $imagemLogo; ?>') no-repeat center center; background-size:contain; width:45px; height:45px;"></div>-->
                     <!-- <img src='<?php //echo $imagemLogo; ?>' class="img-circle" alt="User Image" style="width: 100%;max-width: 40px;height: 40px;margin-left: 10px;"/>  -->
@@ -79,7 +79,7 @@
 
 
                 <li class="treeview">
-                    <a href="#"><i class="fa fa-handshake-o"></i>Indicacoes<i class="fa fa-angle-left pull-right"></i></a>
+                    <a href="#"><i class="fa fa-handshake-o"></i><span>Indicacoes</span><i class="fa fa-angle-left pull-right"></i></a>
                 
                     <ul class="treeview-menu">
                         <li class="treeview">
@@ -87,9 +87,11 @@
                                 <a href="/cadastroIndicacao"><i class="fa fa-circle-o"></i>Adicionar</i></a>
                             </li>
 
-                            <li>
-                                <a href="/editaIndicacao"><i class="fa fa-circle-o"></i>Editar</i></a>             
-                            </li>
+                            <?php if($_SESSION['user']['user_type'] == 1 || $_SESSION['user']['user_type'] == 2){?>
+                                <li>
+                                    <a href="/editaIndicacao"><i class="fa fa-circle-o"></i>Editar</i></a>             
+                                </li>
+                            <?php }?>
 
                             <li>
                                 <a href="/listaIndicacoes"><i class="fa fa-circle-o"></i>Listar</i></a>

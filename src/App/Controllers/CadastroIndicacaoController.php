@@ -170,7 +170,7 @@ class CadastroIndicacaoController
             try{               
                 if($_SESSION['user']['user_type'] == 3 || $_SESSION['user']['user_type'] == 4){
                     $metadata['commission'] = 1;
-                    $metadata['status'] = 1;
+                    $metadata['status'] = 7;
                 }
 
                 $IndicationsModel = new IndicationsModel($this->container);
