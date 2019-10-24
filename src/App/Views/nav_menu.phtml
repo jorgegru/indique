@@ -18,7 +18,7 @@
                 <li class="header">Navegação Principal</li>
 
                 <li >
-                    <a href="dashboard">
+                    <a href="/dashboard">
                         <i class="fa fa-dashboard"></i> <span>Dashboard</span> </i>
                     </a>
                 </li>
@@ -90,16 +90,18 @@
                                 <a href="/cadastroIndicacao"><i class="fa fa-circle-o"></i>Adicionar</i></a>
                             </li>
 
-                            <?php if($_SESSION['user']['user_type'] == 1 || $_SESSION['user']['user_type'] == 2){?>
+                            <?php if($_SESSION['user']['user_type'] != 4){?>
                                 <li>
                                     <a href="/editaIndicacao"><i class="fa fa-circle-o"></i>Editar</i></a>             
                                 </li>
                             <?php }?>
 
-                            <li>
-                                <a href="/listaIndicacoes"><i class="fa fa-circle-o"></i>Listar</i></a>
-                                
-                            </li>
+                            <?php if($_SESSION['user']['user_type'] != 4){?>
+                                <li>
+                                    <a href="/listaIndicacoes"><i class="fa fa-circle-o"></i>Listar</i></a>
+                                    
+                                </li>
+                            <?php }?>
                         </li>    
                     </ul>
                 </li>
