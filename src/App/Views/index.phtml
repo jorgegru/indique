@@ -131,7 +131,7 @@
                 </div>
                 <!-- /.row -->
 
-                <div class="row">
+                <div class="row" id="rowIndicationsPendent">
                     <div class="col-md-12"> 
                     <div class="box box-info">
                         <div class="box-header with-border">
@@ -271,6 +271,77 @@
                 </div>
                 <!-- /.row -->
                 
+                <div class="row" id="rowMyIndications">
+                    <div class="col-md-12"> 
+                    <div class="box box-info">
+                        <div class="box-header with-border">
+                        <h3 class="box-title">Minhas Indicações</h3>
+
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
+                                
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <form id="myForm3" class="form-horizontal" action="" method="get">
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-sm-12 col-xs-6">
+                                        <div class="description-block">
+                                            <div class="table-responsive">
+                                                <div id="id_tabela" style="max-height: 500px;overflow-y: auto;">
+                                                    <table id="tbIndicacao" class="table table-bordered table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                            <th width="300">Nome</th>
+                                                                <th>CPF_CNPJ</th>
+                                                                <th>Telefone</th>
+                                                                <th width="300">Nome Responsável</th>
+                                                                <th>Email</th>
+                                                                <th>Status</th> 
+                                                                <th>Comissao</th>  
+                                                                <th>Consultor</th>
+                                                                
+                                                                <?php if($user_type != 4){?>
+                                                                    <th width="10"><i class="fa fa-edit"></i></th>
+                                                                <?php }?>   
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody  id="tbMyIndicationsBody">
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>   	
+                                        </div>
+                                    </div>
+                                </div>
+                            <!-- /.row -->
+                            </div>
+                        </form>    
+                        <!-- ./box-body -->
+                        <div class="box-footer">
+                            <div class="row">
+                                <!-- /.col -->
+                                <div class="col-sm-3 col-xs-6">
+                                    <div class="description-block">
+                                        <div id="total_my_indications"><h5 class="description-header">1200</h5></div>
+                                        <span class="description-text">Total</span>
+                                    </div>
+                                <!-- /.description-block -->
+                                </div>
+                            </div>
+                        <!-- /.row -->
+                        </div>
+                        <!-- /.box-footer -->
+                    </div>
+                    <!-- /.box -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
               
             </section>
 
@@ -365,20 +436,22 @@
                 var total = 0;
                 var filtro = '&filtro=ORDER BY indications.status';
 
-
-                if(user_type == 4){
-                    nome = 'nome=creator_uuid';
-                    valor = '&valor='+uuid;
-                    var status = '';
-                    $('#div_comissao').show();
-                }
-                else if(user_type == 3){
+                $('#div_comissao').show();
+                // if(user_type == 4){
+                //     nome = 'nome=creator_uuid';
+                //     valor = '&valor='+uuid;
+                //     var status = '';
+                //     $('#div_comissao').show();
+                    
+                // }
+                if(user_type == 3){
                     nome = 'nome=user_uuid';
                     valor = '&valor='+uuid;
                     status2 = 1;
                 }
                 else if(user_type == 2){
                     var status = 'status=7';
+                    status2 = 7;
                 }
                 else if(user_type == 1){
                     nome = 'nome=email';
@@ -387,59 +460,65 @@
                     $('#div_usuarios_pendentes').show();
                 }
                 
-                $.ajax({//tabela de indicações
-                    type: 'POST',
-                    url: 'filtroIndicacaoLista',
-                    dataType: 'json',
-                    data: nome+valor+status+filtro,
-                    success: function(resposta){
-                        if(resposta.length < 1) toastr.warning('Nenhuma indicação pendente!');
-                        for(var i=0; i<resposta.length;i++){
+                if(user_type == 4){
+                    $('#rowIndicationsPendent').hide();
+                }
+                else{
+                    $.ajax({// carrega a tabela de indicações pendentes
+                        type: 'POST',
+                        url: 'filtroIndicacaoLista',
+                        dataType: 'json',
+                        data: nome+valor+status+filtro,
+                        success: function(resposta){
+                            if(resposta.length < 1) toastr.warning('Nenhuma indicação pendente!');
+                            for(var i=0; i<resposta.length;i++){
 
-                            if(resposta[i]['status'] == 5)  ganhos++;
-                            if(resposta[i]['status'] == 6)  perdidos++;
-                            if(resposta[i]['status'] == status2 || user_type == 4){
+                                if(resposta[i]['status'] == 5)  ganhos++;
+                                if(resposta[i]['status'] == 6)  perdidos++;
+                                if(resposta[i]['status'] == status2){
 
-                                if(resposta[i]['status'] == 1){ status = "<td style='color:orange'><b>Pendente</b>"; pendentes++;}
-                                else if(resposta[i]['status'] == 2) status = "<td><b>Cliente contatado</b>";
-                                else if(resposta[i]['status'] == 3) status = "<td><b>Visita Realizada</b>";
-                                else if(resposta[i]['status'] == 4) status = "<td><b>Proposta Enviada</b>";
-                                else if(resposta[i]['status'] == 5) status = "<td style='color:green'><b>Negócio ganho</b>";
-                                else if(resposta[i]['status'] == 6) status = "<td style='color:red'><b>Negócio perdido</b>";
-                                else if(resposta[i]['status'] == 7){ status = "<td style='color:red'><b>Sem Consultor</b>"; pendentes++;}
-                                else status = "<td style='color:red'><b>Cancelado</b>";
-                                
-                                if(resposta[i]['commission'] == 1)   comissao = "<td>Fixa";
-                                else                                 comissao = "<td>Recorrente";
-                                
-                                if(resposta[i]['user_uuid'] == '')   consultor = "<td>Sem Consultor";
-                                else                                 consultor = "<td>"+resposta[i]['user_name'];
+                                    if(resposta[i]['status'] == 1){ status = "<td style='color:orange'><b>Pendente</b>"; pendentes++;}
+                                    else if(resposta[i]['status'] == 2) status = "<td><b>Cliente contatado</b>";
+                                    else if(resposta[i]['status'] == 3) status = "<td><b>Visita Realizada</b>";
+                                    else if(resposta[i]['status'] == 4) status = "<td><b>Proposta Enviada</b>";
+                                    else if(resposta[i]['status'] == 5) status = "<td style='color:green'><b>Negócio ganho</b>";
+                                    else if(resposta[i]['status'] == 6) status = "<td style='color:red'><b>Negócio perdido</b>";
+                                    else if(resposta[i]['status'] == 7){ status = "<td style='color:red'><b>Sem Consultor</b>"; pendentes++;}
+                                    else status = "<td style='color:red'><b>Cancelado</b>";
+                                    
+                                    if(resposta[i]['commission'] == 1)   comissao = "<td>Fixa";
+                                    else                                 comissao = "<td>Recorrente";
+                                    
+                                    if(resposta[i]['user_uuid'] == '')   consultor = "<td>Sem Consultor";
+                                    else                                 consultor = "<td>"+resposta[i]['user_name'];
 
-                                tabela += '<tr>';
-                                tabela += '<td>'+resposta[i]['name']+'</td>';
-                                tabela += '<td>'+resposta[i]['cpf_cnpj']+'</td>';
-                                tabela += '<td>'+resposta[i]['telefone']+'</td>';
-                                tabela += '<td>'+resposta[i]['name_responsavel']+'</td>';
-                                tabela += '<td>'+resposta[i]['email']+'</td>';
-                                tabela += status+'</td>';
-                                tabela += comissao+'</td>';
-                                tabela += consultor+'</td>';
+                                    tabela += '<tr>';
+                                    tabela += '<td>'+resposta[i]['name']+'</td>';
+                                    tabela += '<td>'+resposta[i]['cpf_cnpj']+'</td>';
+                                    tabela += '<td>'+resposta[i]['telefone']+'</td>';
+                                    tabela += '<td>'+resposta[i]['name_responsavel']+'</td>';
+                                    tabela += '<td>'+resposta[i]['email']+'</td>';
+                                    tabela += status+'</td>';
+                                    tabela += comissao+'</td>';
+                                    tabela += consultor+'</td>';
 
-                                <?php if($user_type != 4){?>
-                                    tabela += '<td><button onclick="editarIndicacao(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
-                                <?php }?>
-                                tabela += '</tr>';
-                                total++
+                                    <?php if($user_type != 4){?>
+                                        tabela += '<td><button onclick="editarIndicacao(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
+                                    <?php }?>
+                                    tabela += '</tr>';
+                                    total++
+                                }
                             }
+                            $('#tbIndicacoesBody').html(tabela);
+                            $('#total_indicacoes').html(total);
+                            $('#span_pendentes').html(pendentes);
+                            $('#span_ganhos').html(ganhos);
+                            $('#span_perdidos').html(perdidos);
                         }
-                        $('#tbIndicacoesBody').html(tabela);
-                        $('#total_indicacoes').html(total);
-                        $('#span_pendentes').html(pendentes);
-                        $('#span_ganhos').html(ganhos);
-                        $('#span_perdidos').html(perdidos);
-                    }
-                });
+                    });
+                }
 
+                // carrega a tabela de usuarios pendentes
                 if(user_type == 1 || user_type == 2){
                     var tabela2 = '';
                     var status = '';
@@ -450,7 +529,7 @@
 
                     status = 'status=2';
 
-                    $.ajax({// tabela de usuarios
+                    $.ajax({
                         type: 'POST',
                         url: 'filtroUserLista',
                         dataType: 'json',
@@ -487,7 +566,70 @@
                         }
                     });
                     $('#row_user').show();
+
+                    
                 }
+
+                //carrega a tabela minhas indicações
+                nome = 'nome=creator_uuid';
+                valor = '&valor='+uuid;
+                var status = '';
+                var tabela3 = "";
+                var total3 = "";
+                var ganhos2 = 0;
+                var perdidos2 = 0;
+                var pendentes2 = 0;
+                $.ajax({
+                    type: 'POST',
+                    url: 'filtroIndicacaoLista',
+                    dataType: 'json',
+                    data: nome+valor+status+filtro,
+                    success: function(resposta){
+                        if(resposta.length < 1) toastr.warning('Nenhuma indicação própria encontrada!');
+                        for(var i=0; i<resposta.length;i++){
+                            if(resposta[i]['status'] == 5)  ganhos2++;
+                            if(resposta[i]['status'] == 6)  perdidos2++;
+                            if(resposta[i]['status'] == 1){ status = "<td style='color:orange'><b>Pendente</b>"; pendentes2++;}
+                            else if(resposta[i]['status'] == 2) status = "<td><b>Cliente contatado</b>";
+                            else if(resposta[i]['status'] == 3) status = "<td><b>Visita Realizada</b>";
+                            else if(resposta[i]['status'] == 4) status = "<td><b>Proposta Enviada</b>";
+                            else if(resposta[i]['status'] == 5) status = "<td style='color:green'><b>Negócio ganho</b>";
+                            else if(resposta[i]['status'] == 6) status = "<td style='color:red'><b>Negócio perdido</b>";
+                            else if(resposta[i]['status'] == 7){ status = "<td style='color:red'><b>Sem Consultor</b>"; pendentes2++;}
+                            else status = "<td style='color:red'><b>Cancelado</b>";
+                            
+                            if(resposta[i]['commission'] == 1)   comissao = "<td>Fixa";
+                            else                                 comissao = "<td>Recorrente";
+                            
+                            if(resposta[i]['user_uuid'] == '')   consultor = "<td>Sem Consultor";
+                            else                                 consultor = "<td>"+resposta[i]['user_name'];
+
+                            tabela3 += '<tr>';
+                            tabela3 += '<td>'+resposta[i]['name']+'</td>';
+                            tabela3 += '<td>'+resposta[i]['cpf_cnpj']+'</td>';
+                            tabela3 += '<td>'+resposta[i]['telefone']+'</td>';
+                            tabela3 += '<td>'+resposta[i]['name_responsavel']+'</td>';
+                            tabela3 += '<td>'+resposta[i]['email']+'</td>';
+                            tabela3 += status+'</td>';
+                            tabela3 += comissao+'</td>';
+                            tabela3 += consultor+'</td>';
+
+                            <?php if($user_type != 4){?>
+                                tabela3 += '<td><button onclick="editarIndicacao(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
+                            <?php }?>
+                            tabela3 += '</tr>';
+                            total3++
+                        }
+                        
+                        $('#tbMyIndicationsBody').html(tabela3);
+                        $('#total_my_indications').html(total3);
+                        if(user_type == 4){
+                            $('#span_pendentes').html(pendentes2);
+                            $('#span_ganhos').html(ganhos2);
+                            $('#span_perdidos').html(perdidos2);
+                        }
+                    }
+                });
 			});
 
             function editarIndicacao(uuid){

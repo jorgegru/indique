@@ -199,7 +199,8 @@ class CadastroIndicacaoController
                                             //'company_uuid'=>$metadata['company_uuid'],
                                             'status'=>$metadata['status'],
                                             'commission'=>$metadata['commission'],
-                                            'user_uuid'=>$metadata['user_uuid']]);
+                                            'user_uuid'=>$metadata['user_uuid'],
+                                            'creator_uuid'=>$_SESSION['user']['id']]);
                 if($indication){
                     $this->container->flash->addMessage('success', 'Cadastrado com sucesso');
                     return $response->withRedirect($this->container->router->pathFor('cadastroIndicacao'));
