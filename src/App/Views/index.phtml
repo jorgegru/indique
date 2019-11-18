@@ -58,8 +58,8 @@
             <section class="content">
                 <!-- Info boxes -->
                 <div class="row">
-                    <div class="col-md-3 col-sm-6 col-xs-12" id="div_indicacoes">
-                    <div class="info-box">
+                    <div class="col-md-3 col-sm-6 col-xs-12" id="div_indicacoes" style="display:none;" name="div_row">
+                    <div class="info-box" name="info_box">
                         <span class="info-box-icon bg-yellow"><i class="ion ion-clipboard"></i></span>
 
                         <div class="info-box-content">
@@ -71,8 +71,8 @@
                     <!-- /.info-box -->
                     </div>
                     <!-- /.col -->
-                    <div class="col-md-3 col-sm-6 col-xs-12" id="div_fechados">
-                    <div class="info-box">
+                    <div class="col-md-3 col-sm-6 col-xs-12" id="div_fechados" style="display:none;" name="div_row">
+                    <div class="info-box" name="info_box">
                         <span class="info-box-icon bg-green"><i class="fa fa-handshake-o"></i></span>
 
                         <div class="info-box-content">
@@ -88,8 +88,8 @@
                     <!-- fix for small devices only -->
                     <div class="clearfix visible-sm-block"></div>
 
-                    <div class="col-md-3 col-sm-6 col-xs-12" id="div_perdidos">
-                    <div class="info-box">
+                    <div class="col-md-3 col-sm-6 col-xs-12" id="div_perdidos" style="display:none;" name="div_row">
+                    <div class="info-box" name="info_box">
                     
                         <span class="info-box-icon bg-red"><i class="fa fa-window-close"></i></span>
 
@@ -102,8 +102,8 @@
                     <!-- /.info-box -->
                     </div>
                     <!-- /.col -->
-                    <div class="col-md-3 col-sm-6 col-xs-12" id="div_usuarios_pendentes" style="display:none;">
-                    <div class="info-box">
+                    <div class="col-md-3 col-sm-6 col-xs-12" id="div_usuarios_pendentes" style="display:none;" name="div_row">
+                    <div class="info-box" name="info_box">
                         <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
 
                         <div class="info-box-content">
@@ -115,8 +115,8 @@
                     <!-- /.info-box -->
                     </div>
                     <!-- /.col -->
-                    <div class="col-md-3 col-sm-6 col-xs-12" id="div_comissao" style="display:none;">
-                    <div class="info-box">
+                    <div class="col-md-3 col-sm-6 col-xs-12" id="div_comissao" style="display:none;" name="div_row">
+                    <div class="info-box" name="info_box">
                         <span class="info-box-icon bg-green"><i class="fa fa-money"></i></span>
 
                         <div class="info-box-content">
@@ -128,8 +128,71 @@
                     <!-- /.info-box -->
                     </div>
                     <!-- /.col -->
+
+                    <div class="col-md-3 col-sm-6 col-xs-12" id="div_indicacoes2" name="div_row2">
+                    <div class="info-box" name="info_box">
+                        <span class="info-box-icon bg-blue"><i class="ion ion-clipboard"></i></span>
+
+                        <div class="info-box-content">
+                        <span class="info-box-text">Minhas <br>Indicações</span>
+                        <span class="info-box-number" id="span_indicacoes">0</span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                    </div>
+                    <!-- /.col -->
+
+                    <div class="col-md-3 col-sm-6 col-xs-12" id="div_fechados2" name="div_row2">
+                    <div class="info-box" name="info_box">
+                        <span class="info-box-icon bg-green"><i class="fa fa-handshake-o"></i></span>
+
+                        <div class="info-box-content">
+                        <span class="info-box-text">Meus Negócios<br> Ganhos</span>
+                        <span class="info-box-number" id="span_ganhos2">0</span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                    </div>
+                    <!-- /.col -->
+
+                    <!-- fix for small devices only -->
+                    <div class="clearfix visible-sm-block"></div>
+
+                    <div class="col-md-3 col-sm-6 col-xs-12" id="div_perdidos2" name="div_row2">
+                    <div class="info-box" name="info_box">
+                    
+                        <span class="info-box-icon bg-red"><i class="fa fa-window-close"></i></span>
+
+                        <div class="info-box-content">
+                        <span class="info-box-text">Meus Negócios<br>Perdidos</span>
+                        <span class="info-box-number" id="span_perdidos2">0</span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                    </div>
+                    <!-- /.col -->
+
+                    <div class="col-md-3 col-sm-6 col-xs-12" id="div_comissao2" name="div_row2">
+                    <div class="info-box" name="info_box">
+                        <span class="info-box-icon bg-green"><i class="fa fa-money"></i></span>
+
+                        <div class="info-box-content">
+                        <span class="info-box-text">Comissão de<br> Indicações</span>
+                        <span class="info-box-number" id="span_comissao2">0</span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                    </div>
+                    <!-- /.col -->
+
                 </div>
                 <!-- /.row -->
+
+                
 
                 <div class="row" id="rowIndicationsPendent">
                     <div class="col-md-12"> 
@@ -342,6 +405,36 @@
                     <!-- /.col -->
                 </div>
                 <!-- /.row -->
+
+
+
+                <div class="row" id="rowMyIndications">
+                    <div class="col-md-12"> 
+                    <div class="box box-info">
+                        <div class="box-header with-border">
+                        <h3 class="box-title">Indicações</h3>
+
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
+                                
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="chart">
+                                <!-- <canvas id="barChart" style="height: 100px; width: 489px;" height="100" width="489"></canvas> -->
+                                <div id="graficos"></div>
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <!-- /.box -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
               
             </section>
 
@@ -384,7 +477,7 @@
 		<!-- ChartJS 1.0.1 -->
 		<script src="template/bower_components/chart.js/Chart.min.js" type="text/javascript"></script>
 	
-	
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js"></script>
 		<script src="template/plugins/jQueryUI/jquery-ui.min.js" type="text/javascript"></script>
 
 		<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
@@ -402,7 +495,7 @@
 
         <script>
             $(document).ready(function() {
-				
+    
 				toastr.options = {
                     "closeButton": false,
                     "debug": false,
@@ -434,16 +527,26 @@
                 var usuarios = 0;
                 var pendentes = 0;
                 var total = 0;
+                var andamento = 0;
                 var filtro = '&filtro=ORDER BY indications.status';
 
-                $('#div_comissao').show();
-                // if(user_type == 4){
+                if(user_type == 1 || user_type == 2){
+                    $('[name ="info_box"]').css("width", "100%");
+                    $('[name ="div_row"]').css("width", "20%");
+                }
+                
+
+                //$('#div_comissao').show();
+                if(user_type != 4){
                 //     nome = 'nome=creator_uuid';
                 //     valor = '&valor='+uuid;
                 //     var status = '';
                 //     $('#div_comissao').show();
-                    
-                // }
+                    $('#div_indicacoes').show();  
+                    $('#div_fechados').show();  
+                    $('#div_perdidos').show();  
+                    $('#div_comissao').show();    
+                }
                 if(user_type == 3){
                     nome = 'nome=user_uuid';
                     valor = '&valor='+uuid;
@@ -459,29 +562,33 @@
                     status2 = 7;
                     $('#div_usuarios_pendentes').show();
                 }
-                
+                var t = 0;
                 if(user_type == 4){
                     $('#rowIndicationsPendent').hide();
                 }
+                
                 else{
                     $.ajax({// carrega a tabela de indicações pendentes
                         type: 'POST',
+                        async:false,
                         url: 'filtroIndicacaoLista',
                         dataType: 'json',
                         data: nome+valor+status+filtro,
                         success: function(resposta){
+                            t = resposta.length;
                             if(resposta.length < 1) toastr.warning('Nenhuma indicação pendente!');
                             for(var i=0; i<resposta.length;i++){
 
                                 if(resposta[i]['status'] == 5)  ganhos++;
-                                if(resposta[i]['status'] == 6)  perdidos++;
+                                else if(resposta[i]['status'] == 6)  perdidos++;
+                                else if(resposta[i]['status'] != 7) andamento++;
                                 if(resposta[i]['status'] == status2){
 
                                     if(resposta[i]['status'] == 1){ status = "<td style='color:orange'><b>Pendente</b>"; pendentes++;}
                                     else if(resposta[i]['status'] == 2) status = "<td><b>Cliente contatado</b>";
-                                    else if(resposta[i]['status'] == 3) status = "<td><b>Visita Realizada</b>";
-                                    else if(resposta[i]['status'] == 4) status = "<td><b>Proposta Enviada</b>";
-                                    else if(resposta[i]['status'] == 5) status = "<td style='color:green'><b>Negócio ganho</b>";
+                                    else if(resposta[i]['status'] == 3) status = "<td><b>Visita Realizada</b>"; 
+                                    else if(resposta[i]['status'] == 4) status = "<td><b>Proposta Enviada</b>"; 
+                                    else if(resposta[i]['status'] == 5) status = "<td style='color:green'><b>Negócio ganho</b>"; 
                                     else if(resposta[i]['status'] == 6) status = "<td style='color:red'><b>Negócio perdido</b>";
                                     else if(resposta[i]['status'] == 7){ status = "<td style='color:red'><b>Sem Consultor</b>"; pendentes++;}
                                     else status = "<td style='color:red'><b>Cancelado</b>";
@@ -531,6 +638,7 @@
 
                     $.ajax({
                         type: 'POST',
+                        async:false,
                         url: 'filtroUserLista',
                         dataType: 'json',
                         data: status,
@@ -579,22 +687,25 @@
                 var ganhos2 = 0;
                 var perdidos2 = 0;
                 var pendentes2 = 0;
+                var andamento2 = 0;
                 $.ajax({
                     type: 'POST',
+                    async:false,
                     url: 'filtroIndicacaoLista',
                     dataType: 'json',
                     data: nome+valor+status+filtro,
                     success: function(resposta){
                         if(resposta.length < 1) toastr.warning('Nenhuma indicação própria encontrada!');
                         for(var i=0; i<resposta.length;i++){
-                            if(resposta[i]['status'] == 5)  ganhos2++;
-                            if(resposta[i]['status'] == 6)  perdidos2++;
+                            // if(resposta[i]['status'] == 5)  ganhos2++;
+                            // else if(resposta[i]['status'] == 6)  perdidos2++;
+                            // else if(resposta[i]['status'] != 7) andamento2++;
                             if(resposta[i]['status'] == 1){ status = "<td style='color:orange'><b>Pendente</b>"; pendentes2++;}
-                            else if(resposta[i]['status'] == 2) status = "<td><b>Cliente contatado</b>";
-                            else if(resposta[i]['status'] == 3) status = "<td><b>Visita Realizada</b>";
-                            else if(resposta[i]['status'] == 4) status = "<td><b>Proposta Enviada</b>";
-                            else if(resposta[i]['status'] == 5) status = "<td style='color:green'><b>Negócio ganho</b>";
-                            else if(resposta[i]['status'] == 6) status = "<td style='color:red'><b>Negócio perdido</b>";
+                            else if(resposta[i]['status'] == 2) {status = "<td><b>Cliente contatado</b>";andamento2++;}
+                            else if(resposta[i]['status'] == 3) {status = "<td><b>Visita Realizada</b>";andamento2++;}
+                            else if(resposta[i]['status'] == 4) {status = "<td><b>Proposta Enviada</b>";andamento2++;}
+                            else if(resposta[i]['status'] == 5) {status = "<td style='color:green'><b>Negócio ganho</b>"; ganhos2++;}
+                            else if(resposta[i]['status'] == 6) {status = "<td style='color:red'><b>Negócio perdido</b>"; perdidos2++;}
                             else if(resposta[i]['status'] == 7){ status = "<td style='color:red'><b>Sem Consultor</b>"; pendentes2++;}
                             else status = "<td style='color:red'><b>Cancelado</b>";
                             
@@ -623,13 +734,284 @@
                         
                         $('#tbMyIndicationsBody').html(tabela3);
                         $('#total_my_indications').html(total3);
-                        if(user_type == 4){
-                            $('#span_pendentes').html(pendentes2);
-                            $('#span_ganhos').html(ganhos2);
-                            $('#span_perdidos').html(perdidos2);
-                        }
+                        //if(user_type == 4){
+                            $('#span_indicacoes').html(total3);
+                            $('#span_ganhos2').html(ganhos2);
+                            $('#span_perdidos2').html(perdidos2);
+
+                        //}
                     }
                 });
+
+
+                function Ajax3(metodo, url, post, div_id, funcao){
+                    try{ //Instancia para navegadores modernos
+                        var ajaxRequest = new XMLHttpRequest();
+                    }
+                    catch(err){ //Instancia para navegadores IE antigos
+                        var ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
+                    }
+                    
+                    //Define qual a fun��o que ser� chamada toda vez que o status em chamadaAjax.readyState mudar
+                    ajaxRequest.onreadystatechange = funcao;
+                    ajaxRequest['post'] = post;
+                    
+                    //Escolhe o m�todo, a url, e se true para executar uma chamada ass�ncrona.
+                    if(metodo == 'GET'){
+                        ajaxRequest.open(metodo, url, true);
+                        ajaxRequest.send();
+                    }
+                    
+                    if(metodo == 'POST'){              
+                        ajaxRequest.open(metodo, url, true);
+                        
+                        ajaxRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                        //post deve estar no formato http. Ex.: "var1=valor1&var2=valor2"
+                        //ajaxRequest["ponteiro"] = setTimeout(ajaxRequest.send+"(\"" + ajaxRequest.post + "\")", 2000);
+                        ajaxRequest.send(post);
+                    }   
+                }
+
+                if(user_type == 4){
+                    var d = [total3, pendentes2, andamento2, ganhos2, perdidos2];
+                }
+                else{
+                    var d = [t, pendentes, andamento, ganhos, perdidos];
+                }
+
+                Highcharts.setOptions({
+                    colors: ['#3f7fbf', '#f3e744', '#f28a13', '#6ff344', '#f01417']
+                });
+
+                chart = Highcharts.chart('graficos', {
+		            chart : {
+                        renderTo : 'graficos',
+                        //backgroundColor : '#00000',
+                        type : 'column',
+
+                    },
+                   
+                    title : {
+                        text : 'Indicações'
+                    },
+                    credits : {
+                        enabled : false
+                    },
+                    legend : {
+                        layout : 'vertical',
+                        align : 'right',
+                        verticalAlign : 'top',
+                        floating: true,
+                        //backgroundColor : '#CCC',
+                        x : 0,
+                        y : 40,
+                        borderWidth : 0,
+                        itemStyle : {
+                            color : '#000',
+                            fontSize: "9px"
+                        }
+                    },
+                    yAxis : {
+                        min : 0,
+                        title : {
+                            text : 'Quantidade'
+                        }
+                    },
+                    xAxis : {
+                        categories : ['Indicações', 'Pendentes', 'Em Andamento', 'Ganhas', 'Perdidas']
+                    },
+                    plotOptions: {
+                            column: {
+                                pointPadding: 0.2,
+                                borderWidth: 0,
+                                dataLabels: {
+                                    enabled: true,
+                                    //rotation: -45,
+                                    color: '#000',
+                                    align: 'center',
+                                    style: {
+                                        fontSize: "15px"
+                                    },
+                                    x: 5,
+                                    y: 0
+                                }
+                            }
+                        },
+                    series : []
+                });
+                chart.addSeries({
+					name : ['Indicações'],
+					data : [d[0]],
+				});
+                chart.addSeries({
+					name : ['Pendentes'],
+					data : [d[1]],
+				});
+                chart.addSeries({
+					name : ['Em Andamento'],
+					data : [d[2]],
+				});
+                chart.addSeries({
+					name : ['Ganhas'],
+					data : [d[3]],
+				});
+                chart.addSeries({
+					name : ['Perdidas'],
+					data : [d[4]],
+				});
+                // name : ['Indicações', 'Pendentes', 'Em Andamento', 'Ganhas', 'Perdidas'],
+				// 	data : [t, pendentes, andamento, ganhos, perdidos],
+
+               
+
+
+                // var ctx = document.getElementById("barChart");
+                // var myChart = new Chart(ctx, {
+                //     type: 'bar',
+                    
+                //     data: {
+                //         labels:  ['Indicações', 'Pendentes', 'Em Andamento', 'Ganhas', 'Perdidas'],
+                //         datasets: [{
+                //             data: d,
+                //             backgroundColor: [
+                //                 'rgba(63, 127, 191, 1)',
+                //                 'rgba(243, 231, 68, 1)',
+                //                 'rgba(242, 138, 19, 1)',
+                //                 'rgba(111, 243, 68, 1)',
+                //                 'rgba(240, 20, 23, 1)'
+                //             ],
+                            
+                            
+                          
+                //         }]
+                //     },
+                //     options: {
+                //         scales: {
+                //             yAxes: [{
+                //                 ticks: {
+                //                     beginAtZero:true
+                //                 }
+                //             }]
+                //         },
+                //         plotOptions: {
+                //             column: {
+                //                 pointPadding: 0.2,
+                //                 borderWidth: 0,
+                //                 dataLabels: {
+                //                     enabled: true,
+                //                     //rotation: -45,
+                //                     color: '#000',
+                //                     align: 'center',
+                //                     style: {
+                //                         fontSize: "15px"
+                //                     },
+                //                     x: 5,
+                //                     y: 0
+                //                 }
+                //             }
+                //         },
+                //     }
+                // });
+
+           
+            //     var barData = {
+            //     labels : ["Counselor","Examiner","Rock","Seeker","Uniter"],
+            //     datasets : [{
+            //             // fillColor : "#48A497",
+            //             // strokeColor : "#48A4D1",
+            //             data : [100, 200, 300, 400, 500],
+            //             backgroundColor: [
+            //                 'rgba(255, 99, 132, 0.2)',
+            //                 'rgba(54, 162, 235, 0.2)',
+            //                 'rgba(255, 206, 86, 0.2)',
+            //                 'rgba(75, 192, 192, 0.2)',
+            //                 'rgba(153, 102, 255, 0.2)',
+            //                 ],
+            //             borderColor: [
+            //                 'rgba(255,99,132,1)',
+            //                 'rgba(54, 162, 235, 1)',
+            //                 'rgba(255, 206, 86, 1)',
+            //                 'rgba(75, 192, 192, 1)',
+            //                 'rgba(153, 102, 255, 1)',
+            //                 ],
+            //             borderWidth: 1
+            //     }]
+            // }
+            // // get bar chart canvas
+            // var income = document.getElementById("barChart").getContext("2d");
+            // // draw bar chart
+            // new Chart(income).Bar(barData);
+
+    //             var areaChartData = {
+    //                 labels  : ['Indicações', 'Pendentes', 'Em Andamento', 'Ganhas', 'Perdidas'],
+                    
+    //                 datasets: [
+    //                     {
+    //                     label               : 'Electronics',
+    //                     backgroundColor: [
+    //                         'rgba(255, 99, 132, 0.2)',
+    //                         'rgba(54, 162, 235, 0.2)',
+    //                         'rgba(255, 206, 86, 0.2)',
+    //                         'rgba(75, 192, 192, 0.2)',
+    //                         'rgba(153, 102, 255, 0.2)'
+    //                     ],
+    //                     borderColor: [
+    //                         'rgba(255,99,132,1)',
+    //                         'rgba(54, 162, 235, 1)',
+    //                         'rgba(255, 206, 86, 1)',
+    //                         'rgba(75, 192, 192, 1)',
+    //                         'rgba(153, 102, 255, 1)'
+    //                     ],
+    //                     borderWidth: 1,
+    //                     // fillColor           : 'rgba(210, 214, 222, 1)',
+    //                     // strokeColor         : 'rgba(210, 214, 222, 1)',
+    //                     // pointColor          : 'rgba(210, 214, 222, 1)',
+    //                     // pointStrokeColor    : '#c1c7d1',
+    //                     // pointHighlightFill  : '#fff',
+    //                     // pointHighlightStroke: 'rgba(220,220,220,1)',
+    //                     data                : [65, 59, 80, 81, 56],
+    //                     //backgroundColor : ['rgba(63, 127, 191, 1)','rgba(0, 0, 0, 0.1)','rgba(0, 0, 0, 0.1)','rgba(0, 0, 0, 0.1)','rgba(0, 0, 0, 0.1)']
+    //                     }
+    //                 ]
+    //             }
+    // //-------------
+    // //- BAR CHART -
+    // //-------------
+    // var barChartCanvas                   = $('#barChart').get(0).getContext('2d')
+    // var barChart                         = new Chart(barChartCanvas)
+    // var barChartData                     = areaChartData
+
+    // var barChartOptions                  = {
+    //   //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+    //   scaleBeginAtZero        : true,
+    //   //Boolean - Whether grid lines are shown across the chart
+    //   scaleShowGridLines      : true,
+    //   //String - Colour of the grid lines
+    //   scaleGridLineColor      : 'rgba(0,0,0,.05)',
+    //   //Number - Width of the grid lines
+    //   scaleGridLineWidth      : 1,
+    //   //Boolean - Whether to show horizontal lines (except X axis)
+    //   scaleShowHorizontalLines: true,
+    //   //Boolean - Whether to show vertical lines (except Y axis)
+    //   scaleShowVerticalLines  : true,
+    //   //Boolean - If there is a stroke on each bar
+    //   barShowStroke           : true,
+    //   //Number - Pixel width of the bar stroke
+    //   barStrokeWidth          : 2,
+    //   //Number - Spacing between each of the X value sets
+    //   barValueSpacing         : 5,
+    //   //Number - Spacing between data sets within X values
+    //   barDatasetSpacing       : 1,
+    //   //String - A legend template
+    //   legendTemplate          : '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].fillColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
+    //   //Boolean - whether to make the chart responsive
+    //   responsive              : true,
+    //   maintainAspectRatio     : true
+    // }
+
+    // barChartOptions.datasetFill = false
+    // barChart.Bar(barChartData, barChartOptions)
+
 			});
 
             function editarIndicacao(uuid){

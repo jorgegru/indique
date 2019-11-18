@@ -26,7 +26,12 @@ class EditarIndicacaoController
         $usersModel = new UsersModel($this->container);
         $servicesModel = new ServicesModel($this->container);
 
-        $indications = $indicationsModel->all(['1'=>'1']);
+        if($_SESSION['user']['user_type'] == 3){
+            $indications = $indicationsModel->all(['user_uuid'=>$_SESSION['user']['id']]);
+        }else{
+            $indications = $indicationsModel->all(['1'=>'1']);
+        }
+
         $consultores = $usersModel->all(["user_type"=>"3","status"=>"1"]);
         $services = $servicesModel->all(["1"=>"1"]);
         //$companies = $companiesModel->all(["1"=>"1"]);

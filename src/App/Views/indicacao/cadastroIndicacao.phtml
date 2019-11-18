@@ -218,15 +218,15 @@
                                                     <div class="form-group has-feedback">
                                                         <label class="col-sm-2 control-label">Status:</label>
                                                         <div class="col-sm-6">
-                                                            <select  id='opt_status' name="status" class="normal form-control select2" onchange="revisaCampos();">
-                                                                <option value="" disabled='true'>Selecione o status</option>
+                                                            <select  id='opt_status' disabled="true" name="status" class="normal form-control select2" onchange="revisaCampos();">
+                                                                <option value="" >Selecione o status</option>
                                                                 <option value="7" selected>Sem Consultor</option>
-                                                                <option value="1" disabled='true'>Pendente</option>
-                                                                <option value="2" disabled='true'>Cliente contatado</option>
-                                                                <option value="3" disabled='true'>Visita Realizada</option>
-                                                                <option value="4" disabled='true'>Proposta Enviada</option>
-                                                                <option value="5" disabled='true'>Negocio ganho</option>
-                                                                <option value="6" disabled='true'>Negocio perdido</option>
+                                                                <option value="1" >Pendente</option>
+                                                                <option value="2" >Cliente contatado</option>
+                                                                <option value="3" >Visita Realizada</option>
+                                                                <option value="4" >Proposta Enviada</option>
+                                                                <option value="5" >Negocio ganho</option>
+                                                                <option value="6" >Negocio perdido</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -337,25 +337,17 @@
        
             function revisaCampos(){
                 if($('#opt_user_uuid').val() == ''){
-                    $('#opt_status').val('7');
                     $("#opt_status option[value='7']").removeAttr("disabled","false");
-                    $("#opt_status option[value='1']").attr("disabled","true");   
-                    $("#opt_status option[value='2']").attr("disabled","true");   
-                    $("#opt_status option[value='3']").attr("disabled","true");   
-                    $("#opt_status option[value='4']").attr("disabled","true");   
-                    $("#opt_status option[value='5']").attr("disabled","true");   
-                    $("#opt_status option[value='6']").attr("disabled","true");   
+                    $('#opt_status').val('7');
+                    $("#opt_status").attr("disabled","true");   
                     $('#opt_status').select2();
                 }   
                 else{
-                    $('#opt_status').val('1');
+                    $("#opt_status").removeAttr("disabled");   
+                    if($('#opt_status').val() == "7"){
+                        $('#opt_status').val('1');
+                    }
                     $("#opt_status option[value='7']").attr("disabled","true");
-                    $("#opt_status option[value='1']").removeAttr("disabled","false");
-                    $("#opt_status option[value='2']").removeAttr("disabled","false");
-                    $("#opt_status option[value='3']").removeAttr("disabled","false");
-                    $("#opt_status option[value='4']").removeAttr("disabled","false");
-                    $("#opt_status option[value='5']").removeAttr("disabled","false");   
-                    $("#opt_status option[value='6']").removeAttr("disabled","false");
                     $('#opt_status').select2();
                 }
 
