@@ -140,7 +140,7 @@ trait ModelTrait {
         }
     }
 
-    public function allLikeLeftJoin(array $dados, array $join, $campos, $filtro)
+    public function allLikeLeftJoin(array $dados, array $join, $campos, $filtro="")
     {
         try{
             if(count($dados)==0)

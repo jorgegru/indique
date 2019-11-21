@@ -85,6 +85,9 @@ class EditarIndicacaoControllerTests extends BaseTestCase
         $data['numero'] = '524';
         $data['status'] = '1';
         $data['commission'] = '1';
+        $data['start_date'] = '2019-10-02';
+        $data['end_date'] = '2019-10-02';
+        $data['value_commission'] = '10000';
         $data['complemento'] = 'ap 85';
         $data['service_uuid'] = 'ccf876d4-e91f-11e9-81b4-2a2ae2dbcce4';
         $data['user_uuid'] = '39e6b74d-f081-43d2-ac4b-c50810754d18';
