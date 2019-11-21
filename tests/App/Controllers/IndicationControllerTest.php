@@ -57,7 +57,7 @@ class IndicationControllerTest extends BaseTestCase
 
         $join['users']['campo'] = 'uuid';
         $join['users']['campo2'] = 'indications.user_uuid';
-        $campos = "indications.*, users.name as user_name";
+        $campos = "indications.*, users.name as user_name, users.uuid as user_uuid";
         $rs = $this->allLikeLeftJoin($data2,$join,$campos);
         //$rs = $this->allLike($data2);
         

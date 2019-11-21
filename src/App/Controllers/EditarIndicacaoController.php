@@ -26,7 +26,12 @@ class EditarIndicacaoController
         $usersModel = new UsersModel($this->container);
         $servicesModel = new ServicesModel($this->container);
 
-        $indications = $indicationsModel->all(['1'=>'1']);
+        if($_SESSION['user']['user_type'] == 3){
+            $indications = $indicationsModel->all(['user_uuid'=>$_SESSION['user']['id']]);
+        }else{
+            $indications = $indicationsModel->all(['1'=>'1']);
+        }
+
         $consultores = $usersModel->all(["user_type"=>"3","status"=>"1"]);
         $services = $servicesModel->all(["1"=>"1"]);
         //$companies = $companiesModel->all(["1"=>"1"]);
@@ -174,6 +179,24 @@ class EditarIndicacaoController
                     'notBlank' => 'Selecione a Comissão',
                 ]
             ],
+            'value_commission' => [
+                'rules' => V::numeric(),
+                'messages' => [
+                    'numeric' => 'Valor inválido',
+                ]
+            ],
+            'start_date' => [
+                'rules' => V::length(9, 10),
+                'messages' => [
+                    'length' => 'Data inválida',
+                ]
+            ],
+            'end_date' => [
+                'rules' => V::length(9, 10),
+                'messages' => [
+                    'length' => 'Data inválida',
+                ]
+            ],
         ]);
        
 		if ($validator->isValid()) {
@@ -190,6 +213,11 @@ class EditarIndicacaoController
                 if($indication){
                     $this->container->flash->addMessage('error', 'Indicação com mesmo CPF_CNPJ já existe');
                     return $response->withRedirect($this->container->router->pathFor('editaIndicacao'));
+                }
+
+                if($metadata['start_date'] == $metadata['end_date']){
+                    $metadata['start_date'] = null;
+                    $metadata['end_date'] = null;
                 }
 
                 $indication = $indicationsModel->update([  'uuid'=>$metadata['indication_uuid'],
@@ -209,6 +237,9 @@ class EditarIndicacaoController
                                             //'company_uuid'=>$metadata['company_uuid'],
                                             'status'=>$metadata['status'],
                                             'commission'=>$metadata['commission'],
+                                            'value_commission'=>$metadata['value_commission'],
+                                            'start_date'=>$metadata['start_date'],
+                                            'end_date'=>$metadata['end_date'],
                                             'user_uuid'=>$metadata['user_uuid']]);
 
                 if($indication){

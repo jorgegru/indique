@@ -69,6 +69,9 @@ class CadastroIndicacaoControllerTest extends BaseTestCase
         //$data['company_uuid'] = '878b5a1b-de92-11e9-be79-cdc05b889658';
         $data['status'] = '1';
         $data['commission'] = '1';
+        $data['start_date'] = '2019-10-02';
+        $data['end_date'] = '2019-10-02';
+        $data['value_commission'] = '10000';
         $data['user_uuid'] = '130c01d9-5c12-42c4-8ad0-5b6350cad1a9';
         
         $response = $this->runApp('POST', '/cadastroIndicacao', $data);

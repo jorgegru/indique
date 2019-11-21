@@ -237,7 +237,7 @@
                                                                         <th>Comissao</th>  
                                                                         <th>Consultor</th>
                                                                        
-                                                                        <?php if($user_type == 1 || $user_type == 2){?>
+                                                                        <?php if($user_type != 4){?>
                                                                             <th width="10"><i class="fa fa-edit"></i></th>
                                                                         <?php }?>
                                                                     </tr>
@@ -435,7 +435,7 @@
                             tabela += comissao+'</td>';
                             tabela += consultor+'</td>';
 
-                            <?php if($user_type == 1 || $user_type == 2){?>
+                            <?php if($user_type != 4){?>
                                 tabela += '<td><button onclick="editarIndicacao(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
                             <?php }?>
                             tabela += '</tr>';

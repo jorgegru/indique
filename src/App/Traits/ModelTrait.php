@@ -140,7 +140,7 @@ trait ModelTrait {
         }
     }
 
-    public function allLikeLeftJoin(array $dados, array $join, $campos)
+    public function allLikeLeftJoin(array $dados, array $join, $campos, $filtro="")
     {
         try{
             if(count($dados)==0)
@@ -157,7 +157,7 @@ trait ModelTrait {
 
             $sql = "SELECT {$campos} FROM {$this->table}
             ".implode(' ', $sqlJoin)."
-            WHERE ". implode(' AND ', $sqlArray);
+            WHERE ". implode(' AND ', $sqlArray) . " " . $filtro;
             
             $stmt = $this->conn->prepare($sql);
 
