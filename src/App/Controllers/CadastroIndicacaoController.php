@@ -164,6 +164,24 @@ class CadastroIndicacaoController
                     'notBlank' => 'Selecione a Comissão',
                 ]
             ],
+            'value_commission' => [
+                'rules' => V::numeric(),
+                'messages' => [
+                    'numeric' => 'Valor inválido',
+                ]
+            ],
+            'start_date' => [
+                'rules' => V::length(9, 10),
+                'messages' => [
+                    'length' => 'Data inválida',
+                ]
+            ],
+            'end_date' => [
+                'rules' => V::length(9, 10),
+                'messages' => [
+                    'length' => 'Data inválida',
+                ]
+            ],
         ]);
         $uuid = uuid();// && \is_uuid($uuid)
 		if ($validator->isValid()) {
@@ -180,6 +198,11 @@ class CadastroIndicacaoController
                 if($indication){
                     $this->container->flash->addMessage('error', 'Indicação com mesmo CPF_CNPJ já existe');
                     return $response->withRedirect($this->container->router->pathFor('cadastroIndicacao'));
+                }
+
+                if($metadata['start_date'] == $metadata['end_date']){
+                    $metadata['start_date'] = null;
+                    $metadata['end_date'] = null;
                 }
 
                 $indication = $IndicationsModel->set([  'uuid'=>$uuid,
@@ -199,6 +222,9 @@ class CadastroIndicacaoController
                                             //'company_uuid'=>$metadata['company_uuid'],
                                             'status'=>$metadata['status'],
                                             'commission'=>$metadata['commission'],
+                                            'value_commission'=>$metadata['value_commission'],
+                                            'start_date'=>$metadata['start_date'],
+                                            'end_date'=>$metadata['end_date'],
                                             'user_uuid'=>$metadata['user_uuid'],
                                             'creator_uuid'=>$_SESSION['user']['id']]);
                 if($indication){

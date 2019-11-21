@@ -63,21 +63,9 @@
                         <span class="info-box-icon bg-yellow"><i class="ion ion-clipboard"></i></span>
 
                         <div class="info-box-content">
-                        <span class="info-box-text">Indicações <br>Pendentes</span>
+                        <span class="info-box-text"><?php if($user_type == 1 || $user_type == 2) echo('Indicações Sem <br>Cunsultor');
+                                                    else echo('Indicações <br>Pendentes'); ?></span>
                         <span class="info-box-number" id="span_pendentes">0</span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                    <!-- /.info-box -->
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-md-3 col-sm-6 col-xs-12" id="div_fechados" style="display:none;" name="div_row">
-                    <div class="info-box" name="info_box">
-                        <span class="info-box-icon bg-green"><i class="fa fa-handshake-o"></i></span>
-
-                        <div class="info-box-content">
-                        <span class="info-box-text">Negócios<br> Ganhos</span>
-                        <span class="info-box-number" id="span_ganhos">0</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -88,20 +76,7 @@
                     <!-- fix for small devices only -->
                     <div class="clearfix visible-sm-block"></div>
 
-                    <div class="col-md-3 col-sm-6 col-xs-12" id="div_perdidos" style="display:none;" name="div_row">
-                    <div class="info-box" name="info_box">
-                    
-                        <span class="info-box-icon bg-red"><i class="fa fa-window-close"></i></span>
-
-                        <div class="info-box-content">
-                        <span class="info-box-text">Negócios<br>Perdidos</span>
-                        <span class="info-box-number" id="span_perdidos">0</span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                    <!-- /.info-box -->
-                    </div>
-                    <!-- /.col -->
+                   
                     <div class="col-md-3 col-sm-6 col-xs-12" id="div_usuarios_pendentes" style="display:none;" name="div_row">
                     <div class="info-box" name="info_box">
                         <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
@@ -109,19 +84,6 @@
                         <div class="info-box-content">
                         <span class="info-box-text">Usuários<br> Pendentes</span>
                         <span class="info-box-number" id="span_usuarios">0</span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                    <!-- /.info-box -->
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-md-3 col-sm-6 col-xs-12" id="div_comissao" style="display:none;" name="div_row">
-                    <div class="info-box" name="info_box">
-                        <span class="info-box-icon bg-green"><i class="fa fa-money"></i></span>
-
-                        <div class="info-box-content">
-                        <span class="info-box-text">Comissão</span>
-                        <span class="info-box-number" id="span_comissao">0</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -143,12 +105,28 @@
                     </div>
                     <!-- /.col -->
 
-                    <div class="col-md-3 col-sm-6 col-xs-12" id="div_fechados2" name="div_row2">
+
+                    <div class="col-md-3 col-sm-6 col-xs-12" id="div_minhas_indicacoes" name="div_row2" style="display:none;">
+                    <div class="info-box" name="info_box">
+                        <span class="info-box-icon bg-yellow"><i class="ion ion-clipboard"></i></span>
+
+                        <div class="info-box-content">
+                        <span class="info-box-text">Indicações <br>Pendentes</span>
+                        <span class="info-box-number" id="span_minhas_pendentes">0</span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
+                    </div>
+                    <!-- /.col -->
+
+                    
+                    <div class="col-md-3 col-sm-6 col-xs-12" id="div_fechados2" name="div_row2" style="display:none;">
                     <div class="info-box" name="info_box">
                         <span class="info-box-icon bg-green"><i class="fa fa-handshake-o"></i></span>
 
                         <div class="info-box-content">
-                        <span class="info-box-text">Meus Negócios<br> Ganhos</span>
+                        <span class="info-box-text">Negócios <br>Ganhos</span>
                         <span class="info-box-number" id="span_ganhos2">0</span>
                         </div>
                         <!-- /.info-box-content -->
@@ -157,23 +135,10 @@
                     </div>
                     <!-- /.col -->
 
+
                     <!-- fix for small devices only -->
                     <div class="clearfix visible-sm-block"></div>
 
-                    <div class="col-md-3 col-sm-6 col-xs-12" id="div_perdidos2" name="div_row2">
-                    <div class="info-box" name="info_box">
-                    
-                        <span class="info-box-icon bg-red"><i class="fa fa-window-close"></i></span>
-
-                        <div class="info-box-content">
-                        <span class="info-box-text">Meus Negócios<br>Perdidos</span>
-                        <span class="info-box-number" id="span_perdidos2">0</span>
-                        </div>
-                        <!-- /.info-box-content -->
-                    </div>
-                    <!-- /.info-box -->
-                    </div>
-                    <!-- /.col -->
 
                     <div class="col-md-3 col-sm-6 col-xs-12" id="div_comissao2" name="div_row2">
                     <div class="info-box" name="info_box">
@@ -181,7 +146,7 @@
 
                         <div class="info-box-content">
                         <span class="info-box-text">Comissão de<br> Indicações</span>
-                        <span class="info-box-number" id="span_comissao2">0</span>
+                        <span class="info-box-number" id="span_comissao">0</span>
                         </div>
                         <!-- /.info-box-content -->
                     </div>
@@ -334,7 +299,7 @@
                 </div>
                 <!-- /.row -->
                 
-                <div class="row" id="rowMyIndications">
+                <div class="row" id="rowMyIndicationsCharts">
                     <div class="col-md-12"> 
                     <div class="box box-info">
                         <div class="box-header with-border">
@@ -425,7 +390,36 @@
                         <div class="box-body">
                             <div class="chart">
                                 <!-- <canvas id="barChart" style="height: 100px; width: 489px;" height="100" width="489"></canvas> -->
-                                <div id="graficos"></div>
+                                <div id="IndicationsChart"></div>
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <!-- /.box -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+
+
+                <div class="row" id="rowMyIndicationsCharts">
+                    <div class="col-md-12"> 
+                    <div class="box box-info">
+                        <div class="box-header with-border">
+                        <h3 class="box-title">Minhas Indicações</h3>
+
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
+                                
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="chart">
+                                <!-- <canvas id="barChart" style="height: 100px; width: 489px;" height="100" width="489"></canvas> -->
+                                <div id="myIndicationsChart"></div>
                             </div>
                         </div>
                        
@@ -530,10 +524,10 @@
                 var andamento = 0;
                 var filtro = '&filtro=ORDER BY indications.status';
 
-                if(user_type == 1 || user_type == 2){
-                    $('[name ="info_box"]').css("width", "100%");
-                    $('[name ="div_row"]').css("width", "20%");
-                }
+                // if(user_type == 1 || user_type == 2){
+                //     $('[name ="info_box"]').css("width", "100%");
+                //     $('[name ="div_row"]').css("width", "20%");
+                // }
                 
 
                 //$('#div_comissao').show();
@@ -545,7 +539,7 @@
                     $('#div_indicacoes').show();  
                     $('#div_fechados').show();  
                     $('#div_perdidos').show();  
-                    $('#div_comissao').show();    
+                    $('#div_comissao').show();
                 }
                 if(user_type == 3){
                     nome = 'nome=user_uuid';
@@ -565,6 +559,9 @@
                 var t = 0;
                 if(user_type == 4){
                     $('#rowIndicationsPendent').hide();
+                    $('#rowMyIndications').hide();
+                    $('#div_fechados2').show();
+                    $('#div_minhas_indicacoes').show();
                 }
                 
                 else{
@@ -619,8 +616,8 @@
                             $('#tbIndicacoesBody').html(tabela);
                             $('#total_indicacoes').html(total);
                             $('#span_pendentes').html(pendentes);
-                            $('#span_ganhos').html(ganhos);
-                            $('#span_perdidos').html(perdidos);
+
+
                         }
                     });
                 }
@@ -688,6 +685,7 @@
                 var perdidos2 = 0;
                 var pendentes2 = 0;
                 var andamento2 = 0;
+                var commission = 0;
                 $.ajax({
                     type: 'POST',
                     async:false,
@@ -697,6 +695,7 @@
                     success: function(resposta){
                         if(resposta.length < 1) toastr.warning('Nenhuma indicação própria encontrada!');
                         for(var i=0; i<resposta.length;i++){
+                            commission += parseInt(resposta[i]['value_commission']);
                             // if(resposta[i]['status'] == 5)  ganhos2++;
                             // else if(resposta[i]['status'] == 6)  perdidos2++;
                             // else if(resposta[i]['status'] != 7) andamento2++;
@@ -737,8 +736,21 @@
                         //if(user_type == 4){
                             $('#span_indicacoes').html(total3);
                             $('#span_ganhos2').html(ganhos2);
-                            $('#span_perdidos2').html(perdidos2);
+                            $('#span_minhas_pendentes').html(pendentes2);
 
+
+                        commission = String(commission);
+                        if(commission.length < 3 && commission.length == 2){
+                            commission = '0'+commission;
+                        }
+                        else if(commission.length < 3 && commission.length == 1){
+                            commission = '00' + commission;
+                        }
+                        
+                        var final = commission.substring(commission.length - 2, commission.length);
+                        commission = commission.substring(0,commission.length - 2);
+
+                        $('#span_comissao').html('R$'+commission+','+final);
                         //}
                     }
                 });
@@ -772,27 +784,106 @@
                     }   
                 }
 
-                if(user_type == 4){
-                    var d = [total3, pendentes2, andamento2, ganhos2, perdidos2];
-                }
-                else{
+                //Charts
+                //Indicações
+                if(user_type != 4){
                     var d = [t, pendentes, andamento, ganhos, perdidos];
+
+                    Highcharts.setOptions({
+                        colors: ['#3f7fbf', '#f3e744', '#f28a13', '#6ff344', '#f01417']
+                    });
+
+                    chart = Highcharts.chart('IndicationsChart', {
+                        chart : {
+                            renderTo : 'IndicationsChart',
+                            //backgroundColor : '#00000',
+                            type : 'column',
+                        },
+                        title : {
+                            text : 'Indicações'
+                        },
+                        credits : {
+                            enabled : false
+                        },
+                        legend : {
+                            layout : 'vertical',
+                            align : 'right',
+                            verticalAlign : 'top',
+                            floating: true,
+                            //backgroundColor : '#CCC',
+                            x : 0,
+                            y : 40,
+                            borderWidth : 0,
+                            itemStyle : {
+                                color : '#000',
+                                fontSize: "9px"
+                            }
+                        },
+                        yAxis : {
+                            min : 0,
+                            title : {
+                                text : 'Quantidade'
+                            }
+                        },
+                        xAxis : {
+                            categories : ['Indicações', 'Pendentes', 'Em Andamento', 'Ganhas', 'Perdidas']
+                        },
+                        plotOptions: {
+                                column: {
+                                    pointPadding: 0.2,
+                                    borderWidth: 0,
+                                    dataLabels: {
+                                        enabled: true,
+                                        //rotation: -45,
+                                        color: '#000',
+                                        align: 'center',
+                                        style: {
+                                            fontSize: "15px"
+                                        },
+                                        x: 5,
+                                        y: 5
+                                    }
+                                }
+                            },
+                        series : []
+                    });
+                    chart.addSeries({
+                        name : ['Indicações'],
+                        data : [d[0]],
+                    });
+                    chart.addSeries({
+                        name : ['Pendentes'],
+                        data : [d[1]],
+                    });
+                    chart.addSeries({
+                        name : ['Em Andamento'],
+                        data : [d[2]],
+                    });
+                    chart.addSeries({
+                        name : ['Ganhas'],
+                        data : [d[3]],
+                    });
+                    chart.addSeries({
+                        name : ['Perdidas'],
+                        data : [d[4]],
+                    });
                 }
+
+                //myIndicationsCharts
+                var d = [total3, pendentes2, andamento2, ganhos2, perdidos2];
 
                 Highcharts.setOptions({
                     colors: ['#3f7fbf', '#f3e744', '#f28a13', '#6ff344', '#f01417']
                 });
 
-                chart = Highcharts.chart('graficos', {
+                chart = Highcharts.chart('myIndicationsChart', {
 		            chart : {
-                        renderTo : 'graficos',
+                        renderTo : 'myIndicationsChart',
                         //backgroundColor : '#00000',
                         type : 'column',
-
                     },
-                   
                     title : {
-                        text : 'Indicações'
+                        text : 'Minhas Indicações'
                     },
                     credits : {
                         enabled : false
@@ -833,7 +924,7 @@
                                         fontSize: "15px"
                                     },
                                     x: 5,
-                                    y: 0
+                                    y: 5
                                 }
                             }
                         },

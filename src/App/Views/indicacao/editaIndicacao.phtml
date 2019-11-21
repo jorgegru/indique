@@ -242,6 +242,7 @@
                                                                 <option value="5" >Negocio ganho</option>
                                                                 <option value="6" >Negocio perdido</option>
                                                             </select>
+                                                            <input type="hidden" id="txt_status" name="status" value="7">
                                                         </div>
                                                     </div>
                                                     <div class="form-group has-feedback">
@@ -252,6 +253,86 @@
                                                                 <option value="1" selected>Fixa</option>
                                                                 <option value="2">Recorrente</option>
                                                             </select>
+                                                        </div>
+                                                    </div>
+                                                    <div id="div_data" style="display:none;">
+                                                        <div class="form-group has-feedback">
+                                                            <label class="col-sm-2 control-label">Data início:</label>
+                                                            <div class="col-sm-10">
+                                                                <select  id='opt_start_data_m' name="start_data_m" class="normal form-control" style="width: 125px;display: inline-block;" onchange="revisaCampos();
+                                                                    $('#txt_start_date').val($('#opt_start_data_y').val()+'-'+$('#opt_start_data_m').val()+'-01');
+                                                                ">
+                                                                    <?php 
+                                                                        for($i=0;$i<12; $i++){
+                                                                            if($i+1 == date('m')){
+                                                                                echo("<option value='".($i+1)."' selected>".($i+1)."</option>");
+                                                                            }else{
+                                                                                echo("<option value='".($i+1)."'>".($i+1)."</option>");
+                                                                            }
+                                                                        }
+                                                                    ?>
+                                                                </select> /
+                                                                <select  id='opt_start_data_y' name="start_data_y" class="normal form-control" style="width: 125px;display:inline-block;" onchange="revisaCampos();
+                                                                    $('#txt_start_date').val($('#opt_start_data_y').val()+'-'+$('#opt_start_data_m').val()+'-01');
+                                                                    if($('#opt_start_data_y').val() > $('#opt_end_data_y').val()){
+                                                                        alert('A data de início deve ser menor que a data final');
+                                                                    }
+                                                                ">
+                                                                    <?php 
+                                                                        for($i=0;$i<5; $i++){
+                                                                            if($i == 0){
+                                                                                echo("<option value='".date('Y')."' selected>".date('Y')."</option>");
+                                                                            }else{
+                                                                                echo("<option value='".(date('Y')+$i)."'>".(date('Y')+$i)."</option>");
+                                                                            }
+                                                                        }
+                                                                    ?>
+                                                                </select>
+                                                                <input type="hidden" id="txt_start_date" name="start_date" value="<?php echo(date('Y').'-'.date('m').'-01');?>">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group has-feedback">
+                                                            <label class="col-sm-2 control-label">Data fim:</label>
+                                                            <div class="col-sm-10">
+                                                                <select  id='opt_end_data_m' name="end_data_m" class="normal form-control" style="width: 125px;display: inline-block;" onchange="revisaCampos();
+                                                                    $('#txt_end_date').val($('#opt_end_data_y').val()+'-'+$('#opt_end_data_m').val()+'-01');
+                                                                ">
+                                                                    <?php 
+                                                                        for($i=0;$i<12; $i++){
+                                                                            if($i+1 == date('m')){
+                                                                                echo("<option value='".($i+1)."' selected>".($i+1)."</option>");
+                                                                            }else{
+                                                                                echo("<option value='".($i+1)."'>".($i+1)."</option>");
+                                                                            }
+                                                                        }
+                                                                    ?>
+                                                                </select> /
+                                                                <select  id='opt_end_data_y' name="end_data_y" class="normal form-control" style="width: 125px;display:inline-block;" onchange="revisaCampos();
+                                                                    $('#txt_end_date').val($('#opt_end_data_y').val()+'-'+$('#opt_end_data_m').val()+'-01');
+                                                                    if($('#opt_start_data_y').val() > $('#opt_end_data_y').val()){
+                                                                        alert('A data de início deve ser menor que a data final');
+                                                                    }
+                                                                ">
+                                                                    <?php 
+                                                                        for($i=0;$i<5; $i++){
+                                                                            if($i == 0){
+                                                                                echo("<option value='".date('Y')."' selected>".date('Y')."</option>");
+                                                                            }else{
+                                                                                echo("<option value='".(date('Y')+$i)."'>".(date('Y')+$i)."</option>");
+                                                                            }
+                                                                        }
+                                                                    ?>
+                                                                </select>
+                                                                <input type="hidden" id="txt_end_date" name="end_date" value="<?php echo(date('Y').'-'.date('m').'-01');?>">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="form-group has-feedback">
+                                                        <label class="col-sm-2 control-label">Valor:</label>
+                                                        <div class="col-sm-3">
+                                                            <input type="text" maxlength="30" class="form-control" id="txt_value_commission2" name="value_commission2" placeholder="Valor" value="00,00" onchange="revisaCampos();tratarValor($('#txt_value_commission2').val());">
+                                                            <input type="hidden" id="txt_value_commission" name="value_commission" value="0000">
                                                         </div>
                                                     </div>
                                                     <div class="form-group has-feedback">
@@ -346,6 +427,19 @@
         <script>
         $('.select2').select2();
        
+            function tratarValor(valor){
+                valor = valor.replace('.', ',');
+                var p = valor.indexOf(",");
+                if((valor.length-p) == 3 && p != -1){
+                    valor = valor.replace(',', '');
+                }
+                else{
+                    valor = valor * 100;
+                }
+                $("#txt_value_commission").val(valor);
+
+            }
+
             function carregaIndicacao(){
                 var uuid = $('#opt_indication_uuid').val();
                 $.ajax({
@@ -367,6 +461,20 @@
                         $('#txt_rua').val(dados['rua']);
                         $('#txt_numero').val(dados['numero']);
                         $('#txt_complemento').val(dados['complemento']);
+                        $('#txt_value_commission').val(dados['value_commission']);
+                        var value = dados['value_commission'];
+                        if(value.length < 3 && value.length == 2){
+                            value = '0'+value;
+                        }
+                        else if(value.length < 3 && value.length == 1){
+                            value = '00' + value;
+                        }
+                        var final = value.substring(value.length - 2, value.length);
+                        value = value.substring(0,value.length - 2);
+                        $('#txt_value_commission2').val(value+','+final);
+                        $('#txt_start_date').val(dados['start_date']);
+                        $('#txt_end_date').val(dados['end_date']);
+
                         $('#opt_service_uuid').val(dados['service_uuid']);
                         $('#opt_service_uuid').trigger('change');
                        $('#opt_status').val(dados['status']);
@@ -375,6 +483,23 @@
                         $('#opt_commission').trigger('change');
                         $('#opt_user_uuid').val(dados['user_uuid']);
                         $('#opt_user_uuid').trigger('change');
+
+// alert(dados['start_date'].slice(0,4));
+// alert(dados['start_date'].slice(5,7));
+//                         var start_m = dados['start_date'].slice(5,7);
+//                         if(parseInt(start_m) < 10){
+
+//                         }
+                        if(dados['start_date'] != null){
+                            $('#opt_start_data_y').val(dados['start_date'].slice(0,4));
+                            $('#opt_start_data_y').trigger('change');
+                            $('#opt_start_data_m').val(parseInt(dados['start_date'].slice(5,7)));
+                            $('#opt_start_data_m').trigger('change');
+                            $('#opt_end_data_y').val(dados['end_date'].slice(0,4));
+                            $('#opt_end_data_y').trigger('change');
+                            $('#opt_end_data_m').val((dados['end_date'].slice(5,7)));
+                            $('#opt_end_data_m').trigger('change');
+                        }
 
                     //     $('#opt_user_type').val(dados['user_type']);
                     //     $('#opt_user_type').trigger('change');
@@ -416,16 +541,25 @@
                 if($('#opt_user_uuid').val() == ''){
                     $("#opt_status option[value='7']").removeAttr("disabled","false");
                     $('#opt_status').val('7');
-                    $("#opt_status").attr("disabled","true");   
+                    $("#opt_status").attr("disabled","true"); 
+                    $("#txt_status").removeAttr("disabled");     
                     $('#opt_status').select2();
                 }   
                 else{
                     $("#opt_status").removeAttr("disabled");   
+                    $("#txt_status").attr("disabled","true");
                     if($('#opt_status').val() == "7"){
                         $('#opt_status').val('1');
                     }
                     $("#opt_status option[value='7']").attr("disabled","true");
                     $('#opt_status').select2();
+                }
+
+                if($("#opt_commission").val() == '2'){
+                    $("#div_data").show();
+                }
+                else{
+                    $("#div_data").hide();
                 }
 
                 if($('#txt_name').val() == '' || 
@@ -443,7 +577,7 @@
                 //$('#opt_company_uuid').val() == '' ||
                 $('#opt_status').val() == '' ||
                 $('#opt_commission').val() == '' ||
-                $('#opt_user_uuid').val() == ''){
+                $('#txt_value_commission').val() == ''){
                     $("#editar").attr("disabled","true");    
                 }
                 else{
