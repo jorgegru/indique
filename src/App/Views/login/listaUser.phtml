@@ -290,11 +290,16 @@
                     if($('#opt_status').val() != '')  status = '&'+status;
                 }
                 else if($('#opt_busca').val() == 3){
-                    var nome = 'nome=cpf';
+                    var nome = 'nome=name';
                     if($('#opt_status').val() != '')  status = '&'+status;
                 }
                 
-                var valor = '&valor='+$('#txt_dado').val();
+                if($('#txt_dado').val() == ''){
+                    var valor = "";    
+                }
+                else{
+                    var valor = '&valor='+$('#txt_dado').val();
+                }
 
                 
 

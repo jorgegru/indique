@@ -131,10 +131,7 @@ class EditarLoginController
                     return $response->withRedirect($this->container->router->pathFor('editaLogin'));
                 }
                 else{
-                    if($_SESSION['user']['user_type'] == 3 || $_SESSION['user']['user_type'] == 4){
-                        $metadata['user_type'] = 4;
-                        $metadata['status'] = 2;
-                    }
+                    
                     $user = $UsersModel->update(['uuid'=>$metadata['user_uuid'],
                                                 'user_type'=>$metadata['user_type'],
                                                 'email'=>$metadata['email'], 
