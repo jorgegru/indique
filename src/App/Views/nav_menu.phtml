@@ -26,7 +26,7 @@
 
                 <!-- ## Section Logins / Empresas ## -->
 
-                
+                <?php if($_SESSION['user']['user_type'] != 4){?>
                 <li class="treeview">
                     <a href="#"><i class="fa fa-users"></i><span>Usuários</span><i class="fa fa-angle-left pull-right"></i></a>
                     
@@ -79,7 +79,7 @@
 
                     </ul>
                 </li>
-
+                <?php }?>
 
                 <li class="treeview">
                     <a href="#"><i class="fa fa-handshake-o"></i><span>Indicacoes</span><i class="fa fa-angle-left pull-right"></i></a>

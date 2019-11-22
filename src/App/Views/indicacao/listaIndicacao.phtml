@@ -422,7 +422,7 @@
                             if(resposta[i]['commission'] == 1)   comissao = "<td>Fixa";
                             else                                 comissao = "<td>Recorrente";
                             
-                            if(resposta[i]['user_uuid'] == '')   consultor = "<td>Sem Consultor";
+                            if(resposta[i]['user_uuid'] == null)   consultor = "<td>Sem Consultor";
                             else                                 consultor = "<td>"+resposta[i]['user_name'];
 
                             tabela += '<tr>';

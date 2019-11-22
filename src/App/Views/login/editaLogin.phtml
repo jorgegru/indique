@@ -3,7 +3,7 @@
     $error = isset($message['error']) ? $message['error'] : '';//mensagem de erro
     $success = isset($message['success']) ? $message['success'] : '';//mensagem de sucesso
     //$companies = isset($companies) ? $companies : '';//uuids das companias
-    $users = isset($users) ? $users : '';//uuids das companias
+    $users = isset($users) ? $users : '';//uuids dos usuarios
     $uuid = isset($uuid) ? $uuid : '';
     $validate = isset($message['validate']) ? $message['validate'] : '';//mensagem do validador dos campos
     $user_type = $_SESSION['user']['user_type'];//tipo de usuario
@@ -81,7 +81,7 @@
                                     <div class="row">
                             
 
-                                        <form id="myForm" class="form-horizontal" action="editaLogin" method="post">
+                                        <form id="myForm" class="form-horizontal" action="/editaLogin" method="post">
                                             <div class="box-body">
                                                 <div class="form-group has-feedback">
                                                     <label class="col-sm-2 control-label">Login:</label>
@@ -108,9 +108,9 @@
                                                     <div class="col-sm-6">
                                                         <select  id='opt_user_type' name="user_type" class="normal form-control select2" onchange="revisaCampos();">
                                                             <option value="">Selecione o tipo de usuário</option>
-                                                            <option value="1">Super</option>
-                                                            <option value="2">Admin</option>
-                                                            <option value="3">Consultor</option>
+                                                            <?php if($user_type == 1) echo("<option value='1'>Super</option>");?>
+                                                            <?php if($user_type == 1 || $user_type == 2) echo("<option value='2'>Admin</option>");?>
+                                                            <?php if($user_type != 4) echo("<option value='3'>Consultor</option>");?>
                                                             <option value="4" 
                                                             <?php if($user_type == 3 || $user_type == 4) echo('selected'); ?>>Usuário</option>
                                                         </select>
@@ -298,6 +298,10 @@
                 });
             });
             $(document).ready(function() {
+
+                var user_type = <?php echo($user_type);?>; 
+                if(user_type == 3 || user_type == 4)    $('#div_status').hide();
+                if(user_type == 4)    $('#div_user').hide();
 				
 				toastr.options = {
                     "closeButton": false,

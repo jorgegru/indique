@@ -283,7 +283,7 @@
                                 <!-- /.col -->
                                 <div class="col-sm-3 col-xs-6">
                                     <div class="description-block">
-                                        <div id="total_usuarios"><h5 class="description-header"></h5></div>
+                                        <div id="total_usuarios"><h5 class="description-header"></h5>0</div>
                                         <span class="description-text">Total</span>
                                     </div>
                                 <!-- /.description-block -->
@@ -355,7 +355,7 @@
                                 <!-- /.col -->
                                 <div class="col-sm-3 col-xs-6">
                                     <div class="description-block">
-                                        <div id="total_my_indications"><h5 class="description-header">1200</h5></div>
+                                        <div id="total_my_indications"><h5 class="description-header">0</h5></div>
                                         <span class="description-text">Total</span>
                                     </div>
                                 <!-- /.description-block -->
@@ -573,51 +573,55 @@
                         data: nome+valor+status+filtro,
                         success: function(resposta){
                             t = resposta.length;
-                            if(resposta.length < 1) toastr.warning('Nenhuma indicação pendente!');
-                            for(var i=0; i<resposta.length;i++){
-
-                                if(resposta[i]['status'] == 5)  ganhos++;
-                                else if(resposta[i]['status'] == 6)  perdidos++;
-                                else if(resposta[i]['status'] != 7) andamento++;
-                                if(resposta[i]['status'] == status2){
-
-                                    if(resposta[i]['status'] == 1){ status = "<td style='color:orange'><b>Pendente</b>"; pendentes++;}
-                                    else if(resposta[i]['status'] == 2) status = "<td><b>Cliente contatado</b>";
-                                    else if(resposta[i]['status'] == 3) status = "<td><b>Visita Realizada</b>"; 
-                                    else if(resposta[i]['status'] == 4) status = "<td><b>Proposta Enviada</b>"; 
-                                    else if(resposta[i]['status'] == 5) status = "<td style='color:green'><b>Negócio ganho</b>"; 
-                                    else if(resposta[i]['status'] == 6) status = "<td style='color:red'><b>Negócio perdido</b>";
-                                    else if(resposta[i]['status'] == 7){ status = "<td style='color:red'><b>Sem Consultor</b>"; pendentes++;}
-                                    else status = "<td style='color:red'><b>Cancelado</b>";
-                                    
-                                    if(resposta[i]['commission'] == 1)   comissao = "<td>Fixa";
-                                    else                                 comissao = "<td>Recorrente";
-                                    
-                                    if(resposta[i]['user_uuid'] == '')   consultor = "<td>Sem Consultor";
-                                    else                                 consultor = "<td>"+resposta[i]['user_name'];
-
-                                    tabela += '<tr>';
-                                    tabela += '<td>'+resposta[i]['name']+'</td>';
-                                    tabela += '<td>'+resposta[i]['cpf_cnpj']+'</td>';
-                                    tabela += '<td>'+resposta[i]['telefone']+'</td>';
-                                    tabela += '<td>'+resposta[i]['name_responsavel']+'</td>';
-                                    tabela += '<td>'+resposta[i]['email']+'</td>';
-                                    tabela += status+'</td>';
-                                    tabela += comissao+'</td>';
-                                    tabela += consultor+'</td>';
-
-                                    <?php if($user_type != 4){?>
-                                        tabela += '<td><button onclick="editarIndicacao(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
-                                    <?php }?>
-                                    tabela += '</tr>';
-                                    total++
-                                }
+                            if(resposta.length < 1){
+                                tabela="<tr><td>Nenhuma Indicação Encontrada</td></tr>";
+                                $('#tbUsuarioBody').html(tabela);
                             }
-                            $('#tbIndicacoesBody').html(tabela);
-                            $('#total_indicacoes').html(total);
-                            $('#span_pendentes').html(pendentes);
+                            else{
+                                for(var i=0; i<resposta.length;i++){
 
+                                    if(resposta[i]['status'] == 5)  ganhos++;
+                                    else if(resposta[i]['status'] == 6)  perdidos++;
+                                    else if(resposta[i]['status'] != 7) andamento++;
+                                    if(resposta[i]['status'] == status2){
 
+                                        if(resposta[i]['status'] == 1){ status = "<td style='color:orange'><b>Atribuída</b>"; pendentes++;}
+                                        else if(resposta[i]['status'] == 2) status = "<td><b>Cliente contatado</b>";
+                                        else if(resposta[i]['status'] == 3) status = "<td><b>Visita Realizada</b>"; 
+                                        else if(resposta[i]['status'] == 4) status = "<td><b>Proposta Enviada</b>"; 
+                                        else if(resposta[i]['status'] == 5) status = "<td style='color:green'><b>Negócio ganho</b>"; 
+                                        else if(resposta[i]['status'] == 6) status = "<td style='color:red'><b>Negócio perdido</b>";
+                                        else if(resposta[i]['status'] == 7){ status = "<td style='color:red'><b>Sem Consultor</b>"; pendentes++;}
+                                        else status = "<td style='color:red'><b>Cancelado</b>";
+                                        
+                                        if(resposta[i]['commission'] == 1)   comissao = "<td>Fixa";
+                                        else                                 comissao = "<td>Recorrente";
+                                        
+                                        if(resposta[i]['user_uuid'] == null)   consultor = "<td>Sem Consultor";
+                                        else                                 consultor = "<td>"+resposta[i]['user_name'];
+
+                                        tabela += '<tr>';
+                                        tabela += '<td>'+resposta[i]['name']+'</td>';
+                                        tabela += '<td>'+resposta[i]['cpf_cnpj']+'</td>';
+                                        tabela += '<td>'+resposta[i]['telefone']+'</td>';
+                                        tabela += '<td>'+resposta[i]['name_responsavel']+'</td>';
+                                        tabela += '<td>'+resposta[i]['email']+'</td>';
+                                        tabela += status+'</td>';
+                                        tabela += comissao+'</td>';
+                                        tabela += consultor+'</td>';
+
+                                        <?php if($user_type != 4){?>
+                                            tabela += '<td><button onclick="editarIndicacao(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
+                                        <?php }?>
+                                        tabela += '</tr>';
+                                        total++
+                                    }
+                                }
+                                $('#tbIndicacoesBody').html(tabela);
+                                $('#total_indicacoes').html(total);
+                                $('#span_pendentes').html(pendentes);
+
+                            }
                         }
                     });
                 }
@@ -640,7 +644,10 @@
                         dataType: 'json',
                         data: status,
                         success: function(resposta){
-                            if(resposta.length < 1) toastr.warning('Nenhum usuário encontrado!');
+                            if(resposta.length < 1){
+                                tabela2="<tr><td>Nenhum Usuário encontrado</td></tr>";
+                                $('#tbUsuarioBody').html(tabela2);
+                            }
                             else{
                                 for(var i=0; i<resposta.length;i++){
                                     if(resposta[i]['status'] == 1) status = "<td style='color:green'><b>Ativado</b>";
@@ -664,6 +671,7 @@
                                     tabela2 += '</tr>';
                                     total2++;
                                 }
+                                
                                 $('#tbUsuarioBody').html(tabela2);
                                 $('#total_usuarios').html(total2);
                                 $('#span_usuarios').html(total2);
@@ -693,50 +701,55 @@
                     dataType: 'json',
                     data: nome+valor+status+filtro,
                     success: function(resposta){
-                        if(resposta.length < 1) toastr.warning('Nenhuma indicação própria encontrada!');
-                        for(var i=0; i<resposta.length;i++){
-                            commission += parseInt(resposta[i]['value_commission']);
-                            // if(resposta[i]['status'] == 5)  ganhos2++;
-                            // else if(resposta[i]['status'] == 6)  perdidos2++;
-                            // else if(resposta[i]['status'] != 7) andamento2++;
-                            if(resposta[i]['status'] == 1){ status = "<td style='color:orange'><b>Pendente</b>"; pendentes2++;}
-                            else if(resposta[i]['status'] == 2) {status = "<td><b>Cliente contatado</b>";andamento2++;}
-                            else if(resposta[i]['status'] == 3) {status = "<td><b>Visita Realizada</b>";andamento2++;}
-                            else if(resposta[i]['status'] == 4) {status = "<td><b>Proposta Enviada</b>";andamento2++;}
-                            else if(resposta[i]['status'] == 5) {status = "<td style='color:green'><b>Negócio ganho</b>"; ganhos2++;}
-                            else if(resposta[i]['status'] == 6) {status = "<td style='color:red'><b>Negócio perdido</b>"; perdidos2++;}
-                            else if(resposta[i]['status'] == 7){ status = "<td style='color:red'><b>Sem Consultor</b>"; pendentes2++;}
-                            else status = "<td style='color:red'><b>Cancelado</b>";
-                            
-                            if(resposta[i]['commission'] == 1)   comissao = "<td>Fixa";
-                            else                                 comissao = "<td>Recorrente";
-                            
-                            if(resposta[i]['user_uuid'] == '')   consultor = "<td>Sem Consultor";
-                            else                                 consultor = "<td>"+resposta[i]['user_name'];
-
-                            tabela3 += '<tr>';
-                            tabela3 += '<td>'+resposta[i]['name']+'</td>';
-                            tabela3 += '<td>'+resposta[i]['cpf_cnpj']+'</td>';
-                            tabela3 += '<td>'+resposta[i]['telefone']+'</td>';
-                            tabela3 += '<td>'+resposta[i]['name_responsavel']+'</td>';
-                            tabela3 += '<td>'+resposta[i]['email']+'</td>';
-                            tabela3 += status+'</td>';
-                            tabela3 += comissao+'</td>';
-                            tabela3 += consultor+'</td>';
-
-                            <?php if($user_type != 4){?>
-                                tabela3 += '<td><button onclick="editarIndicacao(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
-                            <?php }?>
-                            tabela3 += '</tr>';
-                            total3++
+                        if(resposta.length < 1){
+                            tabela3="<tr><td>Nenhuma Indicação Encontrada</td></tr>";
+                            $('#tbMyIndicationsBody').html(tabela3);
                         }
-                        
-                        $('#tbMyIndicationsBody').html(tabela3);
-                        $('#total_my_indications').html(total3);
-                        //if(user_type == 4){
-                            $('#span_indicacoes').html(total3);
-                            $('#span_ganhos2').html(ganhos2);
-                            $('#span_minhas_pendentes').html(pendentes2);
+                        else{
+                            for(var i=0; i<resposta.length;i++){
+                                commission += parseInt(resposta[i]['value_commission']);
+                                // if(resposta[i]['status'] == 5)  ganhos2++;
+                                // else if(resposta[i]['status'] == 6)  perdidos2++;
+                                // else if(resposta[i]['status'] != 7) andamento2++;
+                                if(resposta[i]['status'] == 1){ status = "<td style='color:orange'><b>Atribuída</b>"; pendentes2++;}
+                                else if(resposta[i]['status'] == 2) {status = "<td><b>Cliente contatado</b>";pendentes2++;}
+                                else if(resposta[i]['status'] == 3) {status = "<td><b>Visita Realizada</b>";pendentes2++;}
+                                else if(resposta[i]['status'] == 4) {status = "<td><b>Proposta Enviada</b>";pendentes2++;}
+                                else if(resposta[i]['status'] == 5) {status = "<td style='color:green'><b>Negócio ganho</b>"; ganhos2++;}
+                                else if(resposta[i]['status'] == 6) {status = "<td style='color:red'><b>Negócio perdido</b>"; perdidos2++;}
+                                else if(resposta[i]['status'] == 7){ status = "<td style='color:red'><b>Sem Consultor</b>"; pendentes2++;}
+                                else status = "<td style='color:red'><b>Cancelado</b>";
+                                
+                                if(resposta[i]['commission'] == 1)   comissao = "<td>Fixa";
+                                else                                 comissao = "<td>Recorrente";
+                                
+                                if(resposta[i]['user_uuid'] == null)   consultor = "<td>Sem Consultor";
+                                else                                 consultor = "<td>"+resposta[i]['user_name'];
+
+                                tabela3 += '<tr>';
+                                tabela3 += '<td>'+resposta[i]['name']+'</td>';
+                                tabela3 += '<td>'+resposta[i]['cpf_cnpj']+'</td>';
+                                tabela3 += '<td>'+resposta[i]['telefone']+'</td>';
+                                tabela3 += '<td>'+resposta[i]['name_responsavel']+'</td>';
+                                tabela3 += '<td>'+resposta[i]['email']+'</td>';
+                                tabela3 += status+'</td>';
+                                tabela3 += comissao+'</td>';
+                                tabela3 += consultor+'</td>';
+
+                                <?php if($user_type != 4){?>
+                                    tabela3 += '<td><button onclick="editarIndicacao(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
+                                <?php }?>
+                                tabela3 += '</tr>';
+                                total3++
+                            }
+                            
+                            $('#tbMyIndicationsBody').html(tabela3);
+                            $('#total_my_indications').html(total3);
+                            //if(user_type == 4){
+                                $('#span_indicacoes').html(total3);
+                                $('#span_ganhos2').html(ganhos2);
+                                $('#span_minhas_pendentes').html(pendentes2);
+                        }
 
 
                         commission = String(commission);
@@ -826,7 +839,7 @@
                             }
                         },
                         xAxis : {
-                            categories : ['Indicações', 'Pendentes', 'Em Andamento', 'Ganhas', 'Perdidas']
+                            categories : ['Indicações', 'Atribuídas', 'Em Andamento', 'Ganhas', 'Perdidas']
                         },
                         plotOptions: {
                                 column: {
@@ -852,7 +865,7 @@
                         data : [d[0]],
                     });
                     chart.addSeries({
-                        name : ['Pendentes'],
+                        name : ['Atribuídas'],
                         data : [d[1]],
                     });
                     chart.addSeries({
@@ -870,10 +883,10 @@
                 }
 
                 //myIndicationsCharts
-                var d = [total3, pendentes2, andamento2, ganhos2, perdidos2];
+                var d = [total3, pendentes2, ganhos2, perdidos2];
 
                 Highcharts.setOptions({
-                    colors: ['#3f7fbf', '#f3e744', '#f28a13', '#6ff344', '#f01417']
+                    colors: ['#3f7fbf', '#f3e744', '#6ff344', '#f01417']
                 });
 
                 chart = Highcharts.chart('myIndicationsChart', {
@@ -909,7 +922,7 @@
                         }
                     },
                     xAxis : {
-                        categories : ['Indicações', 'Pendentes', 'Em Andamento', 'Ganhas', 'Perdidas']
+                        categories : ['Indicações', 'Pendentes', 'Ganhas', 'Perdidas']
                     },
                     plotOptions: {
                             column: {
@@ -939,16 +952,12 @@
 					data : [d[1]],
 				});
                 chart.addSeries({
-					name : ['Em Andamento'],
+					name : ['Ganhas'],
 					data : [d[2]],
 				});
                 chart.addSeries({
-					name : ['Ganhas'],
-					data : [d[3]],
-				});
-                chart.addSeries({
 					name : ['Perdidas'],
-					data : [d[4]],
+					data : [d[3]],
 				});
                 // name : ['Indicações', 'Pendentes', 'Em Andamento', 'Ganhas', 'Perdidas'],
 				// 	data : [t, pendentes, andamento, ganhos, perdidos],
