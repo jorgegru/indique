@@ -6,6 +6,7 @@ use Project\Models\UsersModel;
 use Project\Models\CompaniesModel;
 use Project\Models\ServicesModel;
 use Project\Models\IndicationsModel;
+use Project\Controllers\CadastroComissaoController;
 use \Psr\Container\ContainerInterface;
 use Respect\Validation\Validator as V;
 
@@ -227,7 +228,12 @@ class CadastroIndicacaoController
                                             'end_date'=>$metadata['end_date'],
                                             'user_uuid'=>$metadata['user_uuid'],
                                             'creator_uuid'=>$_SESSION['user']['id']]);
-                if($indication){
+                if($indication){//cadastroComissao
+                    $CadastroComissaoController = new CadastroComissaoController($this->container);
+                    $metadata['uuid'] = $uuid;
+                    $CadastroComissaoController->cadastroComissao($metadata);
+                    $debug2 = fopen("teste.txt","w+");
+                    fwrite($debug2,$metadata['start_date']);
                     $this->container->flash->addMessage('success', 'Cadastrado com sucesso');
                     return $response->withRedirect($this->container->router->pathFor('cadastroIndicacao'));
                 }
