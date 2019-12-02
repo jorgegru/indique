@@ -18,3 +18,9 @@ CREATE TABLE `indique`.`contracts` ( `uuid` VARCHAR(45) NOT NULL ,
     `observation` VARCHAR(255), 
     `indentification` VARCHAR(50) NOT NULL , 
     `indication_uuid` VARCHAR(45) NOT NULL , PRIMARY KEY (`uuid`(45))) ENGINE = InnoDB;
+
+
+CREATE TABLE `indique`.`files` ( `uuid` VARCHAR(45) NOT NULL ,
+     `name_file` VARCHAR(200) NOT NULL , 
+     `type` TINYINT(1) NOT NULL COMMENT '1 = contrato,2 = comissão' , 
+     `relation_uuid` VARCHAR(45) NOT NULL, PRIMARY KEY (`uuid`(45))) ENGINE = InnoDB

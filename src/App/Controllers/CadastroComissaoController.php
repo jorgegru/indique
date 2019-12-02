@@ -22,12 +22,28 @@ class CadastroComissaoController
         $value_commission   = $data['value_commission'];
         $start_date         = $data['start_date'];
         $end_date           = $data['end_date'];
-        $indication_uuid    = $data['uuid'];
+        $indication_uuid    = $data['indication_uuid'];
         $commission         = $data['commission'];
         $meses              = 0;
+        $day                = $data['day'];
 
-        if($commission == 1){
+        // $debug2 = fopen("testeCadastroCommisao.txt","w+");
+        // fwrite($debug2,$value_commission."---".
+        // $start_date."-/-".
+        // $end_date."-/-".
+        // $indication_uuid."-/-".
+        // $commission."-/-".
+        // $meses."-/-\n\n".
+        // json_encode($data)
+        // );
 
+        if($commission == 1 || $start_date == $end_date){
+            $commissionsModel = new CommissionsModel($this->container);
+                $uuid = uuid();
+                $commissionsModel->set(["uuid"=>$uuid,  
+                                        "value_commission"=>$value_commission,
+                                        "date"=>date('Y')."-".date('m')."-".$day,
+                                        "indication_uuid"=>$indication_uuid]);
         }
         else{
             $ano_ini = substr($start_date,0,4);
@@ -77,7 +93,7 @@ class CadastroComissaoController
 
                 $commissionsModel->set(["uuid"=>$uuid,  
                                         "value_commission"=>$value_commission,
-                                        "date"=>$ano."-".$mes."-01",
+                                        "date"=>$ano."-".$mes."-".$day,
                                         "indication_uuid"=>$indication_uuid]);
             }
         }

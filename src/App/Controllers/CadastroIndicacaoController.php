@@ -25,6 +25,7 @@ class CadastroIndicacaoController
         //$companiesModel = new CompaniesModel($this->container);
         $usersModel = new UsersModel($this->container);
         $servicesModel = new ServicesModel($this->container);
+        
 
         $consultores = $usersModel->all(["user_type"=>"3","status"=>"1"]);
         $services = $servicesModel->all(["1"=>"1"]);
@@ -232,8 +233,6 @@ class CadastroIndicacaoController
                     $CadastroComissaoController = new CadastroComissaoController($this->container);
                     $metadata['uuid'] = $uuid;
                     $CadastroComissaoController->cadastroComissao($metadata);
-                    $debug2 = fopen("teste.txt","w+");
-                    fwrite($debug2,$metadata['start_date']);
                     $this->container->flash->addMessage('success', 'Cadastrado com sucesso');
                     return $response->withRedirect($this->container->router->pathFor('cadastroIndicacao'));
                 }

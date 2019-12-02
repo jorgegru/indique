@@ -82,7 +82,7 @@
                                     <div class="row">
                             
 
-                                        <form id="myForm" class="form-horizontal" action="editaIndicacao" method="post">
+                                        <form id="myForm" class="form-horizontal" action="../editaIndicacao" method="post">
                                             <div class="box-body">
                                                 <div class="form-group has-feedback">
                                                     <label class="col-sm-2 control-label">Indicação:</label>
@@ -472,8 +472,7 @@
                         var final = value.substring(value.length - 2, value.length);
                         value = value.substring(0,value.length - 2);
                         $('#txt_value_commission2').val(value+','+final);
-                        $('#txt_start_date').val(dados['start_date']);
-                        $('#txt_end_date').val(dados['end_date']);
+
 
                         $('#opt_service_uuid').val(dados['service_uuid']);
                         $('#opt_service_uuid').trigger('change');

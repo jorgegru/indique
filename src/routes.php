@@ -6,6 +6,7 @@ use Slim\Http\Response;
 
 return function (App $app) {
     $container = $app->getContainer();
+    $container['upload_directory'] = __DIR__ . '/files';
 
 
     // Cadastro usuario
@@ -96,6 +97,10 @@ return function (App $app) {
     // Filto Indicacao Lista
         $app->post('/filtroIndicacaoLista', Project\Controllers\IndicationController::class . ':filtroLista')->setName('filtroUserLista');
 
+    //Cadastrar Contrato
+        $app->get('/cadastroContrato/{uuid}', Project\Controllers\CadastroContratoController::class . ':cadastroContrato')->setName('cadastroContrato');    
+        $app->post('/cadastrarContrato', Project\Controllers\CadastroContratoController::class . ':cadastrarContrato')->setName('cadastrarContrato');    
+
     // Editar Compania
         $app->group('/editaCompania', function () {
             $this->get('', Project\Controllers\EditarCompaniaController::class . ':editaCompania')->setName('editaCompania');
@@ -103,6 +108,31 @@ return function (App $app) {
         });
         $app->post('/carregaEditarCompania', Project\Controllers\EditarCompaniaController::class . ':carregaEditarCompania')->setName('carregaEditarCompania');
 
+    // index
+        // $app->get('/index', function (Request $request, Response $response, array $args) use ($container) {
+        //     // Sample log message
+        //     $container->get('logger')->info("Slim-Skeleton '/' route");
+        //     $debug2 = fopen("testeArgs.txt","w+");
+        //     fwrite($debug2,json_encode($args['success']));
+
+        //     $debug2 = fopen("testeArgs4.txt","w+");
+        //     fwrite($debug2,$args['success2']);
+            
+        //     $debug2 = fopen("testeArgs2.txt","w+");
+        //     fwrite($debug2,json_decode($args['success']));
+
+        //     $debug2 = fopen("testeArgs3.txt","w+");
+        //     fwrite($debug2,print_r($args['success']));
+        //     // Render index view
+        //     return $container->get('renderer')->render($response, 'index.phtml', $args);
+        // })->setName('index');
+
+        $app->get('/index/{status}', function ($request, $response, $args) use ($container) {
+
+
+            return $container->get('renderer')->render($response, 'index.phtml', ['message'=>$args['status']]);
+        })->setName('index');
+        
 
     $app->get('/[{name}]', function (Request $request, Response $response, array $args) use ($container) {
         // Sample log message

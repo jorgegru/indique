@@ -243,7 +243,13 @@ class EditarIndicacaoController
                                             'user_uuid'=>$metadata['user_uuid']]);
 
                 if($indication){
-                    
+                    $this->container->flash->addMessage('success', 'Alterado com sucesso');
+                    if($metadata['status'] == 5){
+                        return $response->withRedirect($this->container->router->pathFor('cadastroContrato',[
+                            'uuid' => $metadata['indication_uuid']
+                        ]));        
+                    }
+                    return $response->withRedirect($this->container->router->pathFor('editaIndicacao'));    
                 }
                 else{
                     $errors = $validator->getErrors();
@@ -251,9 +257,7 @@ class EditarIndicacaoController
                     return $response->withRedirect($this->container->router->pathFor('editaIndicacao'));
                 }
 
-                $this->container->flash->addMessage('success', 'Alterado com sucesso');
-                return $response->withRedirect($this->container->router->pathFor('editaIndicacao'));
-                
+                                
             }catch(\PDOException $e){
                 $this->container->flash->addMessage('error', 'Falha na Alteração');
 			    return $response->withRedirect($this->container->router->pathFor('editaIndicacao'));
