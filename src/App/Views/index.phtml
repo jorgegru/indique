@@ -326,7 +326,8 @@
                                                     <table id="tbIndicacao" class="table table-bordered table-striped">
                                                         <thead>
                                                             <tr>
-                                                            <th width="300">Nome</th>
+                                                                <th>Comissões</th>
+                                                                <th width="300">Nome</th>
                                                                 <th>CPF_CNPJ</th>
                                                                 <th>Telefone</th>
                                                                 <th width="300">Nome Responsável</th>
@@ -403,6 +404,35 @@
                     <!-- /.col -->
                 </div>
                 <!-- /.row -->
+
+                <!-- MODAL VER COMISSÕES-->
+                <div class="modal fade" id="modal_commission" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Comissões</h4>
+                        </div>
+                        <div class="modal-body">
+                        <table id='table_commissions' class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Valor</th>
+                                    <th>Data</th>
+                                    <th>Status</th>
+                                    <th>Observação</th>
+                                    <th width="10"><i class="fa fa-edit"></i></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody_commission">
+                            
+                            </tbody>
+                        </table>
+
+                        </div>
+                    </div>
+                </div>
+                </div>
 
 
                 <div class="row" id="rowMyIndicationsCharts">
@@ -751,6 +781,7 @@
                                 else                                 consultor = "<td>"+resposta[i]['user_name'];
 
                                 tabela3 += '<tr>';
+                                tabela3 += '<td><button type="button" class="btn btn-default btn-xs" onclick="ver_comisao(\''+resposta[i]['uuid']+'\');"><i class="fa fa-eye"></i></button></td>';
                                 tabela3 += '<td>'+resposta[i]['name']+'</td>';
                                 tabela3 += '<td>'+resposta[i]['cpf_cnpj']+'</td>';
                                 tabela3 += '<td>'+resposta[i]['telefone']+'</td>';
@@ -792,34 +823,7 @@
                     }
                 });
 
-
-                function Ajax3(metodo, url, post, div_id, funcao){
-                    try{ //Instancia para navegadores modernos
-                        var ajaxRequest = new XMLHttpRequest();
-                    }
-                    catch(err){ //Instancia para navegadores IE antigos
-                        var ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
-                    }
-                    
-                    //Define qual a fun��o que ser� chamada toda vez que o status em chamadaAjax.readyState mudar
-                    ajaxRequest.onreadystatechange = funcao;
-                    ajaxRequest['post'] = post;
-                    
-                    //Escolhe o m�todo, a url, e se true para executar uma chamada ass�ncrona.
-                    if(metodo == 'GET'){
-                        ajaxRequest.open(metodo, url, true);
-                        ajaxRequest.send();
-                    }
-                    
-                    if(metodo == 'POST'){              
-                        ajaxRequest.open(metodo, url, true);
-                        
-                        ajaxRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-                        //post deve estar no formato http. Ex.: "var1=valor1&var2=valor2"
-                        //ajaxRequest["ponteiro"] = setTimeout(ajaxRequest.send+"(\"" + ajaxRequest.post + "\")", 2000);
-                        ajaxRequest.send(post);
-                    }   
-                }
+            
 
                 //Charts
                 //Indicações
@@ -983,160 +987,99 @@
 					name : ['Perdidas'],
 					data : [d[3]],
 				});
-                // name : ['Indicações', 'Pendentes', 'Em Andamento', 'Ganhas', 'Perdidas'],
-				// 	data : [t, pendentes, andamento, ganhos, perdidos],
-
-               
-
-
-                // var ctx = document.getElementById("barChart");
-                // var myChart = new Chart(ctx, {
-                //     type: 'bar',
-                    
-                //     data: {
-                //         labels:  ['Indicações', 'Pendentes', 'Em Andamento', 'Ganhas', 'Perdidas'],
-                //         datasets: [{
-                //             data: d,
-                //             backgroundColor: [
-                //                 'rgba(63, 127, 191, 1)',
-                //                 'rgba(243, 231, 68, 1)',
-                //                 'rgba(242, 138, 19, 1)',
-                //                 'rgba(111, 243, 68, 1)',
-                //                 'rgba(240, 20, 23, 1)'
-                //             ],
-                            
-                            
-                          
-                //         }]
-                //     },
-                //     options: {
-                //         scales: {
-                //             yAxes: [{
-                //                 ticks: {
-                //                     beginAtZero:true
-                //                 }
-                //             }]
-                //         },
-                //         plotOptions: {
-                //             column: {
-                //                 pointPadding: 0.2,
-                //                 borderWidth: 0,
-                //                 dataLabels: {
-                //                     enabled: true,
-                //                     //rotation: -45,
-                //                     color: '#000',
-                //                     align: 'center',
-                //                     style: {
-                //                         fontSize: "15px"
-                //                     },
-                //                     x: 5,
-                //                     y: 0
-                //                 }
-                //             }
-                //         },
-                //     }
-                // });
-
-           
-            //     var barData = {
-            //     labels : ["Counselor","Examiner","Rock","Seeker","Uniter"],
-            //     datasets : [{
-            //             // fillColor : "#48A497",
-            //             // strokeColor : "#48A4D1",
-            //             data : [100, 200, 300, 400, 500],
-            //             backgroundColor: [
-            //                 'rgba(255, 99, 132, 0.2)',
-            //                 'rgba(54, 162, 235, 0.2)',
-            //                 'rgba(255, 206, 86, 0.2)',
-            //                 'rgba(75, 192, 192, 0.2)',
-            //                 'rgba(153, 102, 255, 0.2)',
-            //                 ],
-            //             borderColor: [
-            //                 'rgba(255,99,132,1)',
-            //                 'rgba(54, 162, 235, 1)',
-            //                 'rgba(255, 206, 86, 1)',
-            //                 'rgba(75, 192, 192, 1)',
-            //                 'rgba(153, 102, 255, 1)',
-            //                 ],
-            //             borderWidth: 1
-            //     }]
-            // }
-            // // get bar chart canvas
-            // var income = document.getElementById("barChart").getContext("2d");
-            // // draw bar chart
-            // new Chart(income).Bar(barData);
-
-    //             var areaChartData = {
-    //                 labels  : ['Indicações', 'Pendentes', 'Em Andamento', 'Ganhas', 'Perdidas'],
-                    
-    //                 datasets: [
-    //                     {
-    //                     label               : 'Electronics',
-    //                     backgroundColor: [
-    //                         'rgba(255, 99, 132, 0.2)',
-    //                         'rgba(54, 162, 235, 0.2)',
-    //                         'rgba(255, 206, 86, 0.2)',
-    //                         'rgba(75, 192, 192, 0.2)',
-    //                         'rgba(153, 102, 255, 0.2)'
-    //                     ],
-    //                     borderColor: [
-    //                         'rgba(255,99,132,1)',
-    //                         'rgba(54, 162, 235, 1)',
-    //                         'rgba(255, 206, 86, 1)',
-    //                         'rgba(75, 192, 192, 1)',
-    //                         'rgba(153, 102, 255, 1)'
-    //                     ],
-    //                     borderWidth: 1,
-    //                     // fillColor           : 'rgba(210, 214, 222, 1)',
-    //                     // strokeColor         : 'rgba(210, 214, 222, 1)',
-    //                     // pointColor          : 'rgba(210, 214, 222, 1)',
-    //                     // pointStrokeColor    : '#c1c7d1',
-    //                     // pointHighlightFill  : '#fff',
-    //                     // pointHighlightStroke: 'rgba(220,220,220,1)',
-    //                     data                : [65, 59, 80, 81, 56],
-    //                     //backgroundColor : ['rgba(63, 127, 191, 1)','rgba(0, 0, 0, 0.1)','rgba(0, 0, 0, 0.1)','rgba(0, 0, 0, 0.1)','rgba(0, 0, 0, 0.1)']
-    //                     }
-    //                 ]
-    //             }
-    // //-------------
-    // //- BAR CHART -
-    // //-------------
-    // var barChartCanvas                   = $('#barChart').get(0).getContext('2d')
-    // var barChart                         = new Chart(barChartCanvas)
-    // var barChartData                     = areaChartData
-
-    // var barChartOptions                  = {
-    //   //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
-    //   scaleBeginAtZero        : true,
-    //   //Boolean - Whether grid lines are shown across the chart
-    //   scaleShowGridLines      : true,
-    //   //String - Colour of the grid lines
-    //   scaleGridLineColor      : 'rgba(0,0,0,.05)',
-    //   //Number - Width of the grid lines
-    //   scaleGridLineWidth      : 1,
-    //   //Boolean - Whether to show horizontal lines (except X axis)
-    //   scaleShowHorizontalLines: true,
-    //   //Boolean - Whether to show vertical lines (except Y axis)
-    //   scaleShowVerticalLines  : true,
-    //   //Boolean - If there is a stroke on each bar
-    //   barShowStroke           : true,
-    //   //Number - Pixel width of the bar stroke
-    //   barStrokeWidth          : 2,
-    //   //Number - Spacing between each of the X value sets
-    //   barValueSpacing         : 5,
-    //   //Number - Spacing between data sets within X values
-    //   barDatasetSpacing       : 1,
-    //   //String - A legend template
-    //   legendTemplate          : '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<datasets.length; i++){%><li><span style="background-color:<%=datasets[i].fillColor%>"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>',
-    //   //Boolean - whether to make the chart responsive
-    //   responsive              : true,
-    //   maintainAspectRatio     : true
-    // }
-
-    // barChartOptions.datasetFill = false
-    // barChart.Bar(barChartData, barChartOptions)
-
+      
 			});
+
+            function editarComissao(uuid){
+                $("#myForm").attr("action","editaComissao/"+uuid);    
+                $("#myForm").submit();
+            }
+
+            function payCommission(uuid,i){
+                var r = confirm("Deseja pagar a comissão?");
+                if(r == true){
+                    $.get('payCommission/'+uuid,function(data){
+                        var resposta = JSON.parse(data);
+                        if(data == "true"){
+                            $('#pay'+i).html("Pago <button onclick='unpaidCommission(\""+uuid+"\",\""+i+"\");' type='button' title='Não Pago' class='btn btn-default btn-xs'><i class='fa fa-thumbs-up'></i></button>");
+                            $('#pay'+i).css("color","green");
+                        }
+                        else{
+                            toastr.error('Falha ao Pagar');    
+                        }
+                    });
+                }
+            }
+
+            function unpaidCommission(uuid,i){
+                var r = confirm("Deseja não pagar a comissão?");
+                if(r == true){
+                    $.get('payCommission/'+uuid,function(data){
+                        var resposta = JSON.parse(data);
+                        if(data == "true"){
+                            $('#pay'+i).html("Não Pago <button onclick='payCommission(\""+uuid+"\",\""+i+"\");' type='button' title='Pagar' class='btn btn-default btn-xs'><i class='fa fa-thumbs-down'></i></button>");
+                            $('#pay'+i).css("color","red");
+                        }
+                        else{
+                            toastr.error('Falha ao Não Pagar');    
+                        }
+                    });
+                }
+            }
+
+            function ver_comisao(uuid){
+                $('#tbody_commission').html('');
+                $.get('getCommissionsIndication/'+uuid,function(data){
+                    var resposta = JSON.parse(data);
+                    var data = new Date();
+                    var mes_atual = data.getMonth()+1;
+                    var ano_atual = data.getFullYear();
+
+                    var tabela = "";
+                    var status = "";
+                    var dia = '';
+                    var mes = '';
+                    var ano = '';
+                    var data = '';
+                    var observation = '';
+                    var botao = '';
+                    for(var i=0; i<resposta.length;i++){
+
+                        ano  = resposta[i]['date'].split("-")[0];
+                        mes  = resposta[i]['date'].split("-")[1];
+                        dia  = resposta[i]['date'].split("-")[2];
+
+                        
+
+                        if(mes_atual == mes && ano_atual == ano)    data = "-> "+dia + '/' + (mes) + '/' + (ano);
+                        else                                        data = dia + '/' + (mes) + '/' + (ano);
+
+                        if(resposta[i]['observation'] == null)  observation = "<td></td>";
+                        else                                    observation = "<td>"+resposta[i]['observation']+"</td>";
+                        
+                        botao = '';
+                        <?php if($user_type != 4){?>
+                            if(resposta[i]['paid'] == 1)    botao = "<button onclick='payCommission(\""+resposta[i]['uuid']+"\",\""+i+"\");' type='button' title='Pagar' class='btn btn-default btn-xs'><i class='fa fa-thumbs-down'></i></button>";
+                            else                            botao = "<button onclick='unpaidCommission(\""+resposta[i]['uuid']+"\",\""+i+"\");' type='button' title='Não Pago' class='btn btn-default btn-xs'><i class='fa fa-thumbs-up'></i></button>";
+                        <?php }?>
+
+                        if(resposta[i]['paid'] == 1)    status = "<td style='color:red' id=pay"+i+">Não Pago "+botao+"</td>";
+                        else                            status = "<td style='color:green' id=pay"+i+">Pago "+botao+"</td>";
+                            
+                        tabela += "<tr>";
+                        tabela += '<td>R$'+(resposta[i]['value_commission']/100)+'</td>';
+                        tabela += '<td>'+data+'</td>';
+                        tabela += status;
+                        tabela += observation;
+                        tabela += '<td><button onclick="editarComissao(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
+                        tabela += '</tr>';
+
+                    }
+                    $('#tbody_commission').html(tabela);
+                });
+                
+                $('#modal_commission').modal();
+            }
 
             function editarIndicacao(uuid){
                 $("#myForm").attr("action","editaIndicacao/"+uuid);    

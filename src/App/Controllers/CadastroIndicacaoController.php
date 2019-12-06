@@ -230,9 +230,9 @@ class CadastroIndicacaoController
                                             'user_uuid'=>$metadata['user_uuid'],
                                             'creator_uuid'=>$_SESSION['user']['id']]);
                 if($indication){//cadastroComissao
-                    $CadastroComissaoController = new CadastroComissaoController($this->container);
-                    $metadata['uuid'] = $uuid;
-                    $CadastroComissaoController->cadastroComissao($metadata);
+                    // $CadastroComissaoController = new CadastroComissaoController($this->container);
+                    // $metadata['uuid'] = $uuid;
+                    // $CadastroComissaoController->cadastroComissao($metadata);
                     $this->container->flash->addMessage('success', 'Cadastrado com sucesso');
                     return $response->withRedirect($this->container->router->pathFor('cadastroIndicacao'));
                 }

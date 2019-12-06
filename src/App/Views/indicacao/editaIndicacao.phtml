@@ -348,6 +348,12 @@
                                                             </select>
                                                         </div>
                                                     </div>
+                                                    <div class="form-group has-feedback">
+                                                        <label class="col-sm-2 control-label">Comissões:</label>
+                                                        <div class="col-sm-3">
+                                                            <button type="button" class="btn btn-default btn-xs" onclick="ver_comisao();"><i class="fa fa-eye"></i></button>
+                                                        </div>
+                                                    </div>
                                                 </div>
 
                                                 <div class="form-group">
@@ -357,6 +363,35 @@
                                                 </div>
                                             </div>    
                                         </form>
+                                    </div>
+
+                                    <!-- MODAL VER COMISSÕES-->
+                                    <div class="modal fade" id="modal_commission" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title" id="myModalLabel">Comissões</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                            <table id='table_commissions' class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Valor</th>
+                                                        <th>Data</th>
+                                                        <th>Status</th>
+                                                        <th>Observação</th>
+                                                        <th width="10"><i class="fa fa-edit"></i></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tbody_commission">
+                                                
+                                                </tbody>
+                                            </table>
+
+                                            </div>
+                                        </div>
+                                    </div>
                                     </div>
                                 </div><!--box-body-->
                             </div>
@@ -496,7 +531,7 @@
                             $('#opt_start_data_m').trigger('change');
                             $('#opt_end_data_y').val(dados['end_date'].slice(0,4));
                             $('#opt_end_data_y').trigger('change');
-                            $('#opt_end_data_m').val((dados['end_date'].slice(5,7)));
+                            $('#opt_end_data_m').val(parseInt(dados['end_date'].slice(5,7)));
                             $('#opt_end_data_m').trigger('change');
                         }
 
@@ -600,6 +635,95 @@
                     }
                 });
             });
+
+            function ver_comisao(){
+                uuid = $('#opt_indication_uuid').val();
+                $('#tbody_commission').html('');
+                $.get('getCommissionsIndication/'+uuid,function(data){
+                    var resposta = JSON.parse(data);
+                    var data = new Date();
+                    var mes_atual = data.getMonth()+1;
+                    var ano_atual = data.getFullYear();
+
+                    var tabela = "";
+                    var status = "";
+                    var dia = '';
+                    var mes = '';
+                    var ano = '';
+                    var data = '';
+                    var observation = '';
+                    var botao = '';
+                    for(var i=0; i<resposta.length;i++){
+
+                        ano  = resposta[i]['date'].split("-")[0];
+                        mes  = resposta[i]['date'].split("-")[1];
+                        dia  = resposta[i]['date'].split("-")[2];
+
+                        
+
+                        if(mes_atual == mes && ano_atual == ano)    data = "-> "+dia + '/' + (mes) + '/' + (ano);
+                        else                                        data = dia + '/' + (mes) + '/' + (ano);
+
+                        if(resposta[i]['observation'] == null)  observation = "<td></td>";
+                        else                                    observation = "<td>"+resposta[i]['observation']+"</td>";
+                        
+                        botao = '';
+                        <?php if($user_type != 4){?>
+                            if(resposta[i]['paid'] == 1)    botao = "<button onclick='payCommission(\""+resposta[i]['uuid']+"\",\""+i+"\");' type='button' title='Pagar' class='btn btn-default btn-xs'><i class='fa fa-thumbs-down'></i></button>";
+                            else                            botao = "<button onclick='unpaidCommission(\""+resposta[i]['uuid']+"\",\""+i+"\");' type='button' title='Não Pago' class='btn btn-default btn-xs'><i class='fa fa-thumbs-up'></i></button>";
+                        <?php }?>
+
+                        if(resposta[i]['paid'] == 1)    status = "<td style='color:red' id=pay"+i+">Não Pago "+botao+"</td>";
+                        else                            status = "<td style='color:green' id=pay"+i+">Pago "+botao+"</td>";
+                            
+                        tabela += "<tr>";
+                        tabela += '<td>R$'+(resposta[i]['value_commission']/100)+'</td>';
+                        tabela += '<td>'+data+'</td>';
+                        tabela += status;
+                        tabela += observation;
+                        tabela += '<td><button onclick="editarComissao(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
+                        tabela += '</tr>';
+
+                    }
+                    $('#tbody_commission').html(tabela);
+                });
+                
+                $('#modal_commission').modal();
+            }
+
+            function editarComissao(uuid){
+                $("#myForm").attr("action","editaComissao/"+uuid);    
+                $("#myForm").submit();
+            }
+
+            function payCommission(uuid,i){
+                var r = confirm("Deseja pagar a comissão?");
+                if(r == true){
+                    $.get('payCommission/'+uuid,function(data){
+                        var resposta = JSON.parse(data);
+                        if(data == "true"){
+                            $('#pay'+i).html("Pago <button onclick='unpaidCommission(\""+uuid+"\",\""+i+"\");' type='button' title='Não Pago' class='btn btn-default btn-xs'><i class='fa fa-thumbs-up'></i></button>");
+                            $('#pay'+i).css("color","green");
+                        }
+                        else{
+                            toastr.error('Falha ao Pagar');    
+                        }
+                    });
+                }
+            }
+
+            function unpaidCommission(uuid,i){
+                var r = confirm("Deseja não pagar a comissão?");
+                if(r == true){
+                    $.get('payCommission/'+uuid,function(data){
+                        var resposta = JSON.parse(data);
+                        if(data == "true"){
+                            $('#pay'+i).html("Não Pago <button onclick='payCommission(\""+uuid+"\",\""+i+"\");' type='button' title='Pagar' class='btn btn-default btn-xs'><i class='fa fa-thumbs-down'></i></button>");
+                            $('#pay'+i).css("color","red");
+                        }
+                    });
+                }
+            }
 
             $(document).ready(function() {
 				

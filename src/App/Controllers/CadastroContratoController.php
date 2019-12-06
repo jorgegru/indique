@@ -56,8 +56,6 @@ class CadastroContratoController
             $uuid = $args['return']['uuid'];
         }
 
-        $debug2 = fopen("testeMensagem.txt","w+");
-        fwrite($debug2,json_encode($message));
 
         if(isset($args['uuid'])) $uuid = $args['uuid'];
 
@@ -142,7 +140,7 @@ class CadastroContratoController
                 //arrumando a data
                 $data = substr($metadata['date'], -4)."-".substr($metadata['date'],3, -5)."-".substr($metadata['date'],0, -8);
 
-                $contract = $contractsModel->set([  'uuid'=>uuid(),
+                $contract = $contractsModel->set([  'uuid'=>$uuid,
                                                     'corporate_name'=>$metadata['corporate'],
                                                     'value'=>$metadata['value_contract'],
                                                     'date'=>$data,
