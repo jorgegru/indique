@@ -4,7 +4,7 @@ namespace Project\Traits;
 
 trait ModelTrait {
 
-    public function all(array $dados)
+    public function all(array $dados, $filtro='')
     {
         try{
             if(count($dados)==0)
@@ -15,7 +15,7 @@ trait ModelTrait {
                 $sqlArray[] = "{$key} = :{$key_name}";
             }
             $sql = "SELECT * FROM {$this->table}
-            WHERE ". implode(' AND ', $sqlArray);
+            WHERE ". implode(' AND ', $sqlArray) . " " . $filtro;
             
             $stmt = $this->conn->prepare($sql);
 
@@ -155,7 +155,46 @@ trait ModelTrait {
                 $sqlJoin[] = "LEFT JOIN $tabela ON $tabela.".$row['campo']."=".$row['campo2'];
             }
 
-            $sql = "SELECT {$campos} FROM {$this->table}
+            $sql = "SELECT DISTINCT {$campos} FROM {$this->table}
+            ".implode(' ', $sqlJoin)."
+            WHERE ". implode(' AND ', $sqlArray) . " " . $filtro;
+            
+            $stmt = $this->conn->prepare($sql);
+
+            foreach ($dados as $key => $row) {
+                $key_name = explode('.',$key);
+                $key_name = end($key_name);
+                $stmt->bindValue(":{$key_name}", $row, \PDO::PARAM_STR);
+            }
+                
+            $stmt->execute();
+            
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        }catch(\PDOException $e){
+            throw $e;
+        }
+    }
+
+    public function allInnerJoin(array $dados, array $join, $campos, $filtro="")
+    {
+        try{
+            if(count($dados)==0)
+                return false;
+            foreach ($dados as $key => $row) {
+                $key_name = explode('.',$key);
+                $key_name = end($key_name);
+
+                if($key=='1') 
+                    $sqlArray[] = "{$key} = :{$key_name}";
+                else 
+                    $sqlArray[] = "{$this->table}.{$key} = :{$key_name}";
+            }
+
+            foreach ($join as $tabela => $row){
+                $sqlJoin[] = "INNER JOIN $tabela ON $tabela.".$row['campo']."=".$row['campo2'];
+            }
+
+            $sql = "SELECT DISTINCT {$campos} FROM {$this->table}
             ".implode(' ', $sqlJoin)."
             WHERE ". implode(' AND ', $sqlArray) . " " . $filtro;
             
@@ -302,6 +341,103 @@ trait ModelTrait {
                 return  true;
             return false;
         } catch (\PDOException $e) {
+            throw $e;
+        }
+    }
+
+    public function updateWhere($dados)
+    {
+        try {
+            if(count($dados)==0)
+                return false;
+
+            $field = '';
+            foreach($dados['where'] as $dados){  
+                foreach ($dados as $key => $row) {
+                    $key_name = explode('.',$key);
+                    $key_name = end($key_name);
+
+                    $sqlArray[] = "{$key} = :{$key_name}";
+      
+                }
+            }
+            foreach($dados['field'] as $dados){
+                foreach ($dados as $key => $row) {
+                    $key_name = explode('.',$key);
+                    $key_name = end($key_name);
+
+                    $field = "{$key} = :{$key_name}";
+                }
+            }
+
+            if($field == '')
+                throw new \PDOException("Error Processing field", 1);
+                
+            $sql = "UPDATE {$this->table} SET 
+                ".implode(' AND ', $sqlArray)."
+                WHERE  {$field};";
+
+            $stmt =  $this->conn->prepare($sql);
+            foreach ($dados['field'] as $key => $row) {
+                $key_name = explode('.',$key);
+                $key_name = end($key_name);
+                $stmt->bindValue(":{$key_name}", $row, \PDO::PARAM_STR);
+            }
+            foreach ($dados['where'] as $key => $row) {
+                $key_name = explode('.',$key);
+                $key_name = end($key_name);
+                $stmt->bindValue(":{$key_name}", $row, \PDO::PARAM_STR);
+            }
+            
+            $stmt->execute();
+
+            if($stmt->rowCount() >= 0)
+                return  true;
+            return false;
+        } catch (\PDOException $e) {
+            throw $e;
+        }
+    }
+
+    //Valida se um dado é unico na tabela
+    public function validateUniqueField(array $dados)
+    {
+        try{
+            if(count($dados)==0)
+                return false;
+            $field = false;        
+            foreach ($dados as $key => $row) {
+                $key_name = explode('.',$key);
+                $key_name = end($key_name);
+                
+                if($key!='uuid' && $key!='id') 
+                    $sqlArray[] = "{$key} = :{$key_name}";
+                else{
+                    $sqlArray2[] = "{$key} != :{$key_name}";
+                    $field = true;
+                }
+            }
+            
+            if($field){
+                $sql = "SELECT * FROM {$this->table}
+                WHERE (". implode(' OR ', $sqlArray) .") && ". implode(' && ', $sqlArray2);
+            }else{
+                $sql = "SELECT * FROM {$this->table}
+                WHERE ". implode(' OR ', $sqlArray);
+            }
+            
+            $stmt = $this->conn->prepare($sql);
+
+            foreach ($dados as $key => $row) {
+                $key_name = explode('.',$key);
+                $key_name = end($key_name);
+                $stmt->bindValue(":{$key_name}", $row, \PDO::PARAM_STR);
+            }
+                
+            $stmt->execute();
+
+            return $stmt->fetch(\PDO::FETCH_ASSOC);
+        }catch(\PDOException $e){
             throw $e;
         }
     }

@@ -6,6 +6,7 @@ use Slim\Http\Response;
 
 return function (App $app) {
     $container = $app->getContainer();
+    $container['upload_directory'] = __DIR__ . '/files';
 
 
     // Cadastro usuario
@@ -65,6 +66,9 @@ return function (App $app) {
     // Filto Login Lista
         $app->post('/filtroUserLista', Project\Controllers\UserController::class . ':filtroLista')->setName('filtroUserLista');
 
+    //Get Creators
+        $app->get('/getCreators', Project\Controllers\UserController::class . ':getCreators')->setName('getCreators');
+
     // Cadastro Compania
         $app->group('/cadastroCompania', function () {
             $this->get('', Project\Controllers\CadastroCompaniaController::class . ':cadastroCompania')->setName('cadastroCompania');
@@ -94,7 +98,53 @@ return function (App $app) {
             return $container->get('renderer')->render($response, 'indicacao/listaIndicacao.phtml', $args);
         });
     // Filto Indicacao Lista
-        $app->post('/filtroIndicacaoLista', Project\Controllers\IndicationController::class . ':filtroLista')->setName('filtroUserLista');
+        $app->post('/filtroIndicacaoLista', Project\Controllers\IndicationController::class . ':filtroLista')->setName('filtroIndicationLista');
+
+    //Cadastrar Contrato
+        $app->get('/cadastroContrato/{uuid}', Project\Controllers\CadastroContratoController::class . ':cadastroContrato')->setName('cadastroContrato');    
+        $app->post('/cadastrarContrato', Project\Controllers\CadastroContratoController::class . ':cadastrarContrato')->setName('cadastrarContrato');    
+
+    // Editar Contrato
+    $app->group('/editaContrato', function () {
+        $this->get('', Project\Controllers\EditarContratoController::class . ':editaContrato')->setName('editaContrato');
+        $this->post('', Project\Controllers\EditarContratoController::class . ':editarContrato')->setName('editarContrato');
+    });
+    $app->post('/carregaEditarContrato', Project\Controllers\EditarContratoController::class . ':carregaEditarContrato')->setName('carregaEditarContrato');
+    $app->get('/editaContrato/{uuid}', Project\Controllers\EditarContratoController::class . ':editaContrato')->setName('editaContrato');
+
+    //Get Commission
+    $app->get('/getCommissionsIndication/{uuid}', Project\Controllers\CommissionController::class . ':getCommissionsIndication')->setName('getCommissionsIndication');
+
+    //Editar Comissão
+        $app->group('/editaComissao', function () {
+            $this->get('', Project\Controllers\EditarComissaoController::class . ':editaComissao')->setName('editaComissao');
+            $this->post('', Project\Controllers\EditarComissaoController::class . ':editarComissao')->setName('editarComissao');
+        });
+        $app->post('/carregaEditarComissao', Project\Controllers\EditarComissaoController::class . ':carregaEditarComissao')->setName('carregaEditarComissao');
+        $app->post('/carregaEditarComissaoIndicacao', Project\Controllers\EditarComissaoController::class . ':carregaEditarComissaoIndicacao')->setName('carregaEditarComissaoIndicacao');
+       // $app->get('/editaComissao/{uuid}', Project\Controllers\EditarComissaoController::class . ':editaComissao')->setName('editaComissao');
+        $app->group('/editaComissao/{uuid}', function () {
+            $this->get('', Project\Controllers\EditarComissaoController::class . ':editaComissao')->setName('editaComissao');
+            $this->post('', Project\Controllers\EditarComissaoController::class . ':editaComissao')->setName('editaComissao');
+        });
+
+    //Pay Commission
+    $app->get('/payCommission/{uuid}', Project\Controllers\CommissionController::class . ':payCommission')->setName('payCommission');
+
+    //Unpaid Commission
+    $app->get('/unpaidCommission/{uuid}', Project\Controllers\CommissionController::class . ':unpaidCommission')->setName('unpaidCommission');
+
+    //Listar Contratos
+        $app->get('/listaContratos', function (Request $request, Response $response, array $args) use ($container) {
+            // Sample log message
+            $container->get('logger')->info("Slim-Skeleton '/' route");
+
+            // Render index view
+            return $container->get('renderer')->render($response, 'contrato/listaContrato.phtml', $args);
+        });
+
+    // Filto Indicacao Lista
+        $app->post('/filtroContratoLista', Project\Controllers\ContractController::class . ':filtroLista')->setName('filtroContractLista');
 
     // Editar Compania
         $app->group('/editaCompania', function () {
@@ -103,6 +153,13 @@ return function (App $app) {
         });
         $app->post('/carregaEditarCompania', Project\Controllers\EditarCompaniaController::class . ':carregaEditarCompania')->setName('carregaEditarCompania');
 
+
+        $app->get('/index/{status}', function ($request, $response, $args) use ($container) {
+
+
+            return $container->get('renderer')->render($response, 'index.phtml', ['message'=>$args['status']]);
+        })->setName('index');
+        
 
     $app->get('/[{name}]', function (Request $request, Response $response, array $args) use ($container) {
         // Sample log message

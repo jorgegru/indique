@@ -32,9 +32,9 @@
                     
                     <ul class="treeview-menu">
                         <li class="treeview">
-                            <a href="#"><i class="fa fa-circle-o"></i>Usuário<i class="fa fa-angle-left pull-right"></i></a>
+                            <!-- <a href="#"><i class="fa fa-circle-o"></i>Usuário<i class="fa fa-angle-left pull-right"></i></a>
                 
-                            <ul class="treeview-menu">
+                            <ul class="treeview-menu"> -->
                                 <li>
                                 <a href="/cadastroLogin"><i class="fa fa-circle-o"></i>Adicionar</i></a>
                                     
@@ -54,9 +54,9 @@
                                     
                                 </li>
                                 <?php }?>
-                            </ul>
+                            <!-- </ul> -->
                         </li>
-
+<!-- 
                         <li class="treeview">
                             <a href="#"><i class="fa fa-circle-o"></i>Compania<i class="fa fa-angle-left pull-right"></i></a>
                 
@@ -74,13 +74,14 @@
                                     </li>
                                 <?php }?>
                             </ul>
-                        </li>
+                        </li> -->
 
 
                     </ul>
                 </li>
                 <?php }?>
 
+                <!-- Indicações -->
                 <li class="treeview">
                     <a href="#"><i class="fa fa-handshake-o"></i><span>Indicacoes</span><i class="fa fa-angle-left pull-right"></i></a>
                 
@@ -100,6 +101,27 @@
                                 <li>
                                     <a href="/listaIndicacoes"><i class="fa fa-circle-o"></i>Listar</i></a>
                                     
+                                </li>
+                            <?php }?>
+                        </li>    
+                    </ul>
+                </li>
+
+                <!-- Contratos -->
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-file-text"></i><span>Contratos</span><i class="fa fa-angle-left pull-right"></i></a>
+                
+                    <ul class="treeview-menu">
+                        <li class="treeview">
+                            <?php if($_SESSION['user']['user_type'] != 4){?>
+                                <li>
+                                    <a href="/editaContrato"><i class="fa fa-circle-o"></i>Editar</i></a>             
+                                </li>
+                            <?php }?>
+
+                            <?php if($_SESSION['user']['user_type'] != 4){?>
+                                <li>
+                                    <a href="/listaContratos"><i class="fa fa-circle-o"></i>Listar</i></a>
                                 </li>
                             <?php }?>
                         </li>    

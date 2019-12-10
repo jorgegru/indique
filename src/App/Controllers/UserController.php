@@ -47,4 +47,18 @@ class UserController
 
 		return json_encode($users);
     }
+
+    public function getCreators(){
+        $usersModel = new UsersModel($this->container);
+        // SELECT DISTINCT users.* FROM `users` 
+        // INNER JOIN indications ON indications.creator_uuid = users.uuid
+        // WHERE 1=1
+        $campos = "users.*";
+        $join['indications']['campo'] = 'creator_uuid';
+        $join['indications']['campo2'] = 'users.uuid';
+        $dados["1"] = "1";
+        $users = $usersModel->allInnerJoin($dados,$join, $campos, $filtro="ORDER BY users.name");
+
+        return json_encode($users);
+    }
 }

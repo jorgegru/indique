@@ -66,7 +66,7 @@ class EditarIndicacaoController
                 'rules' => V::notBlank()->length(6, 100),
                 'messages' => [
                     'notBlank' => 'O Nome não pode ser vazio',
-                    'length' => 'O Nome devve ter de 6 a 100 caracteres',
+                    'length' => 'O Nome deve ter de 6 a 100 caracteres',
                 ]
             ],
             'cpf_cnpj' => [
@@ -215,7 +215,9 @@ class EditarIndicacaoController
                     return $response->withRedirect($this->container->router->pathFor('editaIndicacao'));
                 }
 
+                $comissao = 2;
                 if($metadata['start_date'] == $metadata['end_date']){
+                    $comissao = 1;
                     $metadata['start_date'] = null;
                     $metadata['end_date'] = null;
                 }
@@ -236,14 +238,20 @@ class EditarIndicacaoController
                                             'service_uuid'=>$metadata['service_uuid'],
                                             //'company_uuid'=>$metadata['company_uuid'],
                                             'status'=>$metadata['status'],
-                                            'commission'=>$metadata['commission'],
+                                            'commission'=>$comissao,
                                             'value_commission'=>$metadata['value_commission'],
                                             'start_date'=>$metadata['start_date'],
                                             'end_date'=>$metadata['end_date'],
                                             'user_uuid'=>$metadata['user_uuid']]);
 
                 if($indication){
-                    
+                    $this->container->flash->addMessage('success', 'Alterado com sucesso');
+                    if($metadata['status'] == 5){
+                        return $response->withRedirect($this->container->router->pathFor('cadastroContrato',[
+                            'uuid' => $metadata['indication_uuid']
+                        ]));        
+                    }
+                    return $response->withRedirect($this->container->router->pathFor('editaIndicacao'));    
                 }
                 else{
                     $errors = $validator->getErrors();
@@ -251,9 +259,7 @@ class EditarIndicacaoController
                     return $response->withRedirect($this->container->router->pathFor('editaIndicacao'));
                 }
 
-                $this->container->flash->addMessage('success', 'Alterado com sucesso');
-                return $response->withRedirect($this->container->router->pathFor('editaIndicacao'));
-                
+                                
             }catch(\PDOException $e){
                 $this->container->flash->addMessage('error', 'Falha na Alteração');
 			    return $response->withRedirect($this->container->router->pathFor('editaIndicacao'));
