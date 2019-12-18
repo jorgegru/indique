@@ -171,42 +171,12 @@ class EditarIndicacaoController
                     'notBlank' => 'Selecione o Status',
                     'numeric' => 'Status inválido',            
                 ]
-            ],
-            'commission' => [
-                'rules' => V::notBlank()->numeric(),
-                'messages' => [
-                    'numeric' => 'Comissão inválida',
-                    'notBlank' => 'Selecione a Comissão',
-                ]
-            ],
-            'value_commission' => [
-                'rules' => V::numeric(),
-                'messages' => [
-                    'numeric' => 'Valor inválido',
-                ]
-            ],
-            'start_date' => [
-                'rules' => V::length(9, 10),
-                'messages' => [
-                    'length' => 'Data inválida',
-                ]
-            ],
-            'end_date' => [
-                'rules' => V::length(9, 10),
-                'messages' => [
-                    'length' => 'Data inválida',
-                ]
-            ],
+            ], 
         ]);
        
 		if ($validator->isValid()) {
             try{
                 $indicationsModel = new IndicationsModel($this->container);
-
-                if($_SESSION['user']['user_type'] == 3 || $_SESSION['user']['user_type'] == 4){
-                    $metadata['commission'] = 1;
-                    $metadata['status'] = 1;
-                }
 
                 $indication = $indicationsModel->validateCompanie(['cpf_cnpj'=>$metadata['cpf_cnpj'], 'uuid'=>$metadata['indication_uuid']]);
 
@@ -215,12 +185,6 @@ class EditarIndicacaoController
                     return $response->withRedirect($this->container->router->pathFor('editaIndicacao'));
                 }
 
-                $comissao = 2;
-                if($metadata['start_date'] == $metadata['end_date']){
-                    $comissao = 1;
-                    $metadata['start_date'] = null;
-                    $metadata['end_date'] = null;
-                }
 
                 $indication = $indicationsModel->update([  'uuid'=>$metadata['indication_uuid'],
                                             'name'=>$metadata['name'],
@@ -238,10 +202,6 @@ class EditarIndicacaoController
                                             'service_uuid'=>$metadata['service_uuid'],
                                             //'company_uuid'=>$metadata['company_uuid'],
                                             'status'=>$metadata['status'],
-                                            'commission'=>$comissao,
-                                            'value_commission'=>$metadata['value_commission'],
-                                            'start_date'=>$metadata['start_date'],
-                                            'end_date'=>$metadata['end_date'],
                                             'user_uuid'=>$metadata['user_uuid']]);
 
                 if($indication){

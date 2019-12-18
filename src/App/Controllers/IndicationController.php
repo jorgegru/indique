@@ -29,6 +29,19 @@ class IndicationController
             if(isset($metadata['status']))  $data['status'] = $metadata['status'];
             if(isset($metadata['filtro']))  $filtro = $metadata['filtro'];
             
+            if($tipo == 4){
+                $data['creator_uuid'] = '%'.$_SESSION['user']['id'].'%';
+            }
+
+            if($tipo == 3){
+                $data2['user_uuid'] = '%'.$_SESSION['user']['id'].'%';
+                $data2['creator_uuid'] = '%'.$_SESSION['user']['id'].'%';
+                $join['users']['campo'] = 'uuid';
+                    $join['users']['campo2'] = 'indications.user_uuid';
+                    $campos = "indications.*, users.name as user_name, users.uuid as user_uuid";
+                    $indication = $indicationsModel->allLikeOrLeftJoin($data,$data2,$join,$campos, $filtro);
+                    return json_encode($indication);
+            }
             // if(isset($metadata['status'])){   
             //     if($tipo == 1){
                     $join['users']['campo'] = 'uuid';

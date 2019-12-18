@@ -86,7 +86,16 @@
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">Nome:</label>
                                                     <div class="col-sm-6">
-                                                        <input type="text" class="form-control" id="txt_name" name="name" placeholder="Nome" onkeyup="revisaCampos();">
+                                                        <input type="text" class="form-control" id="txt_name" name="name" placeholder="Nome" onkeyup="revisaCampos();" onchange="
+                                                            if(this.value.length<6 || this.value.length>100){
+                                                                toastr.error('O Nome deve ter de 6 à 100 caracteres!');
+                                                                $('#txt_name').css('border-color','red');
+                                                            }
+                                                            else{
+                                                                $('#txt_name').css('border-color','#d2d6de');
+                                                            }
+                                                            revisaCampos();
+                                                        ">
                                                     </div>
                                                 </div>
                                                 <div class="form-group has-feedback">
@@ -96,6 +105,13 @@
                                                             var cpf = document.getElementById('txt_cpf_cnpj').value;
                                                             cpf = cpf.replace(/\D+/g, '');
                                                             document.getElementById('txt_cpf_cnpj').value = cpf;
+                                                            if(this.value.length<11 || this.value.length>14){
+                                                                toastr.error('O CPF_CNPJ deve ter de 11 à 14 números!');
+                                                                $('#txt_cpf_cnpj').css('border-color','red');
+                                                            }
+                                                            else{
+                                                                $('#txt_cpf_cnpj').css('border-color','#d2d6de');
+                                                            }
                                                             revisaCampos();
                                                         ">
                                                     </div>
@@ -103,25 +119,68 @@
                                                 <div class="form-group has-feedback">
                                                     <label class="col-sm-2 control-label">Telefone:</label>
                                                     <div class="col-sm-6">
-                                                        <input type="text" class="form-control" id="txt_telefone" name="telefone" placeholder="Telefone" onkeyup="revisaCampos();">
+                                                        <input type="text" class="form-control" id="txt_telefone" name="telefone" placeholder="Telefone" onkeyup="revisaCampos();" onchange="
+                                                            if(this.value.length<8 || this.value.length>20){
+                                                                toastr.error('O Telefone deve ter de 8 à 20 caracteres!');
+                                                                $('#txt_telefone').css('border-color','red');
+                                                            }
+                                                            else{
+                                                                $('#txt_telefone').css('border-color','#d2d6de');
+                                                            }
+                                                            revisaCampos();
+                                                        ">
                                                     </div>
                                                 </div>
                                                 <div class="form-group has-feedback">
                                                     <label class="col-sm-2 control-label">Nome Responsável:</label>
                                                     <div class="col-sm-6">
-                                                        <input type="text" class="form-control" id="txt_name_responsavel" name="name_responsavel" placeholder="Nome Responsavel" onkeyup="revisaCampos();">
+                                                        <input type="text" class="form-control" id="txt_name_responsavel" name="name_responsavel" placeholder="Nome Responsavel" onkeyup="revisaCampos();" onchange="
+                                                            if(this.value.length<6 || this.value.length>100){
+                                                                toastr.error('O Nome do Responsável deve ter de 6 à 100 caracteres!');
+                                                                $('#txt_name_responsavel').css('border-color','red');
+                                                            }
+                                                            else{
+                                                                $('#txt_name_responsavel').css('border-color','#d2d6de');
+                                                            }
+                                                            revisaCampos();
+                                                        ">
                                                     </div>
                                                 </div>
                                                 <div class="form-group has-feedback">
                                                     <label class="col-sm-2 control-label">Email:</label>
                                                     <div class="col-sm-6">
-                                                        <input type="text" class="form-control" id="txt_email" name="email" placeholder="email" onkeyup="revisaCampos();">
+                                                        <input type="text" class="form-control" id="txt_email" name="email" placeholder="email" onkeyup="revisaCampos();" onchange="
+                                                            if(this.value.length<6 || this.value.length>100){
+                                                                toastr.error('O Email deve ter de 6 à 100 caracteres!');
+                                                                $('#txt_email').css('border-color','red');
+                                                            }
+                                                            else if(this.value.search('@') == -1){
+                                                                toastr.error('Digite um Email válido');
+                                                                $('#txt_email').css('border-color','red');
+                                                            }
+                                                            else{
+                                                                $('#txt_email').css('border-color','#d2d6de');
+                                                            }
+                                                            revisaCampos();
+                                                        ">
                                                     </div>
                                                 </div>
                                                 <div class="form-group has-feedback">
                                                     <label class="col-sm-2 control-label">CEP:</label>
                                                     <div class="col-sm-2">
-                                                        <input type="text" class="form-control" id="txt_cep" name="cep" placeholder="cep" onkeyup="revisaCampos();">
+                                                        <input type="text" class="form-control" id="txt_cep" name="cep" placeholder="cep" onkeyup="revisaCampos();" onchange="
+                                                            var cep = document.getElementById('txt_cep').value;
+                                                            cep = cep.replace(/\D+/g, '');
+                                                            document.getElementById('txt_cep').value = cep;
+                                                            if(this.value.length != 8){
+                                                                toastr.error('O CEP deve ter 8 números!');
+                                                                $('#txt_cep').css('border-color','red');
+                                                            }
+                                                            else{
+                                                                $('#txt_cep').css('border-color','#d2d6de');
+                                                            }
+                                                            revisaCampos();
+                                                        ">
                                                     </div>
                                                 </div>
                                                 <div class="form-group has-feedback">
@@ -168,23 +227,62 @@
                                                 <div class="form-group has-feedback">
                                                     <label class="col-sm-2 control-label">Bairro:</label>
                                                     <div class="col-sm-3">
-                                                        <input type="text" class="form-control" id="txt_bairro" name="bairro" placeholder="bairro" onkeyup="revisaCampos();">
+                                                        <input type="text" class="form-control" id="txt_bairro" name="bairro" placeholder="bairro" onkeyup="revisaCampos();" onchange="
+                                                            if(this.value.length < 6 || this.value.length > 100){
+                                                                toastr.error('O Bairro deve ter de 6 à 100 caracteres!');
+                                                                $('#txt_bairro').css('border-color','red');
+                                                            }
+                                                            else{
+                                                                $('#txt_bairro').css('border-color','#d2d6de');
+                                                            }
+                                                            revisaCampos();
+                                                        ">
                                                     </div>
                                                 </div>
                                                 <div class="form-group has-feedback">
                                                     <label class="col-sm-2 control-label">Rua:</label>
                                                     <div class="col-sm-6">
-                                                        <input type="text" class="form-control" id="txt_rua" name="rua" placeholder="rua" onkeyup="revisaCampos();">
+                                                        <input type="text" class="form-control" id="txt_rua" name="rua" placeholder="rua" onkeyup="revisaCampos();" onchange="
+                                                            if(this.value.length < 6 || this.value.length > 100){
+                                                                toastr.error('A Rua deve ter de 6 à 100 caracteres!');
+                                                                $('#txt_rua').css('border-color','red');
+                                                            }
+                                                            else{
+                                                                $('#txt_rua').css('border-color','#d2d6de');
+                                                            }
+                                                            revisaCampos();
+                                                        ">
                                                     </div>
                                                 </div>
                                                 <div class="form-group has-feedback">
                                                     <label class="col-sm-2 control-label">Numero:</label>
                                                     <div class="col-sm-1">
-                                                        <input type="text" class="form-control" style="padding-right:1px;" id="txt_numero" name="numero" placeholder="Nº" onkeyup="revisaCampos();">
+                                                        <input type="text" class="form-control" style="padding-right:1px;" id="txt_numero" name="numero" placeholder="Nº" onkeyup="revisaCampos();" onchange="
+                                                            var numero = document.getElementById('txt_numero').value;
+                                                            numero = numero.replace(/\D+/g, '');
+                                                            document.getElementById('txt_numero').value = numero;
+                                                            if(this.value.length < 1 || this.value.length > 5){
+                                                                toastr.error('O Número deve ter de 1 à 5 números!');
+                                                                $('#txt_numero').css('border-color','red');
+                                                            }
+                                                            else{
+                                                                $('#txt_numero').css('border-color','#d2d6de');
+                                                            }
+                                                            revisaCampos();
+                                                        ">
                                                     </div>
                                                     <label class="col-sm-2 control-label">Complemento:</label>
                                                     <div class="col-sm-3">
-                                                        <input type="text" maxlength="30" class="form-control" id="txt_complemento" name="complemento" placeholder="complemento" onkeyup="revisaCampos();">
+                                                        <input type="text" maxlength="30" class="form-control" id="txt_complemento" name="complemento" placeholder="complemento" onkeyup="revisaCampos();" onchange="
+                                                            if(this.value.length > 30){
+                                                                toastr.error('O Complamento deve ter menos de 30 caracteres!');
+                                                                $('#txt_complemento').css('border-color','red');
+                                                            }
+                                                            else{
+                                                                $('#txt_complemento').css('border-color','#d2d6de');
+                                                            }
+                                                            revisaCampos();
+                                                        ">
                                                     </div>
                                                 </div>
                                                 <div class="form-group has-feedback">
@@ -454,17 +552,17 @@
                     $("#div_data").hide();
                 }
                 
-                if($('#txt_name').val() == '' || 
-                $('#txt_cpf_cnpj').val() == '' || 
-                $('#txt_telefone').val() == '' ||
-                $('#txt_name_responsavel').val() == '' ||
-                $('#txt_email').val() == '' ||
-                $('#txt_cep').val() == '' ||
-                $('#opt_estado_name').val() == '' ||
-                $('#txt_cidade').val() == '' ||
-                $('#txt_bairro').val() == '' ||
-                $('#txt_rua').val() == '' ||
-                $('#txt_numero').val() == '' ||
+                if($('#txt_name').val() == '' || document.getElementById("txt_name").style.borderColor == 'red' ||
+                $('#txt_cpf_cnpj').val() == '' || document.getElementById("txt_cpf_cnpj").style.borderColor == 'red' ||
+                $('#txt_telefone').val() == '' || document.getElementById("txt_telefone").style.borderColor == 'red' ||
+                $('#txt_name_responsavel').val() == '' || document.getElementById("txt_name_responsavel").style.borderColor == 'red' ||
+                $('#txt_email').val() == '' || document.getElementById("txt_email").style.borderColor == 'red' ||
+                $('#txt_cep').val() == '' || document.getElementById("txt_cep").style.borderColor == 'red' ||
+                $('#opt_estado_name').val() == '' || 
+                $('#txt_cidade').val() == '' || document.getElementById("txt_cidade").style.borderColor == 'red' ||
+                $('#txt_bairro').val() == '' || document.getElementById("txt_bairro").style.borderColor == 'red' ||
+                $('#txt_rua').val() == '' || document.getElementById("txt_rua").style.borderColor == 'red' ||
+                $('#txt_numero').val() == '' || document.getElementById("txt_numero").style.borderColor == 'red' ||
                 $('#opt_service_uuid').val() == '' ||
                 //$('#opt_company_uuid').val() == '' ||
                 $('#txt_value_commission').val() == '' ||
@@ -506,7 +604,7 @@
                     if(isset($validate[0])){
                         foreach($validate[0] as $value){
                             foreach($value as $mensagem){
-                                echo "toastr.error('{$mensagem}');";
+                                 echo "toastr.error('{$mensagem}');";
                             }
                         }
                     }

@@ -97,17 +97,18 @@
                                 </li>
                             <?php }?>
 
-                            <?php if($_SESSION['user']['user_type'] != 4){?>
+                          
                                 <li>
                                     <a href="/listaIndicacoes"><i class="fa fa-circle-o"></i>Listar</i></a>
                                     
                                 </li>
-                            <?php }?>
+                            
                         </li>    
                     </ul>
                 </li>
 
                 <!-- Contratos -->
+                <?php if($_SESSION['user']['user_type'] != 4){?>
                 <li class="treeview">
                     <a href="#"><i class="fa fa-file-text"></i><span>Contratos</span><i class="fa fa-angle-left pull-right"></i></a>
                 
@@ -127,6 +128,7 @@
                         </li>    
                     </ul>
                 </li>
+                <?php }?>
 
 
             </ul> <!-- ./ siderbar-menu -->

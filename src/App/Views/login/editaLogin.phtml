@@ -100,7 +100,16 @@
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">Nome:</label>
                                                     <div class="col-sm-6">
-                                                        <input type="text" class="form-control" id="txt_name" name="name" placeholder="Nome" onkeyup="revisaCampos();">
+                                                        <input type="text" class="form-control" id="txt_name" name="name" placeholder="Nome" onkeyup="revisaCampos();" onchange="
+                                                            if(this.value.length<6 || this.value.length>100){
+                                                                toastr.error('O Nome deve ter de 6 à 100 caracteres!');
+                                                                $('#txt_name').css('border-color','red');
+                                                            }
+                                                            else{
+                                                                $('#txt_name').css('border-color','#d2d6de');
+                                                            }
+                                                            revisaCampos();
+                                                        ">
                                                     </div>
                                                 </div>
                                                 <div class="form-group" id="div_user">
@@ -119,19 +128,54 @@
                                                 <div class="form-group has-feedback">
                                                     <label class="col-sm-2 control-label">Email:</label>
                                                     <div class="col-sm-6">
-                                                        <input type="text" class="form-control" id="txt_email" name="email" placeholder="Email" onkeyup="revisaCampos();">
+                                                        <input type="text" class="form-control" id="txt_email" name="email" placeholder="Email" onkeyup="revisaCampos();" onchange="
+                                                            if(this.value.length<6 || this.value.length>100){
+                                                                toastr.error('O Email deve ter de 6 à 100 caracteres!');
+                                                                $('#txt_email').css('border-color','red');
+                                                            }
+                                                            else if(this.value.search('@') == -1){
+                                                                toastr.error('Digite um Email válido');
+                                                                $('#txt_email').css('border-color','red');
+                                                            }
+                                                            else{
+                                                                $('#txt_email').css('border-color','#d2d6de');
+                                                            }
+                                                            revisaCampos();
+                                                        ">
                                                     </div>
                                                 </div>
                                                 <div class="form-group has-feedback">
                                                     <label class="col-sm-2 control-label">Senha:</label>
                                                     <div class="col-sm-6">
-                                                        <input type="password" class="form-control" id="txt_password" name="password" placeholder="Senha" onkeyup="revisaCampos();">
+                                                        <input type="password" class="form-control" id="txt_password" name="password" placeholder="Senha" onkeyup="revisaCampos();" onchange="
+                                                            if(this.value.length<6 || this.value.length>25){
+                                                                toastr.error('A senha deve ter de 6 à 25 caracteres!');
+                                                                $('#txt_password').css('border-color','red');
+                                                            }
+                                                            else if(this.value.search(' ') != -1){
+                                                                toastr.error('A senha não pode ter espaços');
+                                                                $('#txt_password').css('border-color','red');
+                                                            }
+                                                            else{
+                                                                $('#txt_password').css('border-color','#d2d6de');
+                                                            }
+                                                            revisaCampos();
+                                                        ">
                                                     </div>
                                                 </div>
                                                 <div class="form-group has-feedback">
                                                     <label class="col-sm-2 control-label">Repita a Senha:</label>
                                                     <div class="col-sm-6">
-                                                        <input type="password" class="form-control" id="txt_confirm_password" name="confirm_password" placeholder="Repita a Senha" onkeyup="revisaCampos();">
+                                                        <input type="password" class="form-control" id="txt_confirm_password" name="confirm_password" placeholder="Repita a Senha" onkeyup="revisaCampos();" onchange="
+                                                            if(this.value != $('#txt_password').val()){
+                                                                toastr.error('Repita a senha corretamente');
+                                                                $('#txt_confirm_password').css('border-color','red');
+                                                            }
+                                                            else{
+                                                                $('#txt_confirm_password').css('border-color','#d2d6de');
+                                                            }
+                                                            revisaCampos();
+                                                        ">
                                                     </div>
                                                 </div>
                                                 <div class="form-group has-feedback">
@@ -141,6 +185,13 @@
                                                             var cpf = document.getElementById('txt_cpf').value;
                                                             cpf = cpf.replace(/\D+/g, '');
                                                             document.getElementById('txt_cpf').value = cpf;
+                                                            if(!TestaCPF(this.value)){
+                                                                toastr.error('Digite um CPF válido!');
+                                                                $('#txt_cpf').css('border-color','red');
+                                                            }
+                                                            else{
+                                                                $('#txt_cpf').css('border-color','#d2d6de');
+                                                            }
                                                             revisaCampos();
                                                         ">
                                                     </div>
@@ -247,6 +298,27 @@
 
         <script>
         $('.select2').select2();
+
+        function TestaCPF(strCPF) {
+            var Soma;
+            var Resto;
+            Soma = 0;
+            if (strCPF == "00000000000") return false;
+            
+            for (i=1; i<=9; i++) Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (11 - i);
+            Resto = (Soma * 10) % 11;
+        
+            if ((Resto == 10) || (Resto == 11))  Resto = 0;
+            if (Resto != parseInt(strCPF.substring(9, 10)) ) return false;
+        
+            Soma = 0;
+            for (i = 1; i <= 10; i++) Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (12 - i);
+            Resto = (Soma * 10) % 11;
+        
+            if ((Resto == 10) || (Resto == 11))  Resto = 0;
+            if (Resto != parseInt(strCPF.substring(10, 11) ) ) return false;
+            return true;
+        }
        
             function carregaLogin(){
                 var uuid = $('#opt_user_uuid').val();
@@ -275,12 +347,12 @@
             }
 
             function revisaCampos(){
-                if($('#txt_name').val() == '' || 
+                if($('#txt_name').val() == '' || document.getElementById("txt_name").style.borderColor == 'red' ||
                 $('#opt_user_type').val() == '' || 
-                $('#txt_email').val() == '' ||
-                $('#txt_password').val() == '' ||
-                $('#txt_confirm_password').val() == '' ||
-                $('#txt_cpf').val() == '' ||
+                $('#txt_email').val() == '' || document.getElementById("txt_email").style.borderColor == 'red' ||
+                $('#txt_password').val() == '' || document.getElementById("txt_password").style.borderColor == 'red' ||
+                $('#txt_confirm_password').val() == '' || document.getElementById("txt_confirm_password").style.borderColor == 'red' ||
+                $('#txt_cpf').val() == '' || document.getElementById("txt_cpf").style.borderColor == 'red' ||
                 //$('#opt_company_uuid').val() == '' ||
                 $('#opt_status').val() == ''){
                     $("#Editar").attr("disabled","true");    

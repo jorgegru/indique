@@ -159,7 +159,21 @@ return function (App $app) {
 
             return $container->get('renderer')->render($response, 'index.phtml', ['message'=>$args['status']]);
         })->setName('index');
+       
         
+        $app->get('/download/{file}/{extension}', function($req, $res, $args) {
+            $file = 'files/contracts/'.$args['file'];
+            $response = $res->withHeader('Content-Description', 'File Transfer')
+           ->withHeader('Content-Type', 'application/octet-stream')
+           ->withHeader('Content-Disposition', 'attachment;filename="'.basename($file).'"')
+           ->withHeader('Expires', '0')
+           ->withHeader('Cache-Control', 'must-revalidate')
+           ->withHeader('Pragma', 'public')
+           ->withHeader('Content-Length', filesize($file));
+        
+        readfile($file);
+        return $response;
+        });
 
     $app->get('/[{name}]', function (Request $request, Response $response, array $args) use ($container) {
         // Sample log message

@@ -170,6 +170,9 @@ class CadastroContratoController
                     {
                         define('REAL_PATH', realpath("../") . "/");
                     }
+                    if(mkdir(REAL_PATH . "/files", 0700)){
+                        mkdir(REAL_PATH . "/files/contracts", 0700);
+                    }
                     $directory = REAL_PATH . 'files/contracts';
 
                     $uploadedFiles = $metadata['anexo'];
