@@ -174,8 +174,7 @@ class CadastroContratoController
                         mkdir(REAL_PATH . "/files/contracts", 0700);
                     }
                     $directory = REAL_PATH . 'public/files/contracts';
-                    $debug2 = fopen('directory.txt',"w+");
-                    fwrite($debug2,$directory);
+
                     $uploadedFiles = $metadata['anexo'];
                     $uploadedFiles = $request->getUploadedFiles();
 

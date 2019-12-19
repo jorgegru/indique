@@ -163,8 +163,7 @@ return function (App $app) {
         
         $app->get('/download/{type}/{file}/{extension}', function($req, $res, $args) {
             $file = 'files/'.$args['type'].'/'.$args['file'].'.'.$args['extension'];
-            $debug2 = fopen('teste.txt',"w+");
-            fwrite($debug2,$file);
+
             $response = $res->withHeader('Content-Description', 'File Transfer')
            ->withHeader('Content-Type', 'application/octet-stream')
            ->withHeader('Content-Disposition', 'attachment;filename="'.basename($file).'"')
