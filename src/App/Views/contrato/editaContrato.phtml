@@ -78,7 +78,9 @@
                                 </div><!-- /.box-header -->
                                 <div class="box-body">
                                     <div class="row">
-                            
+                                        
+                                        <form style="display: none;" id="form_download" method="GET" action="/download" enctype="multipart/form-data" target="blank">
+                                        </form>
 
                                         <form id="myForm" class="form-horizontal" action="../editaContrato" method="post">
                                             <div class="box-body">
@@ -127,6 +129,18 @@
                                                     </div>
                                                 </div>
 
+                                                <div id="files">        
+                                                    <!-- <input  type="hidden" id="name_file" name="file_name">
+                                                    <input  type="hidden" id="type_file" name="file_type"> -->
+                                                </div>
+
+                                                <div class="form-group has-feedback">
+                                                    <label class="col-sm-2 control-label">Contrato:</label>
+                                                    <div class="col-sm-6" id="div_contrato" style="display:none;">
+                                                        <button type="button" class="btn btn-default btn-xs" onclick="downloadContrato();"><i class="fa fa-file-text"></i></button>
+                                                    </div>
+                                                </div>
+                                               
                                                 <div class="form-group">
                                                     <div class="col-sm-3 col-sm-offset-2">
                                                         <button id="editar" type="submit" class="btn btn-primary" onclick="" disabled="true">Editar</button>
@@ -229,6 +243,21 @@
 
             }
 
+            function downloadContrato(file){
+
+                var nome  = file.split(".")[0];
+                var extension  = file.split(".")[1];
+
+                document.getElementById("form_download").action = "/download/contracts/"+nome+"/"+extension;
+                
+                document.getElementById("form_download").submit();
+
+                // $.ajax({
+                //     type: 'GET',
+                //     url: '/download/'+type+'/'+nome+'/'+extension
+                // });
+            }
+
             function carregaContrato(){
                 var uuid = $('#opt_contract_uuid').val();
                 $.ajax({
@@ -261,6 +290,17 @@
                         value = value.substring(0,value.length - 2);
                         $('#txt_value').val(dados['value']);
                         $('#txt_value2').val(value+','+final);
+                        $('#name_file').val(dados['name_file']);
+                        $('#type_file').val(dados['type_file']);
+
+                        if(dados['files']){
+                            var html = "";
+                            for(var i=0; i<dados['files'].length; i++){
+                                html += '<div><button type="button" class="btn btn-default btn-xs" onclick="downloadContrato(\''+dados['files'][i]['name_file']+'\');"><i class="fa fa-file-text"></i></button>Arquivo ('+(i+1)+')</div>';
+                            }
+                            $('#div_contrato').html(html);
+                            $('#div_contrato').show();
+                        }  
 
                         revisaCampos();
 
