@@ -15,7 +15,7 @@ class IndicationController
        $this->container = $container;
    }
 
-   public function filtroLista($request, $response, $args)
+   public function filtroLista($request, $response, $args) 
    {
 		$metadata = $request->getParsedBody();
 		

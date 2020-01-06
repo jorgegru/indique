@@ -56,4 +56,20 @@ class CommissionController
 
 		return json_encode($commissions);
     }
+
+    public function getMyCommission($request, $response, $args){
+        $uuid = $args['uuid'];
+			
+        
+        $indicationsModel = new IndicationsModel($this->container);
+
+        $data = ['creator_uuid'=>$uuid];
+        $join['commissions']['campo'] = 'indication_uuid';
+        $join['commissions']['campo2'] = 'indications.uuid';
+        $campos = "commissions.*";
+
+        $commissions = $indicationsModel->allInnerJoin($data,$join,$campos);
+        
+		return json_encode($commissions);
+    }
 }

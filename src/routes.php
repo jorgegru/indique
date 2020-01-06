@@ -134,6 +134,9 @@ return function (App $app) {
     //Unpaid Commission
     $app->get('/unpaidCommission/{uuid}', Project\Controllers\CommissionController::class . ':unpaidCommission')->setName('unpaidCommission');
 
+    //Get My Commissions
+    $app->get('/getMyCommission/{uuid}', Project\Controllers\CommissionController::class . ':getMyCommission')->setName('getMyCommission');
+
     //Listar Contratos
         $app->get('/listaContratos', function (Request $request, Response $response, array $args) use ($container) {
             // Sample log message
