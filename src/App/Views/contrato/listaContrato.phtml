@@ -479,7 +479,7 @@
             function unpaidCommission(uuid,i){
                 var r = confirm("Deseja não pagar a comissão?");
                 if(r == true){
-                    $.get('payCommission/'+uuid,function(data){
+                    $.get('unpaidCommission/'+uuid,function(data){
                         var resposta = JSON.parse(data);
                         if(data == "true"){
                             $('#pay'+i).html("Não Pago <button onclick='payCommission(\""+uuid+"\",\""+i+"\");' type='button' title='Pagar' class='btn btn-default btn-xs'><i class='fa fa-thumbs-down'></i></button>");

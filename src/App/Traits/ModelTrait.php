@@ -16,7 +16,7 @@ trait ModelTrait {
             }
             $sql = "SELECT * FROM {$this->table}
             WHERE ". implode(' AND ', $sqlArray) . " " . $filtro;
-            
+
             $stmt = $this->conn->prepare($sql);
 
             foreach ($dados as $key => $row) {
@@ -158,6 +158,43 @@ trait ModelTrait {
             $sql = "SELECT DISTINCT {$campos} FROM {$this->table}
             ".implode(' ', $sqlJoin)."
             WHERE ". implode(' AND ', $sqlArray) . " " . $filtro;
+
+            $stmt = $this->conn->prepare($sql);
+
+            foreach ($dados as $key => $row) {
+                $key_name = explode('.',$key);
+                $key_name = end($key_name);
+                $stmt->bindValue(":{$key_name}", $row, \PDO::PARAM_STR);
+            }
+                
+            $stmt->execute();
+            
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        }catch(\PDOException $e){
+            throw $e;
+        }
+    }
+    
+    //allLikeLeftJoin2:
+    //O campo em dados deve conter o nome da tabela que está sendo usada. Ex: user.name ao inves de name
+    public function allLikeLeftJoin2(array $dados, array $join, $campos, $filtro="")
+    {
+        try{
+            if(count($dados)==0)
+                return false;
+            foreach ($dados as $key => $row) {
+                $key_name = explode('.',$key);
+                $key_name = end($key_name);
+                $sqlArray[] = "{$key} LIKE :{$key_name}";
+            }
+
+            foreach ($join as $tabela => $row){
+                $sqlJoin[] = "LEFT JOIN $tabela ON $tabela.".$row['campo']."=".$row['campo2'];
+            }
+
+            $sql = "SELECT DISTINCT {$campos} FROM {$this->table}
+            ".implode(' ', $sqlJoin)."
+            WHERE ". implode(' AND ', $sqlArray) . " " . $filtro;
             
             $stmt = $this->conn->prepare($sql);
 
@@ -190,6 +227,55 @@ trait ModelTrait {
                 $key_name = explode('.',$key);
                 $key_name = end($key_name);
                 $sqlArray2[] = "{$this->table}.{$key} LIKE :{$key_name}";
+            }
+
+            foreach ($join as $tabela => $row){
+                $sqlJoin[] = "LEFT JOIN $tabela ON $tabela.".$row['campo']."=".$row['campo2'];
+            }
+
+            $sql = "SELECT DISTINCT {$campos} FROM {$this->table}
+            ".implode(' ', $sqlJoin)."
+            WHERE ". implode(' AND ', $sqlArray) . " AND (".implode(' OR ', $sqlArray2).") " . $filtro;
+
+            $stmt = $this->conn->prepare($sql);
+
+            foreach ($dados as $key => $row) {
+                $key_name = explode('.',$key);
+                $key_name = end($key_name);
+                $stmt->bindValue(":{$key_name}", $row, \PDO::PARAM_STR);
+            }
+
+            foreach ($dados2 as $key => $row) {
+                $key_name = explode('.',$key);
+                $key_name = end($key_name);
+                $stmt->bindValue(":{$key_name}", $row, \PDO::PARAM_STR);
+            }
+                
+            $stmt->execute();
+            
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        }catch(\PDOException $e){
+            throw $e;
+        }
+    }
+
+    //allLikeOrLeftJoin2:
+    //O campo em dados deve conter o nome da tabela que está sendo usada. Ex: user.name ao inves de name
+    public function allLikeOrLeftJoin2(array $dados, array $dados2, array $join, $campos, $filtro="")
+    {
+        try{
+            if(count($dados)==0)
+                return false;
+            foreach ($dados as $key => $row) {
+                $key_name = explode('.',$key);
+                $key_name = end($key_name);
+                $sqlArray[] = "{$key} LIKE :{$key_name}";
+            }
+
+            foreach ($dados2 as $key => $row) {
+                $key_name = explode('.',$key);
+                $key_name = end($key_name);
+                $sqlArray2[] = "{$key} LIKE :{$key_name}";
             }
 
             foreach ($join as $tabela => $row){
