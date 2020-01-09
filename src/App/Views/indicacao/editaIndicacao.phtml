@@ -390,6 +390,7 @@
                                                         <th>Status</th>
                                                         <th>Observação</th>
                                                         <th width="10"><i class="fa fa-edit"></i></th>
+                                                        <th width="10"><i class="fa fa-trash-o"></i></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="tbody_commission">
@@ -646,7 +647,7 @@
             function ver_comisao(){
                 uuid = $('#opt_indication_uuid').val();
                 $('#tbody_commission').html('');
-                $.get('getCommissionsIndication/'+uuid,function(data){
+                $.get('/getCommissionsIndication/'+uuid,function(data){
                     var resposta = JSON.parse(data);
                     var data = new Date();
                     var mes_atual = data.getMonth()+1;
@@ -683,12 +684,13 @@
                         if(resposta[i]['paid'] == 1)    status = "<td style='color:red' id=pay"+i+">Não Pago "+botao+"</td>";
                         else                            status = "<td style='color:green' id=pay"+i+">Pago "+botao+"</td>";
                             
-                        tabela += "<tr>";
+                        tabela += '<tr id="'+i+'">';
                         tabela += '<td>R$'+(resposta[i]['value_commission']/100)+'</td>';
                         tabela += '<td>'+data+'</td>';
                         tabela += status;
                         tabela += observation;
                         tabela += '<td><button onclick="editarComissao(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
+                        tabela += '<td><button onclick="excluirComissao(\''+resposta[i]['uuid']+'\',\''+i+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-trash-o"></i></button></td>';
                         tabela += '</tr>';
 
                     }
@@ -701,6 +703,26 @@
             function editarComissao(uuid){
                 $("#myForm").attr("action","editaComissao/"+uuid);    
                 $("#myForm").submit();
+            }
+
+            function excluirComissao(uuid,num){
+                if(confirm("Deseja deletar a indicação?")){
+                    $.ajax({
+                    type: 'POST',
+                    url: '/excluiComissao',
+                    dataType: 'json',
+                    data: 'uuid='+uuid,
+                    success: function(resposta){
+
+                        
+                        if(resposta){
+                            $("#"+num+"").remove();
+                            toastr.success('Deletado');
+                        }
+                    }
+                    
+                    });
+                }
             }
 
             function payCommission(uuid,i){

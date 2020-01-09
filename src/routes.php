@@ -63,6 +63,9 @@ return function (App $app) {
             return $container->get('renderer')->render($response, 'login/listaUser.phtml', $args);
         });
 
+    //Excluir Usuário
+        $app->post('/excluiUsuario', Project\Controllers\ExcluirUsuarioController::class . ':excluiUsuario')->setName('excluiUsuario');
+
     // Filto Login Lista
         $app->post('/filtroUserLista', Project\Controllers\UserController::class . ':filtroLista')->setName('filtroUserLista');
 
@@ -88,6 +91,9 @@ return function (App $app) {
         });
         $app->post('/carregaEditarIndicacao', Project\Controllers\EditarIndicacaoController::class . ':carregaEditarIndicacao')->setName('carregaEditarIndicacao');
         $app->get('/editaIndicacao/{uuid}', Project\Controllers\EditarIndicacaoController::class . ':editaIndicacao')->setName('editaIndicacao');
+        
+    //Excluir Indicacao
+        $app->post('/excluiIndicacao', Project\Controllers\ExcluirIndicacaoController::class . ':excluiIndicacao')->setName('excluiIndicacao');
 
     // Listar Indicacao
         $app->get('/listaIndicacoes', function (Request $request, Response $response, array $args) use ($container) {
@@ -114,6 +120,9 @@ return function (App $app) {
 
     //Get Commission
     $app->get('/getCommissionsIndication/{uuid}', Project\Controllers\CommissionController::class . ':getCommissionsIndication')->setName('getCommissionsIndication');
+    
+    //Excluir Comissao
+    $app->post('/excluiComissao', Project\Controllers\ExcluirComissaoController::class . ':excluiComissao')->setName('excluiComissao');
 
     //Editar Comissão
         $app->group('/editaComissao', function () {

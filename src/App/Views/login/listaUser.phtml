@@ -165,6 +165,7 @@
 
                                                                         <?php if($user_type == 1 || $user_type == 2){?>
                                                                             <th width="10"><i class="fa fa-edit"></i></th>
+                                                                            <th width="10"><i class="fa fa-trash-o"></i></th>
                                                                         <?php }?>    
                                                                     </tr>
                                                                 </thead>
@@ -321,7 +322,7 @@
                                 else if(resposta[i]['user_type'] == 3) tipo = "Consultor";
                                 else tipo = "Usuário";
 
-                                tabela += '<tr>';
+                                tabela += '<tr id="'+i+'">';
                                 tabela += '<td>'+resposta[i]['name']+'</td>';
                                 tabela += '<td>'+resposta[i]['email']+'</td>';
                                 tabela += '<td>'+resposta[i]['cpf']+'</td>';
@@ -329,6 +330,10 @@
                                 tabela += status+'</td>';
                                 <?php if($user_type == 1 || $user_type == 2){?>
                                     tabela += '<td><button onclick="editarUsuario(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
+                                    
+                                    if(resposta[i]['user_type'] != 1){
+                                        tabela += '<td><button onclick="excluirUsuario(\''+resposta[i]['uuid']+'\',\''+i+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-trash-o"></i></button></td>';
+                                    }
                                 <?php }?>
                                 tabela += '</tr>';
                             }
@@ -341,6 +346,24 @@
             function editarUsuario(uuid){
                 $("#myForm").attr("action","editaLogin/"+uuid);    
                 $("#myForm").submit();
+            }
+
+            function excluirUsuario(uuid, num){
+                if(confirm("Deseja deletar o usuário?")){
+                    $.ajax({
+                    type: 'POST',
+                    url: 'excluiUsuario',
+                    dataType: 'json',
+                    data: 'uuid='+uuid,
+                    success: function(resposta){
+                        if(resposta){
+                            $("#"+num+"").remove();
+                            toastr.success('Deletado');
+                        }
+                    }
+                    
+                    });
+                }
             }
 
             $(document).ready(function() {

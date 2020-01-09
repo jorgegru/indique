@@ -197,6 +197,7 @@
                                                                 
                                                                 <?php if($user_type != 4){?>
                                                                     <th width="10"><i class="fa fa-edit"></i></th>
+                                                                    <th width="10"><i class="fa fa-trash-o"></i></th>
                                                                 <?php }?>   
                                                             </tr>
                                                         </thead>
@@ -265,6 +266,7 @@
                                                                 <th>Status</th>
                                                                 <?php if($user_type != 4){?>
                                                                     <th width="10"><i class="fa fa-edit"></i></th>
+                                                                    <th width="10"><i class="fa fa-trash-o"></i></th>
                                                                 <?php }?>   
                                                             </tr>
                                                         </thead>
@@ -338,6 +340,7 @@
                                                                 
                                                                 <?php if($user_type != 4){?>
                                                                     <th width="10"><i class="fa fa-edit"></i></th>
+                                                                    <th width="10"><i class="fa fa-trash-o"></i></th>
                                                                 <?php }?>   
                                                             </tr>
                                                         </thead>
@@ -422,6 +425,7 @@
                                     <th>Status</th>
                                     <th>Observação</th>
                                     <th width="10"><i class="fa fa-edit"></i></th>
+                                    <th width="10"><i class="fa fa-trash-o"></i></th>
                                 </tr>
                             </thead>
                             <tbody id="tbody_commission">
@@ -654,7 +658,7 @@
                                         if(resposta[i]['user_uuid'] == null)   consultor = "<td>Sem Consultor";
                                         else                                 consultor = "<td>"+resposta[i]['user_name'];
 
-                                        tabela += '<tr>';
+                                        tabela += '<tr id="'+resposta[i]['uuid']+'">';
                                         tabela += '<td>'+resposta[i]['name']+'</td>';
                                         tabela += '<td>'+resposta[i]['cpf_cnpj']+'</td>';
                                         tabela += '<td>'+resposta[i]['telefone']+'</td>';
@@ -666,6 +670,7 @@
 
                                         <?php if($user_type != 4){?>
                                             tabela += '<td><button onclick="editarIndicacao(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
+                                            tabela += '<td><button onclick="excluirIndicacao(\''+resposta[i]['uuid']+'\',\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-trash-o"></i></button></td>';
                                         <?php }?>
                                         tabela += '</tr>';
                                         total++
@@ -713,7 +718,7 @@
                                     else if(resposta[i]['user_type'] == 3) tipo = "Consultor";
                                     else tipo = "Usuário";
 
-                                    tabela2 += '<tr>';
+                                    tabela2 += '<tr id="'+resposta[i]['uuid']+'2">';
                                     tabela2 += '<td>'+resposta[i]['name']+'</td>';
                                     tabela2 += '<td>'+resposta[i]['email']+'</td>';
                                     tabela2 += '<td>'+resposta[i]['cpf']+'</td>';
@@ -721,6 +726,10 @@
                                     tabela2 += status+'</td>';
                                     <?php if($user_type == 1 || $user_type == 2){?>
                                         tabela2 += '<td><button onclick="editarUsuario(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
+                                        
+                                        if(resposta[i]['user_type'] != 1){
+                                            tabela2 += '<td><button onclick="excluirUsuario(\''+resposta[i]['uuid']+'\',\''+resposta[i]['uuid']+'2\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-trash-o"></i></button></td>';
+                                        }
                                     <?php }?>
                                     tabela2 += '</tr>';
                                     total2++;
@@ -780,7 +789,7 @@
                                 if(resposta[i]['user_uuid'] == null)   consultor = "<td>Sem Consultor";
                                 else                                 consultor = "<td>"+resposta[i]['user_name'];
 
-                                tabela3 += '<tr>';
+                                tabela3 += '<tr id="'+resposta[i]['uuid']+'">';
                                 tabela3 += '<td><button type="button" class="btn btn-default btn-xs" onclick="ver_comisao(\''+resposta[i]['uuid']+'\');"><i class="fa fa-eye"></i></button></td>';
                                 tabela3 += '<td>'+resposta[i]['name']+'</td>';
                                 tabela3 += '<td>'+resposta[i]['cpf_cnpj']+'</td>';
@@ -793,6 +802,7 @@
 
                                 <?php if($user_type != 4){?>
                                     tabela3 += '<td><button onclick="editarIndicacao(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
+                                    tabela3 += '<td><button onclick="excluirIndicacao(\''+resposta[i]['uuid']+'\',\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-trash-o"></i></button></td>';
                                 <?php }?>
                                 tabela3 += '</tr>';
                                 total3++
@@ -995,6 +1005,24 @@
                 $("#myForm").submit();
             }
 
+            function excluirComissao(uuid,num){
+                if(confirm("Deseja deletar a comissão?")){
+                    $.ajax({
+                    type: 'POST',
+                    url: '/excluiComissao',
+                    dataType: 'json',
+                    data: 'uuid='+uuid,
+                    success: function(resposta){
+                        if(resposta){
+                            $("#"+num+"").remove();
+                            toastr.success('Deletado');
+                        }
+                    }
+                    
+                    });
+                }
+            }
+
             function payCommission(uuid,i){
                 var r = confirm("Deseja pagar a comissão?");
                 if(r == true){
@@ -1029,7 +1057,7 @@
 
             function ver_comisao(uuid){
                 $('#tbody_commission').html('');
-                $.get('getCommissionsIndication/'+uuid,function(data){
+                $.get('/getCommissionsIndication/'+uuid,function(data){
                     var resposta = JSON.parse(data);
                     var data = new Date();
                     var mes_atual = data.getMonth()+1;
@@ -1063,16 +1091,22 @@
                             else                            botao = "<button onclick='unpaidCommission(\""+resposta[i]['uuid']+"\",\""+i+"\");' type='button' title='Não Pago' class='btn btn-default btn-xs'><i class='fa fa-thumbs-up'></i></button>";
                         <?php }?>
 
-                        if(resposta[i]['paid'] == 1)    status = "<td style='color:red' id=pay"+i+">Não Pago "+botao+"</td>";
-                        else                            status = "<td style='color:green' id=pay"+i+">Pago "+botao+"</td>";
-                            
-                        tabela += "<tr>";
+                        <?php if($user_type != 4){?>
+                            if(resposta[i]['paid'] == 1)    status = "<td style='color:red' id=pay"+i+">Não Pago "+botao+"</td>";
+                            else                            status = "<td style='color:green' id=pay"+i+">Pago "+botao+"</td>";
+                        <?php }?>
+
+                        tabela += '<tr id="'+resposta[i]['uuid']+'4">';
                         tabela += '<td>R$'+(resposta[i]['value_commission']/100)+'</td>';
                         tabela += '<td>'+data+'</td>';
                         tabela += status;
                         tabela += observation;
-                        tabela += '<td><button onclick="editarComissao(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
-                        tabela += '</tr>';
+                        <?php if($user_type == 1 || $user_type == 2){?>
+                            tabela += '<td><button onclick="editarComissao(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
+                            tabela += '<td><button onclick="excluirComissao(\''+resposta[i]['uuid']+'\',\''+resposta[i]['uuid']+'4\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-trash-o"></i></button></td>';
+                            tabela += '</tr>';
+                        <?php }?>
+                        
 
                     }
                     $('#tbody_commission').html(tabela);
@@ -1086,9 +1120,46 @@
                 $("#myForm").submit();
             }
 
+            function excluirIndicacao(uuid,num){
+                if(confirm("Deseja deletar a indicação?")){
+                    $.ajax({
+                    type: 'POST',
+                    url: '/excluiIndicacao',
+                    dataType: 'json',
+                    data: 'uuid='+uuid,
+                    success: function(resposta){
+                        if(resposta){
+                            $("#"+num+"").remove();
+                            $("#"+num+"").remove();
+                            toastr.success('Deletado');
+                        }
+                    }
+                    
+                    });
+                }
+            }
+
             function editarUsuario(uuid){
                 $("#myForm2").attr("action","editaLogin/"+uuid);    
                 $("#myForm2").submit();
+            }
+
+            function excluirUsuario(uuid, num){
+                if(confirm("Deseja deletar o usuário?")){
+                    $.ajax({
+                    type: 'POST',
+                    url: '/excluiUsuario',
+                    dataType: 'json',
+                    data: 'uuid='+uuid,
+                    success: function(resposta){
+                        if(resposta){
+                            $("#"+num+"").remove();
+                            toastr.success('Deletado');
+                        }
+                    }
+                    
+                    });
+                }
             }
         </script>
     </body>
