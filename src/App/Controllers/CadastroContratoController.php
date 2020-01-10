@@ -26,8 +26,8 @@ class CadastroContratoController
    public function cadastroContrato($request, $response, $args)
    {
         //$companiesModel = new CompaniesModel($this->container);
-
-        if($args['success']){
+        
+        if(isset($args['success'])){
             return $this->container->renderer->render($response, 'index.phtml',['validate'=>$args['return']['message']]);
         }
 
@@ -51,7 +51,7 @@ class CadastroContratoController
         $servicesModel = new ServicesModel($this->container);
 
         $message = $this->container->flash->getMessages();
-        if($args['return']) {
+        if(isset($args['return'])) {
             $message = $args['return']['message'];
             $uuid = $args['return']['uuid'];
         }
@@ -60,7 +60,7 @@ class CadastroContratoController
         if(isset($args['uuid'])) $uuid = $args['uuid'];
 
 		
-        return $this->container->renderer->render($response, 'contrato/cadastroContrato.phtml',['message'=>$message/*,'companies'=>$companies*/, 'consultores'=>$consultores, 'indication'=>$indication, 'services'=>$services]);
+        return $this->container->renderer->render($response, 'contrato/cadastroContrato.phtml',['message'=>$message/*,'companies'=>$companies*/, 'consultores'=>$consultores, 'indication'=>$indication]);
    }
 
 
