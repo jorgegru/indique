@@ -6,6 +6,7 @@ use Project\Models\ContractsModel;
 use Project\Models\CompaniesModel;
 use Project\Models\IndicationsModel;
 use Project\Models\ServicesModel;
+use Project\Models\FilesModel;
 use \Psr\Container\ContainerInterface;
 use Respect\Validation\Validator as V;
 
@@ -130,8 +131,21 @@ class EditarContratoController
         $metadata = $request->getParsedBody();
      
         $contractsModel = new ContractsModel($this->container);
+        $filesModel = new FilesModel($this->container);
+        
+
+        // $data['uuid'] = '%'.$metadata['uuid'].'%';
+
+        // $join['files']['campo'] = 'relation_uuid';
+        // $join['files']['campo2'] = 'contracts.uuid';
+        
+        // $campos = "contracts.*, files.name_file, files.type as type_file";
+
+        // $contract = $contractsModel->allLikeLeftJoin($data, $join, $campos);
 
         $contract = $contractsModel->find(['uuid'=>$metadata['uuid']]);
+
+        $contract['files'] = $filesModel->all(['relation_uuid'=>$metadata['uuid']]);
 
         return json_encode($contract);
     }

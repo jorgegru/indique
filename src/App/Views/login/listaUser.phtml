@@ -152,30 +152,33 @@
                                 <div class="box-body">
                                     <div class="row">
                                         <div class="col-sm-12 col-xs-6">
-                                            <div id="div_lista">
-                                                <div class="table-responsive">
-                                                    <div id="id_tabela" style="max-height: 530px;overflow-y: auto; overflow-x: hidden;">
-                                                        <table id="tbUsuario" class="table table-bordered table-striped">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th width="300">Nome</th>
-                                                                    <th>Email</th>
-                                                                    <th>CPF</th>
-                                                                    <th>Tipo</th>
-                                                                    <th>Status</th>  
+                                            
+                                                <div id="div_lista">
+                                                    <div class="table-responsive">
+                                                        <div id="id_tabela" style="max-height: 500px;overflow-y: auto;">
+                                                            <table id="tbUsuario" class="table table-bordered table-striped">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th width="300">Nome</th>
+                                                                        <th>Email</th>
+                                                                        <th>CPF</th>
+                                                                        <th>Tipo</th>
+                                                                        <th>Status</th>  
 
-                                                                    <?php if($user_type == 1 || $user_type == 2){?>
-                                                                        <th width="10"><i class="fa fa-edit"></i></th>
-                                                                    <?php }?>    
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody  id="tbUsuarioBody">
+                                                                        <?php if($user_type == 1 || $user_type == 2){?>
+                                                                            <th width="10"><i class="fa fa-edit"></i></th>
+                                                                            <th width="10"><i class="fa fa-trash-o"></i></th>
+                                                                        <?php }?>    
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody  id="tbUsuarioBody">
 
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>	
-                                            </div><!-- Fim his_buscas -->
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>	
+                                                </div><!-- Fim his_buscas -->
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -322,7 +325,7 @@
                                 else if(resposta[i]['user_type'] == 3) tipo = "Consultor";
                                 else tipo = "Usuário";
 
-                                tabela += '<tr>';
+                                tabela += '<tr id="'+i+'">';
                                 tabela += '<td>'+resposta[i]['name']+'</td>';
                                 tabela += '<td>'+resposta[i]['email']+'</td>';
                                 tabela += '<td>'+resposta[i]['cpf']+'</td>';
@@ -330,6 +333,10 @@
                                 tabela += status+'</td>';
                                 <?php if($user_type == 1 || $user_type == 2){?>
                                     tabela += '<td><button onclick="editarUsuario(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
+                                    
+                                    if(resposta[i]['user_type'] != 1){
+                                        tabela += '<td><button onclick="excluirUsuario(\''+resposta[i]['uuid']+'\',\''+i+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-trash-o"></i></button></td>';
+                                    }
                                 <?php }?>
                                 tabela += '</tr>';
                             }
@@ -348,6 +355,24 @@
             function editarUsuario(uuid){
                 $("#myForm").attr("action","editaLogin/"+uuid);    
                 $("#myForm").submit();
+            }
+
+            function excluirUsuario(uuid, num){
+                if(confirm("Deseja deletar o usuário?")){
+                    $.ajax({
+                    type: 'POST',
+                    url: 'excluiUsuario',
+                    dataType: 'json',
+                    data: 'uuid='+uuid,
+                    success: function(resposta){
+                        if(resposta){
+                            $("#"+num+"").remove();
+                            toastr.success('Deletado');
+                        }
+                    }
+                    
+                    });
+                }
             }
 
             $(document).ready(function() {
