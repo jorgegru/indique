@@ -234,6 +234,11 @@ class CadastroIndicacaoController
                     // $metadata['uuid'] = $uuid;
                     // $CadastroComissaoController->cadastroComissao($metadata);
                     $this->container->flash->addMessage('success', 'Cadastrado com sucesso');
+                    if($metadata['status'] == 5){
+                        return $response->withRedirect($this->container->router->pathFor('cadastroContrato',[
+                            'uuid' => $uuid
+                        ]));        
+                    }
                     return $response->withRedirect($this->container->router->pathFor('cadastroIndicacao'));
                 }
                 else{

@@ -82,7 +82,7 @@
                                         <form style="display: none;" id="form_download" method="GET" action="/download" enctype="multipart/form-data" target="blank">
                                         </form>
 
-                                        <form id="myForm" class="form-horizontal" action="../editaContrato" method="post">
+                                        <form id="myForm" class="form-horizontal" action="../editaContrato" enctype="multipart/form-data" method="post">
                                             <div class="box-body">
                                                 <div class="form-group has-feedback">
                                                     <label class="col-sm-2 control-label">Contratos:</label>
@@ -132,6 +132,13 @@
                                                 <div id="files">        
                                                     <!-- <input  type="hidden" id="name_file" name="file_name">
                                                     <input  type="hidden" id="type_file" name="file_type"> -->
+                                                </div>
+
+                                                <div class="form-group has-feedback">
+                                                    <label class="col-sm-2 control-label">Anexo documento:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="file" class="form-control" name="anexo[]" multiple="">
+                                                    </div>
                                                 </div>
 
                                                 <div class="form-group has-feedback">
@@ -243,6 +250,24 @@
 
             }
 
+            function deletarContrato(nome,num){
+                if(confirm("Deseja deletar o Anexo?")){
+                    $.ajax({
+                        type: 'POST',
+                        url: '/deleteFile',
+                        dataType: 'json',
+                        data: 'name='+nome+
+                        '&type=1',
+                        success: function(resposta){
+                            if(resposta){
+                                $("#"+num+"").remove();
+                                toastr.success('Deletado');
+                            }
+                        }
+                    });
+                }
+            }
+
             function downloadContrato(file){
 
                 var nome  = file.split(".")[0];
@@ -296,7 +321,8 @@
                         if(dados['files']){
                             var html = "";
                             for(var i=0; i<dados['files'].length; i++){
-                                html += '<div><button type="button" class="btn btn-default btn-xs" onclick="downloadContrato(\''+dados['files'][i]['name_file']+'\');"><i class="fa fa-file-text"></i></button>Arquivo ('+(i+1)+')</div>';
+                                html += '<div id="'+i+'"><button type="button" class="btn btn-default btn-xs" onclick="downloadContrato(\''+dados['files'][i]['name_file']+'\');"><i class="fa fa-file-text"></i></button>Arquivo ('+(i+1)+')'+
+                                '<button type="button" class="btn btn-default btn-xs" onclick="deletarContrato(\''+dados['files'][i]['name_file']+'\','+i+');"><i class="fa fa-trash"></i></button></div>';
                             }
                             $('#div_contrato').html(html);
                             $('#div_contrato').show();

@@ -106,7 +106,7 @@ return function (App $app) {
     // Filto Indicacao Lista
         $app->post('/filtroIndicacaoLista', Project\Controllers\IndicationController::class . ':filtroLista')->setName('filtroIndicationLista');
 
-    //Cadastrar Contrato
+    //Cadastrar Contrato 
         $app->get('/cadastroContrato/{uuid}', Project\Controllers\CadastroContratoController::class . ':cadastroContrato')->setName('cadastroContrato');    
         $app->post('/cadastrarContrato', Project\Controllers\CadastroContratoController::class . ':cadastrarContrato')->setName('cadastrarContrato');    
 
@@ -172,9 +172,9 @@ return function (App $app) {
             return $container->get('renderer')->render($response, 'index.phtml', ['message'=>$args['status']]);
         })->setName('index');
        
-        
+    //Download File
         $app->get('/download/{type}/{file}/{extension}', function($req, $res, $args) {
-            $file = 'files/'.$args['type'].'/'.$args['file'].'.'.$args['extension'];
+            $file = '../files/'.$args['type'].'/'.$args['file'].'.'.$args['extension'];
 
             $response = $res->withHeader('Content-Description', 'File Transfer')
            ->withHeader('Content-Type', 'application/octet-stream')
@@ -187,6 +187,9 @@ return function (App $app) {
         readfile($file);
         return $response;
         });
+
+    //Delete File
+        $app->post('/deleteFile', Project\Controllers\FileController::class . ':deleteFile')->setName('deleteFile');
 
     $app->get('/[{name}]', function (Request $request, Response $response, array $args) use ($container) {
         // Sample log message
