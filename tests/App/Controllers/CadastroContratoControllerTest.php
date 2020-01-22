@@ -66,7 +66,7 @@
             //$data['company_uuid'] = '878b5a1b-de92-11e9-be79-cdc05b889658'; 
             $data['status'] = '1';
             $response = $this->runApp('POST', '/cadastrarContrato', $data); 
-            var_dump($response);
+            $this->assertStringContainsString('name="corporate123"', (string)$response->getBody()); 
             $location = $response->getHeader("location");
             $this->assertStringContainsString('/index/success', current($location));
             
