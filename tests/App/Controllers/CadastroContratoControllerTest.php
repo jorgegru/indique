@@ -43,6 +43,12 @@
             
         } 
         public function testPostCadastroContrato() { 
+            $_SESSION['user']['id'] = "3c85ebd2-0d01-4910-a34c-2b0e64ab2789"; 
+            //0f081502-43c1-4dde-8f37-ac50f7a69c6f 
+            $_SESSION['user']['name'] = "teste123"; 
+            $_SESSION['user']['email'] = "anlumira@gmail.com"; 
+            $_SESSION['user']['user_type'] = 1; 
+            
             $data['corporate'] = 'Teste Contrato'; 
             $data['value_contract'] = '10000'; 
             $data['date'] = '2020-01-08'; 

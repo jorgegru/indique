@@ -31,8 +31,6 @@ class EditarComissaoControllerTest extends BaseTestCase
 
         $response = $this->runApp('GET', '/editaComissao');
         //var_dump( $response );//die;
-        $debug2 = fopen("teste.txt","w+");
-        fwrite($debug2,(String)$response);
         $this->assertEquals(200, $response->getStatusCode());
         
         $this->assertStringContainsString('name="indication_uuid"', (string)$response->getBody());
