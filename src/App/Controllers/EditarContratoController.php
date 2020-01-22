@@ -81,7 +81,7 @@ class EditarContratoController
                 ]
             ],
         ]);
-       
+
 		if ($validator->isValid()) {
             try{
                 $contractsModel = new ContractsModel($this->container);
@@ -108,43 +108,44 @@ class EditarContratoController
                 if($contract){
 
                     $this->container->flash->addMessage('success', 'Alterado com sucesso');
-
-                    //move file
-                    if (!defined('REAL_PATH'))
-                    {
-                        define('REAL_PATH', realpath("../") . "/");
-                    }
-                    if(mkdir(REAL_PATH . "files/contracts", 0700)){
-                        mkdir(REAL_PATH . "/files/contracts", 0700);
-                    }
-                    $directory = REAL_PATH . 'files/contracts';
-
-                    $uploadedFiles = $metadata['anexo'];
-                    $uploadedFiles = $request->getUploadedFiles();
-
                     
-                    foreach ($uploadedFiles['anexo'] as $uploadedFile) {
+                    if($metadata['anexo']){
+                        //move file
+                        if (!defined('REAL_PATH'))
+                        {
+                            define('REAL_PATH', realpath("../") . "/");
+                        }
+                        if(mkdir(REAL_PATH . "/files", 0700)){
+                            mkdir(REAL_PATH . "/files/contracts", 0700);
+                        }
+                        $directory = REAL_PATH . '/files/contracts';
+
+                        $uploadedFiles = $metadata['anexo'];
+                        $uploadedFiles = $request->getUploadedFiles();
+
                         
-                        if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
-
-                            $uuid_file = uuid();
-                            $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
-                            $basename = 'contract'.$uuid_file; // see http://php.net/manual/en/function.random-bytes.php
-                            $filename = sprintf('%s.%0.8s', $basename, $extension);
+                        foreach ($uploadedFiles['anexo'] as $uploadedFile) {
                             
-                            $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
+                            if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
 
-                            $file = $filesModel->set(['uuid'=>$uuid_file,
-                                                        'name_file'=>$filename,
-                                                        'type'=>1,
-                                                        'relation_uuid'=>$metadata['contract_uuid']]);
-                            if(!$file){
+                                $uuid_file = uuid();
+                                $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
+                                $basename = 'contract'.$uuid_file; // see http://php.net/manual/en/function.random-bytes.php
+                                $filename = sprintf('%s.%0.8s', $basename, $extension);
                                 
+                                $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
+
+                                $file = $filesModel->set(['uuid'=>$uuid_file,
+                                                            'name_file'=>$filename,
+                                                            'type'=>1,
+                                                            'relation_uuid'=>$metadata['contract_uuid']]);
+                                if(!$file){
+                                    
+                                }
                             }
                         }
+                        //move_uploaded_file($file,"/Controllers");
                     }
-                    //move_uploaded_file($file,"/Controllers");
-
                     return $response->withRedirect($this->container->router->pathFor('editaContrato'));   
                 }
                 else{

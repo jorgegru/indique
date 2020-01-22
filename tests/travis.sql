@@ -95,7 +95,7 @@ UPDATE indications SET status = 2 WHERE uuid = '3c27ee78-cee1-4766-a3cb-a30c55bc
 
 UPDATE indications SET status = 3 WHERE uuid = '42abbd55-e3d6-450e-b7bc-2884cc13284a';
 
-UPDATE indications SET status = 4 WHERE uuid = 'dfdd90aa-5959-43b0-9c66-d9aa58bb306d';
+UPDATE indications SET status = 5 WHERE uuid = 'dfdd90aa-5959-43b0-9c66-d9aa58bb306d';
 
 UPDATE indications SET status = 5 WHERE uuid = '982ad4fd-2ba5-45e2-bf31-38d8913b672b';
 
@@ -106,3 +106,9 @@ UPDATE indications SET status = 2 WHERE uuid = 'bda860b8-a08a-4d02-9b4f-37c8e0c1
 UPDATE indications SET status = 3 WHERE uuid = '62c2f6c6-78a9-4a9b-a6e0-0188eba2795c';
 
 UPDATE indications SET status = 5 WHERE uuid = 'c908976a-5cba-4449-9f8d-ee72ddedece5';
+
+INSERT INTO indications (uuid, cpf_cnpj, name, telefone, name_responsavel, email, cep, estado, cidade ,bairro, rua, numero, complemento, status, commission, service_uuid, user_uuid,creator_uuid/*, company_uuid*/) VALUES ("2d70a4fa-c939-46de-9791-1f899971022f","50945400000148","Teste Contrato","8813-9475","Teste Contrato","tcontrato@gmail.com","68907317","AP","Macapá","Pantanal","Rua João Almeida do Nascimento", "214", "", 5, 2, "ccf885ca-e91f-11e9-81b4-2a2ae2dbcce4", "ec920dd9-ae92-4137-ab41-13884c2c215f","8fe4ed5c-f013-4900-adcb-3ca80d371e5f"/*,"edfa7b0d-7934-4541-904b-a245d62ee677"*/);
+
+INSERT INTO contracts (uuid, corporate_name, value, date, user_uuid, observation, indentification, indication_uuid) VALUES ("e9f0b295-184c-46ee-911d-8265817c5d9e","Teste Contrato","10000","2020-01-09","3c85ebd2-0d01-4910-a34c-2b0e64ab2789","teste","123","2d70a4fa-c939-46de-9791-1f899971022f");
+
+INSERT INTO contracts (uuid, paid, value_commission, date, observation, indication_uuid) VALUES ("3cafd9a5-b265-46b8-8723-3c9959746ead","1","10000","2020-01-09","Teste Comissao","123","2d70a4fa-c939-46de-9791-1f899971022f");

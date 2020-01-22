@@ -48,15 +48,17 @@ class CadastroComissaoController
                                         "observation"=>$observation]);
         }
         else{
+            $debug2 = fopen("teste2.txt","a");
+            fwrite($debug2,strlen("132")."\n\n");
             $ano_ini = substr($start_date,0,4);
-            if(count($start_date) == 9){
+            if(strlen($start_date) == 9){
                 $mes_ini = substr($start_date,5,-3);
             }
             else{
                 $mes_ini = substr($start_date,5,-3);
             }
             $ano_fim = substr($end_date,0,4);
-            if(count($end_date) == 9){
+            if(strlen($end_date) == 9){
                 $mes_fim = substr($end_date,5,-3);
             }
             else{
