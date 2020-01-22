@@ -107,8 +107,10 @@
                                                         <select  id='opt_commission_uuid' name="commission_uuid" class="normal form-control select2" onchange="carregaComissao();revisaCampos();">
                                                             <option value="">Selecione uma Comissao</option>
                                                             <?php
-                                                                foreach($commissions as $value){
-                                                                    echo("<option value='".$value["uuid"]."'>".$value["date"]." / R$".($value["value_commission"]/100)."</option>");
+                                                                if($commissions != ''){
+                                                                    foreach($commissions as $value){
+                                                                        echo("<option value='".$value["uuid"]."'>".$value["date"]." / R$".($value["value_commission"]/100)."</option>");
+                                                                    }
                                                                 }
                                                             ?>
                                                         </select>

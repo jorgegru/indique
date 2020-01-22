@@ -42,8 +42,6 @@
             $this->conn = $this->container->get('conn'); 
             $rs = $this->all(['indication_uuid'=>'dfdd90aa-5959-43b0-9c66-d9aa58bb306d','observation'=>'teste unitario']); 
 
-            $debug2 = fopen("teste.txt","w+");
-            fwrite($debug2,json_encode($rs));
             // var_dump($rs);die;
 
             $this->assertEquals("array", gettype($rs));

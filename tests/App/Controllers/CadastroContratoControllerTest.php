@@ -39,6 +39,8 @@
             $this->assertStringContainsString('name="value_commission2"', (string)$response->getBody()); 
             // $this->assertStringContainsString('name="company_uuid"', (string)$response->getBody()); 
             $this->assertStringContainsString('name="anexo[]"', (string)$response->getBody()); 
+        
+            
         } 
         public function testPostCadastroContrato() { 
             $data['corporate'] = 'Teste Contrato'; 

@@ -6,7 +6,7 @@ use Project\Models\FilesModel;
 use \Project\Traits\ModelTrait;
 use Tests\Functional\BaseTestCase;
 
-class EditarComissaoControllerTests extends BaseTestCase 
+class EditarComissaoControllerTest extends BaseTestCase 
 {
     use ModelTrait;
 
@@ -32,7 +32,7 @@ class EditarComissaoControllerTests extends BaseTestCase
         $response = $this->runApp('GET', '/editaComissao');
         //var_dump( $response );//die;
         $debug2 = fopen("teste.txt","w+");
-        fopen($debug2,(String)$response);
+        fwrite($debug2,(String)$response);
         $this->assertEquals(200, $response->getStatusCode());
         
         $this->assertStringContainsString('name="indication_uuid"', (string)$response->getBody());
@@ -47,49 +47,48 @@ class EditarComissaoControllerTests extends BaseTestCase
         $this->assertStringContainsString('id="div_anexo"', (string)$response->getBody());
     }
 
-    // public function testCarregaEditarContrato()
-    // {
-    //     $this->container = $this->app()->getContainer();
-    //     $filesModel = new FilesModel($this->container);
+    public function testCarregaEditarComissao()
+    {
+        $this->container = $this->app()->getContainer();
+        $filesModel = new FilesModel($this->container);
 
-    //     $data['uuid'] = 'e9f0b295-184c-46ee-911d-8265817c5d9e';
+        $data['uuid'] = '3cafd9a5-b265-46b8-8723-3c9959746ead';
         
-    //     $response = $this->runApp('POST', '/carregaEditarContrato', $data);
+        $response = $this->runApp('POST', '/carregaEditarComissao', $data);
 
-    //     $this->container = $this->app()->getContainer();
-    //     $this->conn = $this->container->get('conn');
+        $this->container = $this->app()->getContainer();
+        $this->conn = $this->container->get('conn');
 
-    //     $rs = $this->find(['uuid'=>"e9f0b295-184c-46ee-911d-8265817c5d9e"]);
+        $rs = $this->find(['uuid'=>"3cafd9a5-b265-46b8-8723-3c9959746ead"]);
 
-    //     $rs['files'] = $filesModel->all(['relation_uuid'=>"e9f0b295-184c-46ee-911d-8265817c5d9e"]);
+        $rs['files'] = $filesModel->all(['relation_uuid'=>"3cafd9a5-b265-46b8-8723-3c9959746ead"]);
 
-    //     $this->assertJsonStringEqualsJsonString(
-    //         (string)$response->getBody(),
-    //         json_encode($rs)
-    //     );
-    // }
+        $this->assertJsonStringEqualsJsonString(
+            (string)$response->getBody(),
+            json_encode($rs)
+        );
+    }
 
-    // public function testPostEditarContrato()
-    // {
-    //     $data['contract_uuid'] = 'e9f0b295-184c-46ee-911d-8265817c5d9e';
-    //     $data['corporate_name'] = 'Teste Contrato';
-    //     $data['value2'] = '100,00';
-    //     $data['value'] = '10000';
-    //     $data['date'] = '2020-01-09';
-    //     $data['indentification'] = '00000000';
-    //     $data['observation'] = 'teste';
-    //     $data['anexo'] = '';
+    public function testPostEditarComissao()
+    {
+        $data['commission_uuid'] = '3cafd9a5-b265-46b8-8723-3c9959746ead';
+        $data['indication_uuid'] = '2d70a4fa-c939-46de-9791-1f899971022f';
+        $data['value2'] = '100,00';
+        $data['value'] = '10000';
+        $data['date'] = '09/01/2020';
+        $data['status'] = '1';
+        $data['observation'] = 'Teste Comissao';
+        $data['update'] = '1';
+        $data['anexo'] = '';
         
-    //     $response = $this->runApp('POST', '/editaContrato', $data);
-        
-    //     $response = $this->runApp('GET', '/editaContrato');
-        
-    //     $this->assertStringContainsString('Alterado com sucesso', (string)$response->getBody());
-    //     $debug2 = fopen("response.txt","w+");
-    //             fwrite($debug2,json_encode((string)$response));
+        $response = $this->runApp('POST', '/editaComissao', $data);
 
-    //     // $response = $this->runApp('GET', '/editaIndicacao');
+        $response = $this->runApp('GET', '/editaComissao');
 
-    //     // $this->assertStringContainsString('Alterado com sucesso', (string)$response->getBody());
-    // }
+        $this->assertStringContainsString('Alterado com sucesso', (string)$response->getBody());
+
+        // $response = $this->runApp('GET', '/editaIndicacao');
+
+        // $this->assertStringContainsString('Alterado com sucesso', (string)$response->getBody());
+    }
 }

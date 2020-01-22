@@ -42,9 +42,10 @@ class EditarComissaoController
         else{
             $uuid = '';
             $indication_uuid = '';
+            $commissions = '';
         }
 		
-        return $this->container->renderer->render($response, 'comissao/editaComissao.phtml',['message'=>$message/*,'companies'=>$companies*/,'commissions'=>$commissions, 'indications'=>$indications, 'indication_uuid'=>$indication_uuid, 'uuid'=>$args['uuid']]);
+        return $this->container->renderer->render($response, 'comissao/editaComissao.phtml',['message'=>$message/*,'companies'=>$companies*/,'commissions'=>$commissions, 'indications'=>$indications, 'indication_uuid'=>$indication_uuid, 'uuid'=>$uuid]);
    }
 
    /**

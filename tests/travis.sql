@@ -111,4 +111,4 @@ INSERT INTO indications (uuid, cpf_cnpj, name, telefone, name_responsavel, email
 
 INSERT INTO contracts (uuid, corporate_name, value, date, user_uuid, observation, indentification, indication_uuid) VALUES ("e9f0b295-184c-46ee-911d-8265817c5d9e","Teste Contrato","10000","2020-01-09","3c85ebd2-0d01-4910-a34c-2b0e64ab2789","teste","123","2d70a4fa-c939-46de-9791-1f899971022f");
 
-INSERT INTO contracts (uuid, paid, value_commission, date, observation, indication_uuid) VALUES ("3cafd9a5-b265-46b8-8723-3c9959746ead","1","10000","2020-01-09","Teste Comissao","123","2d70a4fa-c939-46de-9791-1f899971022f");
+INSERT INTO commissions (uuid, paid, value_commission, date, observation, indication_uuid) VALUES ("3cafd9a5-b265-46b8-8723-3c9959746ead","1","10000","2020-01-09","Teste Comissao","2d70a4fa-c939-46de-9791-1f899971022f");
