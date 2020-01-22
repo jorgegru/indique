@@ -127,7 +127,7 @@ class CadastroContratoController
         ]);
         $uuid = uuid();// && \is_uuid($uuid)
 		if ($validator->isValid()) {
-            try{               
+                          
                 $indicationsModel = new IndicationsModel($this->container);
                 $contractsModel = new ContractsModel($this->container);
                 $commissionsModel = new CommissionsModel($this->container);
@@ -219,14 +219,7 @@ class CadastroContratoController
                     //return $response->withRedirect($this->container->router->pathFor('cadastroContrato/('.$metadata['indication'].')'));
                 }
             
-            }catch(\PDOException $e){
-                $errors = $validator->getErrors();
-                $this->container->flash->addMessage('error', 'Falha no Cadastro');
-                $message['uuid'] = $metadata['indication'];
-                $message['message']['validate'][0] = $errors;
-                $this->cadastroContrato($request, $response, ['uuid'=>$metadata['indication'], 'return'=>$message]);
-			    //return $response->withRedirect($this->container->router->pathFor('cadastroContrato/'.$metadata['indication']));
-            }
+            
       	} else {
             $errors = $validator->getErrors();
             $this->container->flash->addMessage('validate', $errors);
