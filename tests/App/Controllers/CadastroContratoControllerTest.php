@@ -48,7 +48,7 @@
             $_SESSION['user']['name'] = "teste123"; 
             $_SESSION['user']['email'] = "anlumira@gmail.com"; 
             $_SESSION['user']['user_type'] = 1; 
-            
+
             $data['corporate'] = 'Teste Contrato'; 
             $data['value_contract'] = '10000'; 
             $data['date'] = '2020-01-08'; 
@@ -66,7 +66,7 @@
             //$data['company_uuid'] = '878b5a1b-de92-11e9-be79-cdc05b889658'; 
             $data['status'] = '1';
             $response = $this->runApp('POST', '/cadastrarContrato', $data); 
-            
+            var_dump($response);
             $location = $response->getHeader("location");
             $this->assertStringContainsString('/index/success', current($location));
             
