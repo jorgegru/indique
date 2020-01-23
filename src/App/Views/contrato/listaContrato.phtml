@@ -22,6 +22,8 @@
         <link rel="stylesheet" href="template/bower_components/Ionicons/css/ionicons.min.css">
         <!-- Theme style -->
         <link rel="stylesheet" href="template/dist/css/AdminLTE.min.css">
+        <!-- Data Table -->
+        <link rel="stylesheet" href="/template/bower_components/datatables.net-bs/css/dataTables.bootstrap.css">
         <!-- iCheck -->
         <link rel="stylesheet" href="template/plugins/iCheck/square/blue.css">
 
@@ -172,34 +174,32 @@
                                 <div class="box-body">
                                     <div class="row">
                                         <div class="col-sm-12 col-xs-6">
-                                            <div class="description-block">
-                                                <div id="div_lista">
-                                                    <div class="table-responsive">
-                                                        <div id="id_tabela" style="max-height: 500px;overflow-y: auto;">
-                                                            <table id="tbUsuario" class="table table-bordered table-striped">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>Comissões</th>
-                                                                        <th width="300">Nome Empresa</th>
-                                                                        <th>Valor</th>
-                                                                        <th>Data</th>
-                                                                        <th width="300">Nome Consultor</th>
-                                                                        <th>Nr. Identificação</th>
-                                                                        <th>Observação</th>
-                                                                       
-                                                                        <?php if($user_type != 4){?>
-                                                                            <th width="10"><i class="fa fa-edit"></i></th>
-                                                                        <?php }?>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody  id="tbIndicacaoBody">
+                                            <div id="div_lista">
+                                                <div class="table-responsive">
+                                                    <div id="id_tabela" style="max-height: 530px;overflow-y: auto; overflow-x: hidden;">
+                                                        <table id="tbUsuario" class="table table-bordered table-striped">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Comissões</th>
+                                                                    <th width="300">Nome Empresa</th>
+                                                                    <th>Valor</th>
+                                                                    <th>Data</th>
+                                                                    <th width="300">Nome Consultor</th>
+                                                                    <th>Nr. Identificação</th>
+                                                                    <th>Observação</th>
+                                                                    
+                                                                    <?php if($user_type != 4){?>
+                                                                        <th width="10"><i class="fa fa-edit"></i></th>
+                                                                    <?php }?>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody  id="tbIndicacaoBody">
 
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>	
-                                                </div><!-- Fim his_buscas -->
-                                            </div>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>	
+                                            </div><!-- Fim his_buscas -->
                                         </div>
                                     </div>
                                 </div>
@@ -224,6 +224,7 @@
                                         <th>Status</th>
                                         <th>Observação</th>
                                         <th width="10"><i class="fa fa-edit"></i></th>
+                                        <th width="10"><i class="fa fa-trash-o"></i></th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbody_commission">
@@ -355,6 +356,7 @@
                         var mes = '';
                         var ano = '';
                         var data = '';
+                        var t = $('#tbUsuario').dataTable();t.fnDestroy();
                         for(var i=0; i<resposta.length;i++){
      
                             ano  = resposta[i]['date'].split("-")[0];
@@ -378,12 +380,19 @@
                             tabela += '</tr>';
                         }
                         $('#tbIndicacaoBody').html(tabela);
+
+                        $('#tbUsuario').DataTable({
+                            'autoWidth'   : true,
+                            'aLengthMenu' :	[[10, 25, 50, -1], [10, 25, 50, "Tudo"]],
+                            'oLanguage'   : {"sEmptyTable": "Nenhum registro encontrado", "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros", "sInfoEmpty": "Mostrando 0 até 0 de 0 registros", "sInfoFiltered": "(Filtrados de _MAX_ registros)", "sInfoPostFix": "", "sInfoThousands": ".", "sLengthMenu": "_MENU_ resultados por página", "sLoadingRecords": "Carregando...", "sProcessing": "Processando...", "sZeroRecords": "Nenhum registro encontrado", "sSearch": "Pesquisar", "oPaginate": { "sNext": "Próximo", "sPrevious": "Anterior", "sFirst": "Primeiro", "sLast": "Último" }, "oAria": { "sSortAscending": ": Ordenar colunas de forma ascendente", "sSortDescending": ": Ordenar colunas de forma descendente"}}
+                        });
                     }
                 });
             }
 
             function ver_comisao(uuid){
                 $('#tbody_commission').html('');
+                var t = $('#table_commissions').dataTable();t.fnDestroy();
                 $.get('getCommissionsIndication/'+uuid,function(data){
                     var resposta = JSON.parse(data);
                     var data = new Date();
@@ -421,16 +430,23 @@
                         if(resposta[i]['paid'] == 1)    status = "<td style='color:red' id=pay"+i+">Não Pago "+botao+"</td>";
                         else                            status = "<td style='color:green' id=pay"+i+">Pago "+botao+"</td>";
                             
-                        tabela += "<tr>";
+                        tabela += "<tr id='"+i+"'>";
                         tabela += '<td>R$'+(resposta[i]['value_commission']/100)+'</td>';
                         tabela += '<td>'+data+'</td>';
                         tabela += status;
                         tabela += observation;
                         tabela += '<td><button onclick="editarComissao(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
+                        tabela += '<td><button onclick="excluirComissao(\''+resposta[i]['uuid']+'\',\''+i+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-trash-o"></i></button></td>';
                         tabela += '</tr>';
 
                     }
                     $('#tbody_commission').html(tabela);
+                    
+                    $('#table_commissions').DataTable({
+                        'autoWidth'   : true,
+                        'aLengthMenu' :	[[10, 25, 50, -1], [10, 25, 50, "Tudo"]],
+                        'oLanguage'   : {"sEmptyTable": "Nenhum registro encontrado", "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros", "sInfoEmpty": "Mostrando 0 até 0 de 0 registros", "sInfoFiltered": "(Filtrados de _MAX_ registros)", "sInfoPostFix": "", "sInfoThousands": ".", "sLengthMenu": "_MENU_ resultados por página", "sLoadingRecords": "Carregando...", "sProcessing": "Processando...", "sZeroRecords": "Nenhum registro encontrado", "sSearch": "Pesquisar", "oPaginate": { "sNext": "Próximo", "sPrevious": "Anterior", "sFirst": "Primeiro", "sLast": "Último" }, "oAria": { "sSortAscending": ": Ordenar colunas de forma ascendente", "sSortDescending": ": Ordenar colunas de forma descendente"}}
+                    });
                 });
                 
                 $('#modal_commission').modal();
@@ -444,6 +460,23 @@
             function editarComissao(uuid){
                 $("#myForm").attr("action","editaComissao/"+uuid);    
                 $("#myForm").submit();
+            }
+
+            function excluirComissao(uuid,num){
+                if(confirm("Deseja deletar a comissão?")){
+                    $.ajax({
+                        type: 'POST',
+                        url: '/excluiComissao',
+                        dataType: 'json',
+                        data: 'uuid='+uuid,
+                        success: function(resposta){
+                            if(resposta){
+                                $("#"+num+"").remove();
+                                toastr.success('Deletado');
+                            }
+                        }
+                    });
+                }
             }
 
             function payCommission(uuid,i){
@@ -465,7 +498,7 @@
             function unpaidCommission(uuid,i){
                 var r = confirm("Deseja não pagar a comissão?");
                 if(r == true){
-                    $.get('payCommission/'+uuid,function(data){
+                    $.get('unpaidCommission/'+uuid,function(data){
                         var resposta = JSON.parse(data);
                         if(data == "true"){
                             $('#pay'+i).html("Não Pago <button onclick='payCommission(\""+uuid+"\",\""+i+"\");' type='button' title='Pagar' class='btn btn-default btn-xs'><i class='fa fa-thumbs-down'></i></button>");

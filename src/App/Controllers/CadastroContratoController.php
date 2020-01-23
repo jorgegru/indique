@@ -26,8 +26,8 @@ class CadastroContratoController
    public function cadastroContrato($request, $response, $args)
    {
         //$companiesModel = new CompaniesModel($this->container);
-
-        if($args['success']){
+        
+        if(isset($args['success'])){
             return $this->container->renderer->render($response, 'index.phtml',['validate'=>$args['return']['message']]);
         }
 
@@ -39,19 +39,23 @@ class CadastroContratoController
 
         $valida = $contractsModel->find(['indication_uuid'=>$uuid]);
         if($valida){
-            $this->container->flash->addMessage('erro', 'Já existe um contrato para essa indicação');
+            $this->container->flash->addMessage('error', 'Já existe um contrato para essa indicação');
             return $response->withRedirect($this->container->router->pathFor('editaIndicacao'));
         }
 
         $indication = $indicationsModel->find(["uuid"=>$uuid]);
-        
+        if($indication["status"] != 5){
+            $this->container->flash->addMessage('error', 'A indicação deve ser ganha para se cadastrar o contrato!');
+            return $response->withRedirect($this->container->router->pathFor('editaIndicacao'));
+        }
+
         $consultores = $userModel->all(["1"=>"1"]);
 
         $usersModel = new UsersModel($this->container);
         $servicesModel = new ServicesModel($this->container);
 
         $message = $this->container->flash->getMessages();
-        if($args['return']) {
+        if(isset($args['return'])) {
             $message = $args['return']['message'];
             $uuid = $args['return']['uuid'];
         }
@@ -60,7 +64,7 @@ class CadastroContratoController
         if(isset($args['uuid'])) $uuid = $args['uuid'];
 
 		
-        return $this->container->renderer->render($response, 'contrato/cadastroContrato.phtml',['message'=>$message/*,'companies'=>$companies*/, 'consultores'=>$consultores, 'indication'=>$indication, 'services'=>$services]);
+        return $this->container->renderer->render($response, 'contrato/cadastroContrato.phtml',['message'=>$message/*,'companies'=>$companies*/, 'consultores'=>$consultores, 'indication'=>$indication]);
    }
 
 
@@ -166,31 +170,37 @@ class CadastroContratoController
                     //return $response->withRedirect($this->container->router->pathFor('index'));
                     
                     //move arquivo
-                    if (!defined('REAL_PATH'))
-                    {
-                        define('REAL_PATH', realpath("../") . "/");
-                    }
-                    $directory = REAL_PATH . 'files/contracts';
+                    if(isset($metadata['anexo'])){
+                        if (!defined('REAL_PATH'))
+                        {
+                            define('REAL_PATH', realpath("../") . "/");
+                        }
+                        
+                        mkdir(REAL_PATH . "files", 0700);
+                        mkdir(REAL_PATH . "files/contracts", 0700);
+                        
+                        $directory = REAL_PATH . 'files/contracts';
 
-                    $uploadedFiles = $metadata['anexo'];
-                    $uploadedFiles = $request->getUploadedFiles();
+                        $uploadedFiles = $metadata['anexo'];
+                        $uploadedFiles = $request->getUploadedFiles();
 
-                    foreach ($uploadedFiles['anexo'] as $uploadedFile) {
-                        if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+                        foreach ($uploadedFiles['anexo'] as $uploadedFile) {
+                            if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
 
-                            $uuid_file = uuid();
-                            $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
-                            $basename = 'contract_'.$uuid_file; // see http://php.net/manual/en/function.random-bytes.php
-                            $filename = sprintf('%s.%0.8s', $basename, $extension);
+                                $uuid_file = uuid();
+                                $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
+                                $basename = 'contract_'.$uuid_file; // see http://php.net/manual/en/function.random-bytes.php
+                                $filename = sprintf('%s.%0.8s', $basename, $extension);
 
-                            $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
+                                $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
 
-                            $file = $filesModel->set(['uuid'=>$uuid_file,
-                                                        'name_file'=>$filename,
-                                                        'type'=>1,
-                                                        'relation_uuid'=>$uuid]);
-                            if(!$file){
-                                
+                                $file = $filesModel->set(['uuid'=>$uuid_file,
+                                                            'name_file'=>$filename,
+                                                            'type'=>1,
+                                                            'relation_uuid'=>$uuid]);
+                                if(!$file){
+                                    
+                                }
                             }
                         }
                     }

@@ -47,7 +47,6 @@ class EditarIndicacaoControllerTests extends BaseTestCase
         $this->assertStringContainsString('name="service_uuid"', (string)$response->getBody());
        // $this->assertStringContainsString('name="company_uuid"', (string)$response->getBody());
         $this->assertStringContainsString('name="status"', (string)$response->getBody());
-        $this->assertStringContainsString('name="commission"', (string)$response->getBody());
         $this->assertStringContainsString('name="user_uuid"', (string)$response->getBody());
     }
 

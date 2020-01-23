@@ -6,6 +6,7 @@ use Project\Models\UsersModel;
 use Project\Models\CommissionsModel;
 use Project\Models\IndicationsModel;
 use Project\Models\ServicesModel;
+use Project\Models\FilesModel;
 use \Psr\Container\ContainerInterface;
 use Respect\Validation\Validator as V;
 
@@ -41,9 +42,10 @@ class EditarComissaoController
         else{
             $uuid = '';
             $indication_uuid = '';
+            $commissions = '';
         }
 		
-        return $this->container->renderer->render($response, 'comissao/editaComissao.phtml',['message'=>$message/*,'companies'=>$companies*/,'commissions'=>$commissions, 'indications'=>$indications, 'indication_uuid'=>$indication_uuid, 'uuid'=>$args['uuid']]);
+        return $this->container->renderer->render($response, 'comissao/editaComissao.phtml',['message'=>$message/*,'companies'=>$companies*/,'commissions'=>$commissions, 'indications'=>$indications, 'indication_uuid'=>$indication_uuid, 'uuid'=>$uuid]);
    }
 
    /**
@@ -82,6 +84,7 @@ class EditarComissaoController
 		if ($validator->isValid()) {
             try{
                 $commissionsModel = new CommissionsModel($this->container);
+                $filesModel = new FilesModel($this->container);
 
                 if($metadata['update'] == 1){          
                     //arrumando a data
@@ -141,6 +144,41 @@ class EditarComissaoController
 
                 if($commission){
                     $this->container->flash->addMessage('success', 'Alterado com sucesso');
+
+                    //move file
+                    if (!defined('REAL_PATH'))
+                    {
+                        define('REAL_PATH', realpath("../") . "/");
+                    }
+                    if(mkdir(REAL_PATH . "files/commissions", 0700)){
+                        mkdir(REAL_PATH . "files/commissions", 0700);
+                    }
+                    $directory = REAL_PATH . 'files/commissions';
+
+                    $uploadedFiles = $metadata['anexo'];
+                    $uploadedFiles = $request->getUploadedFiles();
+
+                    foreach ($uploadedFiles['anexo'] as $uploadedFile) {
+                        if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+
+                            $uuid_file = uuid();
+                            $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
+                            $basename = 'commission'.$uuid_file; // see http://php.net/manual/en/function.random-bytes.php
+                            $filename = sprintf('%s.%0.8s', $basename, $extension);
+                            
+                            $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
+
+                            $file = $filesModel->set(['uuid'=>$uuid_file,
+                                                        'name_file'=>$filename,
+                                                        'type'=>2,
+                                                        'relation_uuid'=>$metadata['commission_uuid']]);
+                            if(!$file){
+                                
+                            }
+                        }
+                    }
+                    //move_uploaded_file($file,"/Controllers");
+
                     return $response->withRedirect($this->container->router->pathFor('editaComissao'));   
                 }
                 else{
@@ -166,8 +204,11 @@ class EditarComissaoController
         $metadata = $request->getParsedBody();
      
         $commissionsModel = new CommissionsModel($this->container);
+        $filesModel = new FilesModel($this->container);
 
         $commission = $commissionsModel->find(['uuid'=>$metadata['uuid']]);
+
+        $commission['files'] = $filesModel->all(['relation_uuid'=>$metadata['uuid']]);
 
         return json_encode($commission);
     }

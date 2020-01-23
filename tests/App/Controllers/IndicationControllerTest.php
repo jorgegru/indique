@@ -93,7 +93,6 @@ class IndicationControllerTest extends BaseTestCase
         $this->assertStringContainsString('name="complemento"', (string)$response->getBody());
         $this->assertStringContainsString('name="service_uuid"', (string)$response->getBody());
         $this->assertStringContainsString('name="status"', (string)$response->getBody());
-        $this->assertStringContainsString('name="commission"', (string)$response->getBody());
         $this->assertStringContainsString('name="user_uuid"', (string)$response->getBody());
 
     }

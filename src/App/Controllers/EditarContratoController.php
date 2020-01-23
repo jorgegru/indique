@@ -6,6 +6,7 @@ use Project\Models\ContractsModel;
 use Project\Models\CompaniesModel;
 use Project\Models\IndicationsModel;
 use Project\Models\ServicesModel;
+use Project\Models\FilesModel;
 use \Psr\Container\ContainerInterface;
 use Respect\Validation\Validator as V;
 
@@ -80,10 +81,11 @@ class EditarContratoController
                 ]
             ],
         ]);
-       
+
 		if ($validator->isValid()) {
             try{
                 $contractsModel = new ContractsModel($this->container);
+                $filesModel = new FilesModel($this->container);
 
                 $contract = $contractsModel->validateUniqueField(['indentification'=>$metadata['indentification'], 'uuid'=>$metadata['contract_uuid']]);
 
@@ -104,7 +106,46 @@ class EditarContratoController
                                             ]);
 
                 if($contract){
+
                     $this->container->flash->addMessage('success', 'Alterado com sucesso');
+                    
+                    if($metadata['anexo']){
+                        //move file
+                        if (!defined('REAL_PATH'))
+                        {
+                            define('REAL_PATH', realpath("../") . "/");
+                        }
+                        if(mkdir(REAL_PATH . "/files", 0700)){
+                            mkdir(REAL_PATH . "/files/contracts", 0700);
+                        }
+                        $directory = REAL_PATH . '/files/contracts';
+
+                        $uploadedFiles = $metadata['anexo'];
+                        $uploadedFiles = $request->getUploadedFiles();
+
+                        
+                        foreach ($uploadedFiles['anexo'] as $uploadedFile) {
+                            
+                            if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+
+                                $uuid_file = uuid();
+                                $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
+                                $basename = 'contract'.$uuid_file; // see http://php.net/manual/en/function.random-bytes.php
+                                $filename = sprintf('%s.%0.8s', $basename, $extension);
+                                
+                                $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
+
+                                $file = $filesModel->set(['uuid'=>$uuid_file,
+                                                            'name_file'=>$filename,
+                                                            'type'=>1,
+                                                            'relation_uuid'=>$metadata['contract_uuid']]);
+                                if(!$file){
+                                    
+                                }
+                            }
+                        }
+                        //move_uploaded_file($file,"/Controllers");
+                    }
                     return $response->withRedirect($this->container->router->pathFor('editaContrato'));   
                 }
                 else{
@@ -130,8 +171,21 @@ class EditarContratoController
         $metadata = $request->getParsedBody();
      
         $contractsModel = new ContractsModel($this->container);
+        $filesModel = new FilesModel($this->container);
+        
+
+        // $data['uuid'] = '%'.$metadata['uuid'].'%';
+
+        // $join['files']['campo'] = 'relation_uuid';
+        // $join['files']['campo2'] = 'contracts.uuid';
+        
+        // $campos = "contracts.*, files.name_file, files.type as type_file";
+
+        // $contract = $contractsModel->allLikeLeftJoin($data, $join, $campos);
 
         $contract = $contractsModel->find(['uuid'=>$metadata['uuid']]);
+
+        $contract['files'] = $filesModel->all(['relation_uuid'=>$metadata['uuid']]);
 
         return json_encode($contract);
     }

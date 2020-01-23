@@ -20,6 +20,8 @@
         <link rel="stylesheet" href="/template/bower_components/Ionicons/css/ionicons.min.css">
         <!-- Theme style -->
         <link rel="stylesheet" href="/template/dist/css/AdminLTE.min.css">
+        <!-- Data Table -->
+        <link rel="stylesheet" href="/template/bower_components/datatables.net-bs/css/dataTables.bootstrap.css">
         <!-- iCheck -->
         <link rel="stylesheet" href="/template/plugins/iCheck/square/blue.css">
 
@@ -180,9 +182,9 @@
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-sm-12 col-xs-6">
-                                        <div class="description-block">
+                                        
                                             <div class="table-responsive">
-                                                <div id="id_tabela" style="max-height: 500px;overflow-y: auto;">
+                                                <div id="id_tabela" style="max-height: 500px;overflow-y: auto; overflow-x: hidden;">
                                                     <table id="tbIndicacao" class="table table-bordered table-striped">
                                                         <thead>
                                                             <tr>
@@ -197,6 +199,7 @@
                                                                 
                                                                 <?php if($user_type != 4){?>
                                                                     <th width="10"><i class="fa fa-edit"></i></th>
+                                                                    <th width="10"><i class="fa fa-trash-o"></i></th>
                                                                 <?php }?>   
                                                             </tr>
                                                         </thead>
@@ -206,7 +209,7 @@
                                                     </table>
                                                 </div>
                                             </div>   	
-                                        </div>
+                                        
                                     </div>
                                 </div>
                             <!-- /.row -->
@@ -252,9 +255,9 @@
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-sm-12 col-xs-6">
-                                        <div class="description-block">
+                                        
                                             <div class="table-responsive">
-                                                <div style="max-height: 500px;overflow-y: auto;">
+                                                <div style="max-height: 500px;overflow-y: auto; overflow-x: hidden;">
                                                     <table id="tbUsuario" class="table table-bordered table-striped">
                                                         <thead>
                                                             <tr>
@@ -265,6 +268,7 @@
                                                                 <th>Status</th>
                                                                 <?php if($user_type != 4){?>
                                                                     <th width="10"><i class="fa fa-edit"></i></th>
+                                                                    <th width="10"><i class="fa fa-trash-o"></i></th>
                                                                 <?php }?>   
                                                             </tr>
                                                         </thead>
@@ -274,7 +278,7 @@
                                                     </table>
                                                 </div>
                                             </div>	
-                                        </div>
+                                        
                                     </div>
                                 </div>
                             <!-- /.row -->
@@ -320,10 +324,10 @@
                             <div class="box-body">
                                 <div class="row">
                                     <div class="col-sm-12 col-xs-6">
-                                        <div class="description-block">
+                                        
                                             <div class="table-responsive">
-                                                <div id="id_tabela" style="max-height: 500px;overflow-y: auto;">
-                                                    <table id="tbIndicacao" class="table table-bordered table-striped">
+                                                <div id="id_tabela" style="max-height: 500px;overflow-y: auto; overflow-x: hidden;">
+                                                    <table id="tbMyIndications" class="table table-bordered table-striped">
                                                         <thead>
                                                             <tr>
                                                                 <th>Comissões</th>
@@ -338,6 +342,7 @@
                                                                 
                                                                 <?php if($user_type != 4){?>
                                                                     <th width="10"><i class="fa fa-edit"></i></th>
+                                                                    <th width="10"><i class="fa fa-trash-o"></i></th>
                                                                 <?php }?>   
                                                             </tr>
                                                         </thead>
@@ -347,7 +352,7 @@
                                                     </table>
                                                 </div>
                                             </div>   	
-                                        </div>
+                                        
                                     </div>
                                 </div>
                             <!-- /.row -->
@@ -422,6 +427,7 @@
                                     <th>Status</th>
                                     <th>Observação</th>
                                     <th width="10"><i class="fa fa-edit"></i></th>
+                                    <th width="10"><i class="fa fa-trash-o"></i></th>
                                 </tr>
                             </thead>
                             <tbody id="tbody_commission">
@@ -654,7 +660,7 @@
                                         if(resposta[i]['user_uuid'] == null)   consultor = "<td>Sem Consultor";
                                         else                                 consultor = "<td>"+resposta[i]['user_name'];
 
-                                        tabela += '<tr>';
+                                        tabela += '<tr id="'+resposta[i]['uuid']+'">';
                                         tabela += '<td>'+resposta[i]['name']+'</td>';
                                         tabela += '<td>'+resposta[i]['cpf_cnpj']+'</td>';
                                         tabela += '<td>'+resposta[i]['telefone']+'</td>';
@@ -666,6 +672,7 @@
 
                                         <?php if($user_type != 4){?>
                                             tabela += '<td><button onclick="editarIndicacao(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
+                                            tabela += '<td><button onclick="excluirIndicacao(\''+resposta[i]['uuid']+'\',\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-trash-o"></i></button></td>';
                                         <?php }?>
                                         tabela += '</tr>';
                                         total++
@@ -676,6 +683,12 @@
                                 $('#span_pendentes').html(pendentes);
 
                             }
+
+                            $('#tbIndicacao').DataTable({
+                                'autoWidth'   : true,
+                                'aLengthMenu' :	[[10, 25, 50, -1], [10, 25, 50, "Tudo"]],
+                                'oLanguage'   : {"sEmptyTable": "Nenhum registro encontrado", "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros", "sInfoEmpty": "Mostrando 0 até 0 de 0 registros", "sInfoFiltered": "(Filtrados de _MAX_ registros)", "sInfoPostFix": "", "sInfoThousands": ".", "sLengthMenu": "_MENU_ resultados por página", "sLoadingRecords": "Carregando...", "sProcessing": "Processando...", "sZeroRecords": "Nenhum registro encontrado", "sSearch": "Pesquisar", "oPaginate": { "sNext": "Próximo", "sPrevious": "Anterior", "sFirst": "Primeiro", "sLast": "Último" }, "oAria": { "sSortAscending": ": Ordenar colunas de forma ascendente", "sSortDescending": ": Ordenar colunas de forma descendente"}}
+                            }); 
                         }
                     });
                 }
@@ -713,7 +726,7 @@
                                     else if(resposta[i]['user_type'] == 3) tipo = "Consultor";
                                     else tipo = "Usuário";
 
-                                    tabela2 += '<tr>';
+                                    tabela2 += '<tr id="'+resposta[i]['uuid']+'2">';
                                     tabela2 += '<td>'+resposta[i]['name']+'</td>';
                                     tabela2 += '<td>'+resposta[i]['email']+'</td>';
                                     tabela2 += '<td>'+resposta[i]['cpf']+'</td>';
@@ -721,6 +734,10 @@
                                     tabela2 += status+'</td>';
                                     <?php if($user_type == 1 || $user_type == 2){?>
                                         tabela2 += '<td><button onclick="editarUsuario(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
+                                        
+                                        if(resposta[i]['user_type'] != 1){
+                                            tabela2 += '<td><button onclick="excluirUsuario(\''+resposta[i]['uuid']+'\',\''+resposta[i]['uuid']+'2\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-trash-o"></i></button></td>';
+                                        }
                                     <?php }?>
                                     tabela2 += '</tr>';
                                     total2++;
@@ -730,6 +747,12 @@
                                 $('#total_usuarios').html(total2);
                                 $('#span_usuarios').html(total2);
                             }    
+
+                            $('#tbUsuario').DataTable({
+                                'autoWidth'   : true,
+                                'aLengthMenu' :	[[10, 25, 50, -1], [10, 25, 50, "Tudo"]],
+                                'oLanguage'   : {"sEmptyTable": "Nenhum registro encontrado", "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros", "sInfoEmpty": "Mostrando 0 até 0 de 0 registros", "sInfoFiltered": "(Filtrados de _MAX_ registros)", "sInfoPostFix": "", "sInfoThousands": ".", "sLengthMenu": "_MENU_ resultados por página", "sLoadingRecords": "Carregando...", "sProcessing": "Processando...", "sZeroRecords": "Nenhum registro encontrado", "sSearch": "Pesquisar", "oPaginate": { "sNext": "Próximo", "sPrevious": "Anterior", "sFirst": "Primeiro", "sLast": "Último" }, "oAria": { "sSortAscending": ": Ordenar colunas de forma ascendente", "sSortDescending": ": Ordenar colunas de forma descendente"}}
+                            });
                         }
                     });
                     $('#row_user').show();
@@ -780,7 +803,7 @@
                                 if(resposta[i]['user_uuid'] == null)   consultor = "<td>Sem Consultor";
                                 else                                 consultor = "<td>"+resposta[i]['user_name'];
 
-                                tabela3 += '<tr>';
+                                tabela3 += '<tr id="'+resposta[i]['uuid']+'">';
                                 tabela3 += '<td><button type="button" class="btn btn-default btn-xs" onclick="ver_comisao(\''+resposta[i]['uuid']+'\');"><i class="fa fa-eye"></i></button></td>';
                                 tabela3 += '<td>'+resposta[i]['name']+'</td>';
                                 tabela3 += '<td>'+resposta[i]['cpf_cnpj']+'</td>';
@@ -793,6 +816,7 @@
 
                                 <?php if($user_type != 4){?>
                                     tabela3 += '<td><button onclick="editarIndicacao(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
+                                    tabela3 += '<td><button onclick="excluirIndicacao(\''+resposta[i]['uuid']+'\',\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-trash-o"></i></button></td>';
                                 <?php }?>
                                 tabela3 += '</tr>';
                                 total3++
@@ -818,10 +842,55 @@
                         var final = commission.substring(commission.length - 2, commission.length);
                         commission = commission.substring(0,commission.length - 2);
 
-                        $('#span_comissao').html('R$'+commission+','+final);
+                        //$('#span_comissao').html('R$'+commission+','+final);  
                         //}
+
+                        
+                        $('#tbMyIndications').DataTable({
+                            'autoWidth'   : true,
+                            'aLengthMenu' :	[[10, 25, 50, -1], [10, 25, 50, "Tudo"]],
+                            'oLanguage'   : {"sEmptyTable": "Nenhum registro encontrado", "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros", "sInfoEmpty": "Mostrando 0 até 0 de 0 registros", "sInfoFiltered": "(Filtrados de _MAX_ registros)", "sInfoPostFix": "", "sInfoThousands": ".", "sLengthMenu": "_MENU_ resultados por página", "sLoadingRecords": "Carregando...", "sProcessing": "Processando...", "sZeroRecords": "Nenhum registro encontrado", "sSearch": "Pesquisar", "oPaginate": { "sNext": "Próximo", "sPrevious": "Anterior", "sFirst": "Primeiro", "sLast": "Último" }, "oAria": { "sSortAscending": ": Ordenar colunas de forma ascendente", "sSortDescending": ": Ordenar colunas de forma descendente"}}
+                        });
                     }
+                    
                 });
+
+
+                //Comissão
+                $.get('/getMyCommission/'+uuid,function(data){
+                    var resposta = JSON.parse(data);
+                    var today = new Date();
+                    var dia = '';
+                    var mes = '';
+                    var ano = '';
+                    var totalCommission = 0;
+                    var anoAtual = today.getFullYear();
+                    var mesAtual = (today.getMonth()+1);
+
+                    //var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                    for(var i=0;i<resposta.length;i++){
+                        ano  = resposta[i]['date'].split("-")[0];
+                        mes  = resposta[i]['date'].split("-")[1];
+                        dia  = resposta[i]['date'].split("-")[2];
+
+                        if(resposta[i]['paid'] == 1 && mes == mesAtual && ano == anoAtual){
+                            totalCommission += parseInt(resposta[i]['value_commission']);
+                        }
+                    }
+                    totalCommission = totalCommission/100;
+                    $('#span_comissao').html('');
+                    $('#span_comissao').html('R$'+totalCommission);  
+                    // if(data == "true"){
+                    //     $('#span_comissao').html('R$'+commission+','+final);  
+                    //     $('#txt_status').val(1);
+                    //     $('#div_status').html("<p style='color: red;'>Não Pago <button onclick='payCommission(\""+uuid+"\",\""+i+"\");' type='button' title='Pagar' class='btn btn-default btn-xs'><i class='fa fa-thumbs-down'></i></button>");
+                    // }
+                    // else{
+                    //     toastr.error('Falha ao Não Pagar');    
+                    // }
+                });
+
+                             
 
             
 
@@ -991,8 +1060,26 @@
 			});
 
             function editarComissao(uuid){
-                $("#myForm").attr("action","editaComissao/"+uuid);    
+                $("#myForm").attr("action","/editaComissao/"+uuid);    
                 $("#myForm").submit();
+            }
+
+            function excluirComissao(uuid,num){
+                if(confirm("Deseja deletar a comissão?")){
+                    $.ajax({
+                    type: 'POST',
+                    url: '/excluiComissao',
+                    dataType: 'json',
+                    data: 'uuid='+uuid,
+                    success: function(resposta){
+                        if(resposta){
+                            $("#"+num+"").remove();
+                            toastr.success('Deletado');
+                        }
+                    }
+                    
+                    });
+                }
             }
 
             function payCommission(uuid,i){
@@ -1014,7 +1101,7 @@
             function unpaidCommission(uuid,i){
                 var r = confirm("Deseja não pagar a comissão?");
                 if(r == true){
-                    $.get('payCommission/'+uuid,function(data){
+                    $.get('unpaidCommission/'+uuid,function(data){
                         var resposta = JSON.parse(data);
                         if(data == "true"){
                             $('#pay'+i).html("Não Pago <button onclick='payCommission(\""+uuid+"\",\""+i+"\");' type='button' title='Pagar' class='btn btn-default btn-xs'><i class='fa fa-thumbs-down'></i></button>");
@@ -1029,7 +1116,8 @@
 
             function ver_comisao(uuid){
                 $('#tbody_commission').html('');
-                $.get('getCommissionsIndication/'+uuid,function(data){
+                var t = $('#table_commissions').dataTable();t.fnDestroy();
+                $.get('/getCommissionsIndication/'+uuid,function(data){
                     var resposta = JSON.parse(data);
                     var data = new Date();
                     var mes_atual = data.getMonth()+1;
@@ -1063,32 +1151,81 @@
                             else                            botao = "<button onclick='unpaidCommission(\""+resposta[i]['uuid']+"\",\""+i+"\");' type='button' title='Não Pago' class='btn btn-default btn-xs'><i class='fa fa-thumbs-up'></i></button>";
                         <?php }?>
 
-                        if(resposta[i]['paid'] == 1)    status = "<td style='color:red' id=pay"+i+">Não Pago "+botao+"</td>";
-                        else                            status = "<td style='color:green' id=pay"+i+">Pago "+botao+"</td>";
-                            
-                        tabela += "<tr>";
+                        <?php if($user_type != 4){?>
+                            if(resposta[i]['paid'] == 1)    status = "<td style='color:red' id=pay"+i+">Não Pago "+botao+"</td>";
+                            else                            status = "<td style='color:green' id=pay"+i+">Pago "+botao+"</td>";
+                        <?php }?>
+
+                        tabela += '<tr id="'+resposta[i]['uuid']+'4">';
                         tabela += '<td>R$'+(resposta[i]['value_commission']/100)+'</td>';
                         tabela += '<td>'+data+'</td>';
                         tabela += status;
                         tabela += observation;
-                        tabela += '<td><button onclick="editarComissao(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
-                        tabela += '</tr>';
+                        <?php if($user_type == 1 || $user_type == 2){?>
+                            tabela += '<td><button onclick="editarComissao(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
+                            tabela += '<td><button onclick="excluirComissao(\''+resposta[i]['uuid']+'\',\''+resposta[i]['uuid']+'4\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-trash-o"></i></button></td>';
+                            tabela += '</tr>';
+                        <?php }?>
+                        
 
                     }
                     $('#tbody_commission').html(tabela);
+
+                    $('#table_commissions').DataTable({
+                        'autoWidth'   : true,
+                        'aLengthMenu' :	[[10, 25, 50, -1], [10, 25, 50, "Tudo"]],
+                        'oLanguage'   : {"sEmptyTable": "Nenhum registro encontrado", "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros", "sInfoEmpty": "Mostrando 0 até 0 de 0 registros", "sInfoFiltered": "(Filtrados de _MAX_ registros)", "sInfoPostFix": "", "sInfoThousands": ".", "sLengthMenu": "_MENU_ resultados por página", "sLoadingRecords": "Carregando...", "sProcessing": "Processando...", "sZeroRecords": "Nenhum registro encontrado", "sSearch": "Pesquisar", "oPaginate": { "sNext": "Próximo", "sPrevious": "Anterior", "sFirst": "Primeiro", "sLast": "Último" }, "oAria": { "sSortAscending": ": Ordenar colunas de forma ascendente", "sSortDescending": ": Ordenar colunas de forma descendente"}}
+                    });
                 });
                 
                 $('#modal_commission').modal();
             }
 
             function editarIndicacao(uuid){
-                $("#myForm").attr("action","editaIndicacao/"+uuid);    
+                $("#myForm").attr("action","/editaIndicacao/"+uuid);    
                 $("#myForm").submit();
             }
 
+            function excluirIndicacao(uuid,num){
+                if(confirm("Deseja deletar a indicação?")){
+                    $.ajax({
+                    type: 'POST',
+                    url: '/excluiIndicacao',
+                    dataType: 'json',
+                    data: 'uuid='+uuid,
+                    success: function(resposta){
+                        if(resposta){
+                            $("#"+num+"").remove();
+                            $("#"+num+"").remove();
+                            toastr.success('Deletado');
+                        }
+                    }
+                    
+                    });
+                }
+            }
+
             function editarUsuario(uuid){
-                $("#myForm2").attr("action","editaLogin/"+uuid);    
+                $("#myForm2").attr("action","/editaLogin/"+uuid);    
                 $("#myForm2").submit();
+            }
+
+            function excluirUsuario(uuid, num){
+                if(confirm("Deseja deletar o usuário?")){
+                    $.ajax({
+                    type: 'POST',
+                    url: '/excluiUsuario',
+                    dataType: 'json',
+                    data: 'uuid='+uuid,
+                    success: function(resposta){
+                        if(resposta){
+                            $("#"+num+"").remove();
+                            toastr.success('Deletado');
+                        }
+                    }
+                    
+                    });
+                }
             }
         </script>
     </body>

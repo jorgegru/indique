@@ -26,6 +26,7 @@ class CadastroComissaoController
         $commission         = $data['commission'];
         $meses              = 0;
         $day                = $data['day'];
+        $observation        = $data['observation_commissions'];
 
         // $debug2 = fopen("testeCadastroCommisao.txt","w+");
         // fwrite($debug2,$value_commission."---".
@@ -43,18 +44,19 @@ class CadastroComissaoController
                 $commissionsModel->set(["uuid"=>$uuid,  
                                         "value_commission"=>$value_commission,
                                         "date"=>date('Y')."-".date('m')."-".$day,
-                                        "indication_uuid"=>$indication_uuid]);
+                                        "indication_uuid"=>$indication_uuid,
+                                        "observation"=>$observation]);
         }
         else{
             $ano_ini = substr($start_date,0,4);
-            if(count($start_date) == 9){
+            if(strlen($start_date) == 9){
                 $mes_ini = substr($start_date,5,-3);
             }
             else{
                 $mes_ini = substr($start_date,5,-3);
             }
             $ano_fim = substr($end_date,0,4);
-            if(count($end_date) == 9){
+            if(strlen($end_date) == 9){
                 $mes_fim = substr($end_date,5,-3);
             }
             else{
@@ -94,7 +96,8 @@ class CadastroComissaoController
                 $commissionsModel->set(["uuid"=>$uuid,  
                                         "value_commission"=>$value_commission,
                                         "date"=>$ano."-".$mes."-".$day,
-                                        "indication_uuid"=>$indication_uuid]);
+                                        "indication_uuid"=>$indication_uuid,
+                                        "observation"=>$observation]);
             }
         }
    }

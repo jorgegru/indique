@@ -5,7 +5,7 @@ namespace Tests\App\Controllers;
 use \Project\Traits\ModelTrait;
 use Tests\Functional\BaseTestCase;
 
-class EditarCompaniaControllerTests extends BaseTestCase 
+class EditarCompaniaControllerTest extends BaseTestCase 
 {
     use ModelTrait;
 

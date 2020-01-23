@@ -79,9 +79,11 @@
                                 </div><!-- /.box-header -->
                                 <div class="box-body">
                                     <div class="row">
-                            
+                                    
+                                        <form style="display: none;" id="form_download" method="GET" action="/download" enctype="multipart/form-data" target="blank">
+                                        </form>
 
-                                        <form id="myForm" class="form-horizontal" action="../editaComissao" method="post">
+                                        <form id="myForm" class="form-horizontal" action="../editaComissao" enctype="multipart/form-data" method="post">
                                             <div class="box-body">
                                                 <div class="form-group has-feedback">
                                                     <label class="col-sm-2 control-label">Indicação:</label>
@@ -105,8 +107,10 @@
                                                         <select  id='opt_commission_uuid' name="commission_uuid" class="normal form-control select2" onchange="carregaComissao();revisaCampos();">
                                                             <option value="">Selecione uma Comissao</option>
                                                             <?php
-                                                                foreach($commissions as $value){
-                                                                    echo("<option value='".$value["uuid"]."'>".$value["date"]." / R$".($value["value_commission"]/100)."</option>");
+                                                                if($commissions != ''){
+                                                                    foreach($commissions as $value){
+                                                                        echo("<option value='".$value["uuid"]."'>".$value["date"]." / R$".($value["value_commission"]/100)."</option>");
+                                                                    }
                                                                 }
                                                             ?>
                                                         </select>
@@ -146,6 +150,21 @@
                                                             <option value="2">Atualizar este e os próximos</option>
                                                             <option value="3">Atualizar todos os lançamentos</option>
                                                         </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group has-feedback">
+                                                    <label class="col-sm-2 control-label">Anexo documento:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="file" class="form-control" name="anexo[]" multiple="">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group has-feedback">
+                                                    <label class="col-sm-2 control-label">Anexo:</label>
+                                                    <div class="col-sm-6" id="div_anexo" style="display:none;">
+                                                        <button type="button" class="btn btn-default btn-xs" onclick="downloadAnexo();"><i class="fa fa-file-text"></i></button>
+                                                        <button type="button" class="btn btn-default btn-xs" onclick="deletarAnexo();"><i class="fa fa-trash"></i></button>
                                                     </div>
                                                 </div>
 
@@ -284,6 +303,17 @@
                             $('#txt_value').val(dados['value_commission']);
                             $('#txt_value2').val(value+','+final);
 
+
+                            if(dados['files']){
+                                var html = "";
+                                for(var i=0; i<dados['files'].length; i++){
+                                    html += '<div id="'+i+'"><button type="button" class="btn btn-default btn-xs" onclick="downloadAnexo(\''+dados['files'][i]['name_file']+'\');"><i class="fa fa-file-text"></i></button>Arquivo ('+(i+1)+')'
+                                    +'<button type="button" class="btn btn-default btn-xs" onclick="deletarAnexo(\''+dados['files'][i]['name_file']+'\','+i+');"><i class="fa fa-trash"></i></button></div>';
+                                }
+                                $('#div_anexo').html(html);
+                                $('#div_anexo').show();
+                            }
+
                             revisaCampos();
                         },
                         error: function (dados){
@@ -314,7 +344,7 @@
                                 mes  = dados[i]['date'].split("-")[1];
                                 dia  = dados[i]['date'].split("-")[2];
 
-                                campos += "<option value="+dados[i]['uuid']+">"+dia + '/' + (mes) + '/' + (ano)+" / "+(dados[i]['value_commission']/100)+"</option>";
+                                campos += "<option value="+dados[i]['uuid']+">"+dia + '/' + (mes) + '/' + (ano)+" / R$ "+(dados[i]['value_commission']/100)+"</option>";
                             }
                             $('#opt_commission_uuid').html(campos);
                             $('#opt_commission_uuid').trigger('change');
@@ -329,6 +359,21 @@
                 else{
                     toastr.warning('Selecione uma indicação');
                 }
+            }
+
+            function downloadAnexo(file){
+
+                var nome  = file.split(".")[0];
+                var extension  = file.split(".")[1];
+
+                document.getElementById("form_download").action = "/download/commissions/"+nome+"/"+extension;
+
+                document.getElementById("form_download").submit();
+
+                // $.ajax({
+                //     type: 'GET',
+                //     url: '/download/'+type+'/'+nome+'/'+extension
+                // });
             }
 
             function payCommission(uuid){
@@ -347,10 +392,28 @@
                 }
             }
 
+            function deletarAnexo(nome,num){
+                if(confirm("Deseja deletar o Anexo?")){
+                    $.ajax({
+                        type: 'POST',
+                        url: '/deleteFile',
+                        dataType: 'json',
+                        data: 'name='+nome+
+                        '&type=2',
+                        success: function(resposta){
+                            if(resposta){
+                                $("#"+num+"").remove();
+                                toastr.success('Deletado');
+                            }
+                        }
+                    });
+                }
+            }
+
             function unpaidCommission(uuid){
                 var r = confirm("Deseja não pagar a comissão?");
                 if(r == true){
-                    $.get('payCommission/'+uuid,function(data){
+                    $.get('unpaidCommission/'+uuid,function(data){
                         var resposta = JSON.parse(data);
                         if(data == "true"){
                             $('#txt_status').val(1);
