@@ -85,7 +85,7 @@ class CadastroContratoController
                 'rules' => V::notBlank()->length(6, 100),
                 'messages' => [
                     'notBlank' => 'O Nome não pode ser vazio',
-                    'length' => 'O Nome deve ter de 6 a 100 caracteres',
+                    'length' => 'A Razão Social deve ter de 6 a 100 caracteres',
                 ]
             ],
             'value_contract' => [
