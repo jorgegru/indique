@@ -154,13 +154,9 @@ class CommissionController
             $data2['indications.creator_uuid'] = $_SESSION['user']['id'];
             //$metadata['creator_uuid'] = $_SESSION['user']['id'];
         }
-        $debug2 = fopen('data.txt',"w+");
-            fwrite($debug2,json_encode($data));
-        $commissions = $commissionsModel->allInnerJoin2($data,$join,$campos," ",$data2);
-        $debug2 = fopen('teste2.txt',"w+");
-            fwrite($debug2,json_encode($commissions));
-        
 
+        $commissions = $commissionsModel->allInnerJoin2($data,$join,$campos," ",$data2);
+        
 		return json_encode($commissions);
     }
 }

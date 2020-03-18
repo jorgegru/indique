@@ -394,8 +394,7 @@ trait ModelTrait {
 
                 $stmt->bindValue(":{$key_name}", $row, \PDO::PARAM_STR);
             }
-            $debug2 = fopen('sql.txt',"w+");
-            fwrite($debug2,$sql);
+
             $stmt->execute();
 
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
