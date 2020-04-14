@@ -130,7 +130,25 @@
                 </li>
                 <?php }?>
 
+                <!-- Comissões -->
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-money"></i><span>Comissões</span><i class="fa fa-angle-left pull-right"></i></a>
+                
+                    <ul class="treeview-menu">
+                        <li class="treeview">
+                            <?php if($_SESSION['user']['user_type'] != 4){?>
+                                <li>
+                                    <a href="/editaComissao"><i class="fa fa-circle-o"></i>Editar</i></a>             
+                                </li>
+                            <?php }?>
 
+                            <li>
+                                <a href="/listaComissoes"><i class="fa fa-circle-o"></i>Listar</i></a>
+                                
+                            </li>
+                        </li>    
+                    </ul>
+                </li>
             </ul> <!-- ./ siderbar-menu -->
 
 

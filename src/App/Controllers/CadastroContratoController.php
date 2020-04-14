@@ -79,13 +79,13 @@ class CadastroContratoController
    public function cadastrarContrato($request, $response, $args)
    {   
         $metadata = $request->getParsedBody();
-        
+
         $validator = $this->container->validator->validate($request, [
             'corporate' => [
                 'rules' => V::notBlank()->length(6, 100),
                 'messages' => [
                     'notBlank' => 'O Nome não pode ser vazio',
-                    'length' => 'O Nome deve ter de 6 a 100 caracteres',
+                    'length' => 'A Razão Social deve ter de 6 a 100 caracteres',
                 ]
             ],
             'value_contract' => [
@@ -104,12 +104,7 @@ class CadastroContratoController
                     'noWhitespace' => 'A Data não pdoe ter espaços',
                 ]
             ],
-            'observation' => [
-                'rules' => V::length(0, 255)->notBlank(),
-                'messages' => [
-                    'length' => 'A Observação deve ter até 255 caracteres',
-                ]
-            ],
+            
             'indentification' => [
                 'rules' => V::noWhitespace()->notBlank(),
                 'messages' => [
@@ -170,40 +165,41 @@ class CadastroContratoController
                     //return $response->withRedirect($this->container->router->pathFor('index'));
                     
                     //move arquivo
-                    if(isset($metadata['anexo'])){
-                        if (!defined('REAL_PATH'))
-                        {
-                            define('REAL_PATH', realpath("../") . "/");
-                        }
+                   
+                    if (!defined('REAL_PATH'))
+                    {
+                        define('REAL_PATH', realpath("../") . "/");
+                    }
+                    
+                    mkdir(REAL_PATH . "files", 0700);
+                    mkdir(REAL_PATH . "files/contracts", 0700);
+                    
+                    $directory = REAL_PATH . 'files/contracts';
+
+                    $uploadedFiles = $files['anexo'];
+                    $uploadedFiles = $request->getUploadedFiles();
+                    
+                    foreach ($uploadedFiles['anexo'] as $uploadedFile) {
                         
-                        mkdir(REAL_PATH . "files", 0700);
-                        mkdir(REAL_PATH . "files/contracts", 0700);
-                        
-                        $directory = REAL_PATH . 'files/contracts';
+                        if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+                            
+                            $uuid_file = uuid();
+                            $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
+                            $basename = 'contract_'.$uuid_file; // see http://php.net/manual/en/function.random-bytes.php
+                            $filename = sprintf('%s.%0.8s', $basename, $extension);
 
-                        $uploadedFiles = $metadata['anexo'];
-                        $uploadedFiles = $request->getUploadedFiles();
-
-                        foreach ($uploadedFiles['anexo'] as $uploadedFile) {
-                            if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
-
-                                $uuid_file = uuid();
-                                $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
-                                $basename = 'contract_'.$uuid_file; // see http://php.net/manual/en/function.random-bytes.php
-                                $filename = sprintf('%s.%0.8s', $basename, $extension);
-
-                                $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
-
-                                $file = $filesModel->set(['uuid'=>$uuid_file,
-                                                            'name_file'=>$filename,
-                                                            'type'=>1,
-                                                            'relation_uuid'=>$uuid]);
-                                if(!$file){
-                                    
-                                }
+                            $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
+                            
+                            $file = $filesModel->set(['uuid'=>$uuid_file,
+                                                        'name_file'=>$filename,
+                                                        'type'=>1,
+                                                        'relation_uuid'=>$uuid]);
+                            if(!$file){
+                                
                             }
                         }
                     }
+                    
                     //move_uploaded_file($file,"/Controllers");
 
                     return $response->withRedirect($this->container->router->pathFor('index',[
@@ -213,26 +209,26 @@ class CadastroContratoController
                 else{
                     $errors = $validator->getErrors();
                     $this->container->flash->addMessage('error', 'Falha no cadastro');
-                    $message['uuid'] = $metadata['indication'];
+                    $message['uuid'] = $metadata['indication_uuid'];
                     $message['message']['validate'][0] = $errors;
-                    $this->cadastroContrato($request, $response, ['uuid'=>$metadata['indication'], 'return'=>$message]);
+                    $this->cadastroContrato($request, $response, ['uuid'=>$metadata['indication_uuid'], 'return'=>$message]);
                     //return $response->withRedirect($this->container->router->pathFor('cadastroContrato/('.$metadata['indication'].')'));
                 }
             
             }catch(\PDOException $e){
                 $errors = $validator->getErrors();
                 $this->container->flash->addMessage('error', 'Falha no Cadastro');
-                $message['uuid'] = $metadata['indication'];
+                $message['uuid'] = $metadata['indication_uuid'];
                 $message['message']['validate'][0] = $errors;
-                $this->cadastroContrato($request, $response, ['uuid'=>$metadata['indication'], 'return'=>$message]);
+                $this->cadastroContrato($request, $response, ['uuid'=>$metadata['indication_uuid'], 'return'=>$message]);
 			    //return $response->withRedirect($this->container->router->pathFor('cadastroContrato/'.$metadata['indication']));
             }
       	} else {
             $errors = $validator->getErrors();
             $this->container->flash->addMessage('validate', $errors);
-            $message['uuid'] = $metadata['indication'];
+            $message['uuid'] = $metadata['indication_uuid'];
             $message['message']['validate'][0] = $errors;
-            $this->cadastroContrato($request, $response, ['uuid'=>$metadata['indication'], 'return'=>$message]);
+            $this->cadastroContrato($request, $response, ['uuid'=>$metadata['indication_uuid'], 'return'=>$message]);
             //return $this->$container->get('renderer')->render($response, 'cadastroContrato/'.$metadata['indication'], $args);
 			//return $response->withRedirect($this->container->router->pathFor('cadastroContrato/'.$metadata['indication']));
       	}

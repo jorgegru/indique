@@ -137,6 +137,18 @@ return function (App $app) {
             $this->post('', Project\Controllers\EditarComissaoController::class . ':editaComissao')->setName('editaComissao');
         });
 
+    // Listar comissoes
+    $app->get('/listaComissoes', function (Request $request, Response $response, array $args) use ($container) {
+        // Sample log message
+        $container->get('logger')->info("Slim-Skeleton '/' route");
+
+        // Render index view
+        return $container->get('renderer')->render($response, 'comissao/listaComissoes.phtml', $args);
+    });
+
+    // Filto Comissoes Lista
+    $app->post('/filtroComissaoLista', Project\Controllers\CommissionController::class . ':filtroComissao')->setName('filtrocomissaoLista');
+
     //Pay Commission
     $app->get('/payCommission/{uuid}', Project\Controllers\CommissionController::class . ':payCommission')->setName('payCommission');
 

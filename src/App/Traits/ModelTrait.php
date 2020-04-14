@@ -259,7 +259,7 @@ trait ModelTrait {
         }
     }
 
-    //allLikeOrLeftJoin2:
+    //allLikeOrLeftJoin2: 
     //O campo em dados deve conter o nome da tabela que está sendo usada. Ex: user.name ao inves de name
     public function allLikeOrLeftJoin2(array $dados, array $dados2, array $join, $campos, $filtro="")
     {
@@ -341,6 +341,62 @@ trait ModelTrait {
                 
             $stmt->execute();
             
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        }catch(\PDOException $e){
+            throw $e;
+        }
+    }
+
+    public function allInnerJoin2(array $dados, array $join, $campos, $filtro="", array $dados2=null)
+    {
+        try{
+            if(count($dados)==0)
+                return false;
+            foreach ($dados as $key => $row) {
+                $key_name = explode('.',$key);
+                $key_name = end($key_name);
+                $sqlArray[] = "{$key} LIKE :{$key_name}";
+            }
+
+            foreach ($dados2 as $key => $row) {
+                $key_name = explode('.',$key);
+                $key_name = end($key_name);
+                $sqlArray2[] = "{$key} LIKE :{$key_name}";
+            }
+
+            foreach ($join as $tabela => $row){
+                $sqlJoin[] = "INNER JOIN $tabela ON $tabela.".$row['campo']."=".$row['campo2'];
+            }
+
+            $condition = "";
+            if($sqlArray2){
+                $condition = " AND (".implode(' OR ', $sqlArray2).") ";
+            }
+
+            $sql = "SELECT DISTINCT {$campos} FROM {$this->table}
+            ".implode(' ', $sqlJoin)."
+            WHERE ". implode(' AND ', $sqlArray) . $condition . $filtro;
+            
+            $stmt = $this->conn->prepare($sql);
+
+            if($sqlArray2){
+                foreach ($dados2 as $key => $row) {
+                    $key_name = explode('.',$key);
+                    $key_name = end($key_name);
+    
+                    $stmt->bindValue(":{$key_name}", $row, \PDO::PARAM_STR);
+                }
+            }
+
+            foreach ($dados as $key => $row) {
+                $key_name = explode('.',$key);
+                $key_name = end($key_name);
+
+                $stmt->bindValue(":{$key_name}", $row, \PDO::PARAM_STR);
+            }
+
+            $stmt->execute();
+
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         }catch(\PDOException $e){
             throw $e;
