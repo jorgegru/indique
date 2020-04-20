@@ -6,6 +6,7 @@ use Project\Models\UsersModel;
 use Project\Models\CompaniesModel;
 use Project\Models\ServicesModel;
 use Project\Models\IndicationsModel;
+use Project\Models\ObservationIndicationModel;
 use Project\Controllers\CadastroComissaoController;
 use \Psr\Container\ContainerInterface;
 use Respect\Validation\Validator as V;
@@ -56,15 +57,6 @@ class CadastroIndicacaoController
                     'length' => 'O Nome devve ter de 6 a 100 caracteres',
                 ]
             ],
-            'cpf_cnpj' => [
-                'rules' => V::numeric()->notBlank()->noWhitespace()->length(11, 14),
-                'messages' => [
-                    'numeric' => 'Digite apenas números para o CPF_CNPJ',
-                    'notBlank' => 'O CPF_CNPJ não pode ser vazio',
-                    'noWhitespace' => 'O CPF_CNPJ não pode ter espaço',
-                    'length' => 'O CPF_CNPJ deve ter de 11 a 14 caracteres',
-                ]
-            ],
             'telefone' => [
                 'rules' => V::length(8, 20)->notBlank()->noWhitespace(),
                 'messages' => [
@@ -80,6 +72,13 @@ class CadastroIndicacaoController
                     'length' => 'Nome Responsável deve ter de 6 a 100 caracteres',
                 ]
             ],
+            'cargo' => [
+                'rules' => V::length(4, 45)->notBlank(),
+                'messages' => [
+                    'length' => 'O Cargo deve conter de 4 a 45 caracteres',
+                    'notBlank' => 'Cargp não pode ser vazio',
+                ]
+            ],
             'email' => [
                 'rules' => V::length(6, 100)->contains('@')->noWhitespace()->notBlank(),
                 'messages' => [
@@ -87,57 +86,6 @@ class CadastroIndicacaoController
                     'notBlank' => 'Email não pode ser vazio',
                     'noWhitespace' => 'Email não pode ter espaçoes vazios',
                     'contains' => 'Email inválido',
-                ]
-            ],
-            'cep' => [
-                'rules' => V::length(8)->noWhitespace()->notBlank(),
-                'messages' => [
-                    'length' => 'CEP deve conter 8 caracteres',
-                    'notBlank' => 'CEP não pode ser vazio',
-                    'noWhitespace' => 'CEP não pode ter espaço',
-                ]
-            ],
-            'estado' => [
-                'rules' => V::notBlank()->length(2),
-                'messages' => [
-                    'notBlank' => 'Selecione um Estado',
-                    'length' => 'O Estado deve ter 2 caracteres',
-                ]
-            ],
-            'cidade' => [
-                'rules' => V::notBlank()->length(6, 100),
-                'messages' => [
-                    'length' => 'Cidade deve ter de 6 a 100 caracteres',
-                    'notBlank' => 'Cidade não pode ser vazio',
-                ]
-            ],
-            'bairro' => [
-                'rules' => V::notBlank()->length(6, 100),
-                'messages' => [
-                    'length' => 'Bairro deve ter de 6 a 100 caracteres',
-                    'notBlank' => 'Bairro não pode ser vazio',
-                ]
-            ],
-            'rua' => [
-                'rules' => V::notBlank()->length(6, 100),
-                'messages' => [
-                    'length' => 'Rua deve ter de 6 a 100 caracteres',
-                    'notBlank' => 'Rua não pode ser vazio',
-                ]
-            ],
-            'numero' => [
-                'rules' => V::notBlank()->length(1, 5)->numeric()->noWhitespace(),
-                'messages' => [
-                    'length' => 'Número deve ter de 1 a 5 caracteres',
-                    'notBlank' => 'Número não pode ser vazio',
-                    'noWhitespace' => 'Número não pode ter espaços',
-                    'numeric' => 'Número deve ser numérioco',
-                ]
-            ],
-            'complemento' => [
-                'rules' => V::length(0, 30),
-                'messages' => [
-                    'length' => 'Complemento deve ter até 30 caracteres',
                 ]
             ],
             'service_uuid' => [
@@ -159,59 +107,69 @@ class CadastroIndicacaoController
                     'numeric' => 'Status inválido',            
                 ]
             ],
-            'commission' => [
-                'rules' => V::notBlank()->numeric(),
-                'messages' => [
-                    'numeric' => 'Comissão inválida',
-                    'notBlank' => 'Selecione a Comissão',
-                ]
-            ],
-            'value_commission' => [
-                'rules' => V::numeric(),
-                'messages' => [
-                    'numeric' => 'Valor inválido',
-                ]
-            ],
-            'start_date' => [
-                'rules' => V::length(9, 10),
-                'messages' => [
-                    'length' => 'Data inválida',
-                ]
-            ],
-            'end_date' => [
-                'rules' => V::length(9, 10),
-                'messages' => [
-                    'length' => 'Data inválida',
-                ]
-            ],
+            // 'commission' => [
+            //     'rules' => V::notBlank()->numeric(),
+            //     'messages' => [
+            //         'numeric' => 'Comissão inválida',
+            //         'notBlank' => 'Selecione a Comissão',
+            //     ]
+            // ],
+            // 'value_commission' => [
+            //     'rules' => V::numeric(),
+            //     'messages' => [
+            //         'numeric' => 'Valor inválido',
+            //     ]
+            // ],
+            // 'start_date' => [
+            //     'rules' => V::length(9, 10),
+            //     'messages' => [
+            //         'length' => 'Data inválida',
+            //     ]
+            // ],
+            // 'end_date' => [
+            //     'rules' => V::length(9, 10),
+            //     'messages' => [
+            //         'length' => 'Data inválida',
+            //     ]
+            // ],
         ]);
         $uuid = uuid();// && \is_uuid($uuid)
 		if ($validator->isValid()) {
             try{               
                 if($_SESSION['user']['user_type'] == 3 || $_SESSION['user']['user_type'] == 4){
-                    $metadata['commission'] = 1;
                     $metadata['status'] = 7;
                 }
 
+                $metadata['commission'] = 1;
+
                 $IndicationsModel = new IndicationsModel($this->container);
 
-                $indication = $IndicationsModel->find(['cpf_cnpj'=>$metadata['cpf_cnpj']]);
-
-                if($indication){
-                    $this->container->flash->addMessage('error', 'Indicação com mesmo CPF_CNPJ já existe');
-                    return $response->withRedirect($this->container->router->pathFor('cadastroIndicacao'));
+                if($metadata['cpf_cnpj']){
+                    $indication = $IndicationsModel->find(['cpf_cnpj'=>$metadata['cpf_cnpj']]);
+                    if($indication){
+                        $this->container->flash->addMessage('error', 'Indicação com mesmo CPF_CNPJ já existe');
+                        return $response->withRedirect($this->container->router->pathFor('cadastroIndicacao'));
+                    }
+                }
+                else{
+                    $metadata['cpf_cnpj']=null;
                 }
 
-                if($metadata['start_date'] == $metadata['end_date']){
-                    $metadata['start_date'] = null;
-                    $metadata['end_date'] = null;
-                }
+
+                // if($metadata['start_date'] == $metadata['end_date']){
+                //     $metadata['start_date'] = null;
+                //     $metadata['end_date'] = null;
+                // }
+
+
 
                 $indication = $IndicationsModel->set([  'uuid'=>$uuid,
                                             'name'=>$metadata['name'],
                                             'cpf_cnpj'=>$metadata['cpf_cnpj'], 
                                             'telefone'=>$metadata['telefone'],
+                                            'telefone2'=>$metadata['telefone2'],
                                             'name_responsavel'=>$metadata['name_responsavel'],
+                                            'cargo'=>$metadata['cargo'],
                                             'email'=>$metadata['email'],
                                             'cep'=>$metadata['cep'],
                                             'estado'=>$metadata['estado'],
@@ -224,15 +182,22 @@ class CadastroIndicacaoController
                                             //'company_uuid'=>$metadata['company_uuid'],
                                             'status'=>$metadata['status'],
                                             'commission'=>$metadata['commission'],
-                                            'value_commission'=>$metadata['value_commission'],
-                                            'start_date'=>$metadata['start_date'],
-                                            'end_date'=>$metadata['end_date'],
+                                            'value_commission'=>"0000",
+                                            'start_date'=>null,
+                                            'end_date'=> null,
+                                            'observation'=>$metadata['observation'],
                                             'user_uuid'=>$metadata['user_uuid'],
                                             'creator_uuid'=>$_SESSION['user']['id']]);
                 if($indication){//cadastroComissao
                     // $CadastroComissaoController = new CadastroComissaoController($this->container);
                     // $metadata['uuid'] = $uuid;
                     // $CadastroComissaoController->cadastroComissao($metadata);
+                    if($metadata['observation_status']){//adiciona observação status
+                        $ObservationIndicationModel = new ObservationIndicationModel($this->container);
+                        $observation = $ObservationIndicationModel->set(['uuid_indication'=>$uuid,
+                                            'status'=>$metadata['status'],
+                                            'observation'=>$metadata['observation_status']]);
+                    }
                     $this->container->flash->addMessage('success', 'Cadastrado com sucesso');
                     if($metadata['status'] == 5){
                         return $response->withRedirect($this->container->router->pathFor('cadastroContrato',[

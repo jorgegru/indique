@@ -127,7 +127,7 @@ class CadastroLoginController
                 else{
                     if($_SESSION['user']['user_type'] == 3 || $_SESSION['user']['user_type'] == 4){
                         $metadata['user_type'] = 4;
-                        $metadata['status'] = 2;
+                        $metadata['status'] = 1;
                     }
                     $user = $UsersModel->set([  'uuid'=>$uuid,
                                                 'user_type'=>$metadata['user_type'],
@@ -227,7 +227,7 @@ class CadastroLoginController
                 }
                 else{    
                     $metadata['user_type'] = 4;
-                    $metadata['status'] = 2;
+                    $metadata['status'] = 1;
 
                     $user = $UsersModel->set([  'uuid'=>$uuid,
                                                 'user_type'=>$metadata['user_type'],

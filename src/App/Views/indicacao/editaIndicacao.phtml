@@ -98,7 +98,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="col-sm-2 control-label">Nome:</label>
+                                                    <label class="col-sm-2 control-label">*Nome:</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control" id="txt_name" name="name" placeholder="Nome" onkeyup="revisaCampos();" onchange="
                                                             if(this.value.length<6 || this.value.length>100){
@@ -119,7 +119,7 @@
                                                             var cpf = document.getElementById('txt_cpf_cnpj').value;
                                                             cpf = cpf.replace(/\D+/g, '');
                                                             document.getElementById('txt_cpf_cnpj').value = cpf;
-                                                            if(this.value.length<11 || this.value.length>14){
+                                                            if((this.value.length<11 || this.value.length>14) && this.value){
                                                                 toastr.error('O CPF_CNPJ deve ter de 11 à 14 números!');
                                                                 $('#txt_cpf_cnpj').css('border-color','red');
                                                             }
@@ -131,7 +131,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group has-feedback">
-                                                    <label class="col-sm-2 control-label">Telefone:</label>
+                                                    <label class="col-sm-2 control-label">*Telefone:</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control" id="txt_telefone" name="telefone" placeholder="Telefone" onkeyup="revisaCampos();" onchange="
                                                             if(this.value.length<8 || this.value.length>20){
@@ -146,7 +146,22 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group has-feedback">
-                                                    <label class="col-sm-2 control-label">Nome Responsável:</label>
+                                                    <label class="col-sm-2 control-label">Telefone2:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" id="txt_telefone2" name="telefone2" placeholder="Telefone2" onkeyup="revisaCampos();" onchange="
+                                                            if(this.value.length<8 || this.value.length>20){
+                                                                toastr.error('O Telefone deve ter de 8 à 20 caracteres!');
+                                                                $('#txt_telefone2').css('border-color','red');
+                                                            }
+                                                            else{
+                                                                $('#txt_telefone2').css('border-color','#d2d6de');
+                                                            }
+                                                            revisaCampos();
+                                                        ">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group has-feedback">
+                                                    <label class="col-sm-2 control-label">*Nome Responsável:</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control" id="txt_name_responsavel" name="name_responsavel" placeholder="Nome Responsavel" onkeyup="revisaCampos();" onchange="
                                                             if(this.value.length<6 || this.value.length>100){
@@ -161,7 +176,22 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group has-feedback">
-                                                    <label class="col-sm-2 control-label">Email:</label>
+                                                    <label class="col-sm-2 control-label">*Cargo Responsável:</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" id="txt_cargo" name="cargo" placeholder="Cargo Responsavel" onkeyup="revisaCampos();" onchange="
+                                                            if(this.value.length<4 || this.value.length>45){
+                                                                toastr.error('O Cargo do Responsável deve ter de 6 à 100 caracteres!');
+                                                                $('#txt_cargo').css('border-color','red');
+                                                            }
+                                                            else{
+                                                                $('#txt_cargo_').css('border-color','#d2d6de');
+                                                            }
+                                                            revisaCampos();
+                                                        ">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group has-feedback">
+                                                    <label class="col-sm-2 control-label">*Email:</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control" id="txt_email" name="email" placeholder="email" onkeyup="revisaCampos();" onchange="
                                                             if(this.value.length<6 || this.value.length>100){
@@ -186,7 +216,7 @@
                                                             var cep = document.getElementById('txt_cep').value;
                                                             cep = cep.replace(/\D+/g, '');
                                                             document.getElementById('txt_cep').value = cep;
-                                                            if(this.value.length != 8){
+                                                            if(this.value.length != 8 && this.value){
                                                                 toastr.error('O CEP deve ter 8 números!');
                                                                 $('#txt_cep').css('border-color','red');
                                                             }
@@ -242,7 +272,7 @@
                                                     <label class="col-sm-2 control-label">Bairro:</label>
                                                     <div class="col-sm-3">
                                                         <input type="text" class="form-control" id="txt_bairro" name="bairro" placeholder="bairro" onkeyup="revisaCampos();" onchange="
-                                                            if(this.value.length < 6 || this.value.length > 100){
+                                                            if((this.value.length < 6 || this.value.length > 100) && this.value){
                                                                 toastr.error('O Bairro deve ter de 6 à 100 caracteres!');
                                                                 $('#txt_bairro').css('border-color','red');
                                                             }
@@ -257,7 +287,7 @@
                                                     <label class="col-sm-2 control-label">Rua:</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control" id="txt_rua" name="rua" placeholder="rua" onkeyup="revisaCampos();" onchange="
-                                                            if(this.value.length < 6 || this.value.length > 100){
+                                                            if((this.value.length < 6 || this.value.length > 100) && this.value){
                                                                 toastr.error('A Rua deve ter de 6 à 100 caracteres!');
                                                                 $('#txt_rua').css('border-color','red');
                                                             }
@@ -275,7 +305,7 @@
                                                             var numero = document.getElementById('txt_numero').value;
                                                             numero = numero.replace(/\D+/g, '');
                                                             document.getElementById('txt_numero').value = numero;
-                                                            if(this.value.length < 1 || this.value.length > 5){
+                                                            if((this.value.length < 1 || this.value.length > 5) && this.value){
                                                                 toastr.error('O Número deve ter de 1 à 5 números!');
                                                                 $('#txt_numero').css('border-color','red');
                                                             }
@@ -288,7 +318,7 @@
                                                     <label class="col-sm-2 control-label">Complemento:</label>
                                                     <div class="col-sm-3">
                                                         <input type="text" maxlength="30" class="form-control" id="txt_complemento" name="complemento" placeholder="complemento" onkeyup="revisaCampos();" onchange="
-                                                            if(this.value.length > 30){
+                                                            if(this.value.length >){
                                                                 toastr.error('O Complamento deve ter menos de 30 caracteres!');
                                                                 $('#txt_complemento').css('border-color','red');
                                                             }
@@ -299,6 +329,14 @@
                                                         ">
                                                     </div>
                                                 </div>
+
+                                                <div id="div_observation" class="form-group has-feedback">
+                                                    <label class="col-sm-2 control-label">Observação:</label>
+                                                    <div class="col-sm-6">
+                                                        <textarea type="text" class="form-control" id="txt_observation" name="observation"></textarea>
+                                                    </div>
+                                                </div>
+
                                                 <div class="form-group has-feedback">
                                                     <label class="col-sm-2 control-label">Serviços:</label>
                                                     <div class="col-sm-6">
@@ -342,7 +380,29 @@
                                                             </select>
                                                             <input type="hidden" id="txt_status" name="status" value="7">
                                                         </div>
+                                                        <div class="col-sm-3">
+                                                            <button type="button" class="btn btn-default btn-xs" title="Ver observações" onclick="ver_observacao();"><i class="fa fa-list"></i></button>
+                                                            <button type="button" class="btn btn-default btn-xs" title="Adicionar observação" id="btn_show_observacao" onclick="
+                                                                $('#div_observation_status').show();
+                                                                $('#btn_hide_observacao').show();
+                                                                $('#btn_show_observacao').hide();"><i class="fa fa-plus"></i>
+                                                            </button>
+                                                            <button type="button" class="btn btn-default btn-xs" title="Adicionar observação" id="btn_hide_observacao" onclick="
+                                                                $('#div_observation_status').hide();
+                                                                $('#btn_show_observacao').show();
+                                                                $('#btn_hide_observacao').hide();
+                                                                $('#txa_observation').val('')" style="display:none;"><i class="fa fa-minus"></i>
+                                                            </button>
+                                                        </div>
                                                     </div>
+
+                                                    <div id="div_observation_status" class="form-group has-feedback" style="display:none;">
+                                                        <label class="col-sm-2 control-label">Observação Status:</label>
+                                                        <div class="col-sm-6">
+                                                            <textarea class="form-control" id="txa_observation" name="observation_status"></textarea>
+                                                        </div>
+                                                    </div>
+
                                                     <div class="form-group has-feedback">
                                                         <label class="col-sm-2 control-label">Consultor:</label>
                                                         <div class="col-sm-6">
@@ -357,7 +417,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group has-feedback">
-                                                        <label class="col-sm-2 control-label">Comissões:</label>
+                                                        <label class="col-sm-2 control-label">Bônus:</label>
                                                         <div class="col-sm-3">
                                                             <button type="button" class="btn btn-default btn-xs" onclick="ver_comisao();"><i class="fa fa-eye"></i></button>
                                                         </div>
@@ -375,33 +435,84 @@
 
                                     <!-- MODAL VER COMISSÕES-->
                                     <div class="modal fade" id="modal_commission" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                    <div class="modal-dialog modal-lg" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                <h4 class="modal-title" id="myModalLabel">Comissões</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                            <table id='table_commissions' class="table table-hover">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Valor</th>
-                                                        <th>Data</th>
-                                                        <th>Status</th>
-                                                        <th>Observação</th>
-                                                        <th width="10"><i class="fa fa-edit"></i></th>
-                                                        <th width="10"><i class="fa fa-trash-o"></i></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="tbody_commission">
-                                                
-                                                </tbody>
-                                            </table>
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">Bônus</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                <table id='table_commissions' class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Valor</th>
+                                                            <th>Data</th>
+                                                            <th>Status</th>
+                                                            <th>Observação</th>
+                                                            <th width="10"><i class="fa fa-edit"></i></th>
+                                                            <th width="10"><i class="fa fa-trash-o"></i></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="tbody_commission">
+                                                    
+                                                    </tbody>
+                                                </table>
 
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <!-- MODAL OBSERVACAO-->
+                                    <div class="modal fade" id="modal_observation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">Observações</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <input type="hidden" id="txt_status_modal">
+                                                    <!-- <button class="btn btn-default pull-right" onclick="modal_adicionar_observacao()"><i class="fa fa-plus"></i> Adicionar Observação</button> -->
+                                                    <table id='table_observation' class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Status</th>
+                                                                <th width="550">Observação</th>
+                                                                <th width="150">Data/hora da criação</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="tbody_observation">
+                                                        
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+
+                                    <!-- MODAL ADICIONAR OBSERVACAO-->
+                                    <div class="modal fade" id="modal_add_observation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel">Adicionar Observação</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <button class="btn btn-default pull-right" onclick="add_observacao()"><i class="fa fa-plus"></i></button>
+                                                    <div id="div_observation" class="form-group has-feedback">
+                                                        <div class="col-sm-11">
+                                                            <input type="text" class="form-control" id="txt_observation_modal" name="observation_modal">
+                                                        </div>
+                                                    </div>
+                                                    <br>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    
                                 </div><!--box-body-->
                             </div>
                         </div>    
@@ -495,7 +606,9 @@
                         $('#txt_name').val(dados['name']);
                         $('#txt_cpf_cnpj').val(dados['cpf_cnpj']);
                         $('#txt_telefone').val(dados['telefone']);
+                        $('#txt_telefone2').val(dados['telefone2']);
                         $('#txt_name_responsavel').val(dados['name_responsavel']);
+                        $('#txt_cargo').val(dados['cargo']);
                         $('#txt_email').val(dados['email']);
                         $('#txt_cep').val(dados['cep']);
                         $('#opt_estado_name').val(dados['estado']);
@@ -505,7 +618,9 @@
                         $('#txt_rua').val(dados['rua']);
                         $('#txt_numero').val(dados['numero']);
                         $('#txt_complemento').val(dados['complemento']);
+                        $('#txt_observation').val(dados['observation']);
                         $('#txt_value_commission').val(dados['value_commission']);
+                        $('#txt_status_modal').val(dados['status']);
                         var value = dados['value_commission'];
                         if(value.length < 3 && value.length == 2){
                             value = '0'+value;
@@ -572,6 +687,62 @@
                         //                     'status'=>$metadata['status'],
                         //                     'commission'=>$metadata['commission'],
                         //                     'user_uuid'=>$metadata['user_uuid']]);
+                        //var status = ["","Pendente","Cliente contatado","Visita Realizada","Proposta Enviada","Negocio ganho","Negocio perdido"];
+                        var tabela = "";
+                        var status = "";
+                        
+                        for(var i = 0; i<dados['observation_status'].length; i++) {
+                            tabela += '<tr>';
+                            switch (dados['observation_status'][i]['status']) {
+                                case "1":
+                                    status = 'Pendente';
+                                    break;
+                                case "2":
+                                    status = 'Cliente contatado';
+                                    break;
+                                case "3":
+                                    status = 'Visita Realizada';
+                                    break;
+                                case "4":
+                                    status = 'Proposta Enviada';
+                                    break;
+                                case "5":
+                                    status = 'Negocio ganho';
+                                    break;
+                                case "6":
+                                    status = 'Negocio perdido';
+                                    break;
+                                case "7":
+                                    status = 'Sem Consultor';
+                                    break;
+                                default:
+                                    break;
+                            }
+                            var data = dados['observation_status'][i]['create_time'];
+                            
+                            var vetor = data.split(" ");
+                            var vetor2 = vetor[0].split("-");
+                            
+                            var ano = vetor2[0];
+                            var mes = vetor2[1];
+                            var dia = vetor2[2];
+                            var horario = vetor[1];
+
+                            tabela += "<td>"+status+"</td>";
+                            tabela += '<td>'+dados['observation_status'][i]['observation']+'</td>';
+                            tabela += "<td>"+dia+"/"+mes+"/"+ano+" - "+horario+"</td>";
+
+                            // for(var t = 0; t <dados['observation_status'].length; t++){
+                            //     if(dados['observation_status'][t]['status'] == i){
+                            //         teste = true
+                            //     }
+                            // }
+                            // if(!teste){
+                            //     tabela += "<td></td>";
+                            // }
+                            tabela += '</tr>';
+                        }
+                        $('#tbody_observation').html(tabela);
                     },
                     error: function (dados){
                         toastr.error('Erro ao carregar Indicação');
@@ -605,20 +776,20 @@
                 }
 
                 if($('#txt_name').val() == '' || document.getElementById("txt_name").style.borderColor == 'red' ||
-                $('#txt_cpf_cnpj').val() == '' || document.getElementById("txt_cpf_cnpj").style.borderColor == 'red' ||
+                document.getElementById("txt_cpf_cnpj").style.borderColor == 'red' ||
                 $('#txt_telefone').val() == '' || document.getElementById("txt_telefone").style.borderColor == 'red' ||
                 $('#txt_name_responsavel').val() == '' || document.getElementById("txt_name_responsavel").style.borderColor == 'red' ||
+                $('#txt_cargo').val() == '' || document.getElementById("txt_cargo").style.borderColor == 'red' ||
                 $('#txt_email').val() == '' || document.getElementById("txt_email").style.borderColor == 'red' ||
-                $('#txt_cep').val() == '' || document.getElementById("txt_cep").style.borderColor == 'red' ||
-                $('#opt_estado_name').val() == '' || 
-                $('#txt_cidade').val() == '' || document.getElementById("txt_cidade").style.borderColor == 'red' ||
-                $('#txt_bairro').val() == '' || document.getElementById("txt_bairro").style.borderColor == 'red' ||
-                $('#txt_rua').val() == '' || document.getElementById("txt_rua").style.borderColor == 'red' ||
-                $('#txt_numero').val() == '' || document.getElementById("txt_numero").style.borderColor == 'red' ||
+                document.getElementById("txt_cep").style.borderColor == 'red' ||
+                document.getElementById("txt_telefone2").style.borderColor == 'red' ||
+                document.getElementById("txt_cidade").style.borderColor == 'red' ||
+                document.getElementById("txt_bairro").style.borderColor == 'red' ||
+                document.getElementById("txt_rua").style.borderColor == 'red' ||
+                document.getElementById("txt_numero").style.borderColor == 'red' ||
                 $('#opt_service_uuid').val() == '' ||
                 //$('#opt_company_uuid').val() == '' ||
                 $('#opt_status').val() == '' ||
-                $('#opt_commission').val() == '' ||
                 $('#txt_value_commission').val() == ''){
                     $("#editar").attr("disabled","true");    
                 }
@@ -643,6 +814,71 @@
                     }
                 });
             });
+
+            function ver_observacao(){
+                $('#modal_observation').modal();
+            }
+
+            function modal_adicionar_observacao(){
+                $('#txt_observation_modal').val("");
+                $('#modal_add_observation').modal();
+            }
+
+            function add_observacao(){
+                var observacao = $('#txt_observation_modal').val();
+                if(observacao == "" || observacao == " " || !observacao){
+                    toastr.warning('Digite uma observação');
+                    return false;
+                }
+                var status = $('#txt_status_modal').val();
+                var uuid = $('#opt_indication_uuid').val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/addObservacao',
+                    data: 'uuid='+uuid+'&status='+status+'&observation='+observacao,
+                    dataType: 'json',
+                    success: function (dados) {
+                        if(dados){
+                            toastr.success('Adicionado');
+                            $('#modal_add_observation').modal('hide');
+                            var coluna = "<tr>";
+                            switch (status) {
+                                case "1":
+                                    status = 'Pendente';
+                                    break;
+                                case "2":
+                                    status = 'Cliente contatado';
+                                    break;
+                                case "3":
+                                    status = 'Visita Realizada';
+                                    break;
+                                case "4":
+                                    status = 'Proposta Enviada';
+                                    break;
+                                case "5":
+                                    status = 'Negocio ganho';
+                                    break;
+                                case "6":
+                                    status = 'Negocio perdido';
+                                    break;
+                                case "7":
+                                    status = 'Sem Consultor';
+                                    break;
+                                default:
+                                    break;
+                            }
+                            coluna += "<td>"+dados.status+"</td>";
+                            coluna += "<td>"+dados.observacao+"</td>";
+                            coluna += "<td>"+dados.data+"</td></tr>";
+                            $('#table_observation').append(coluna);
+                        }
+                        else{
+                            toastr.error('Erro ao adicionar');
+                        }
+                    }
+                });
+            }
 
             function ver_comisao(){
                 uuid = $('#opt_indication_uuid').val();
@@ -708,7 +944,7 @@
             }
 
             function editarComissao(uuid){
-                $("#myForm").attr("action","editaComissao/"+uuid);    
+                $("#myForm").attr("action","/editaComissao/"+uuid);    
                 $("#myForm").submit();
             }
 

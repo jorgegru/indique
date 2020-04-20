@@ -5,6 +5,7 @@ namespace Project\Controllers;
 use Project\Models\UsersModel;
 use Project\Models\CompaniesModel;
 use Project\Models\IndicationsModel;
+use Project\Models\ObservationIndicationModel;
 use Project\Models\ServicesModel;
 use \Psr\Container\ContainerInterface;
 use Respect\Validation\Validator as V;
@@ -69,15 +70,6 @@ class EditarIndicacaoController
                     'length' => 'O Nome deve ter de 6 a 100 caracteres',
                 ]
             ],
-            'cpf_cnpj' => [
-                'rules' => V::numeric()->notBlank()->noWhitespace()->length(11, 14),
-                'messages' => [
-                    'numeric' => 'Digite apenas números para o CPF_CNPJ',
-                    'notBlank' => 'O CPF_CNPJ não pode ser vazio',
-                    'noWhitespace' => 'O CPF_CNPJ não pode ter espaço',
-                    'length' => 'O CPF_CNPJ deve ter de 11 a 14 caracteres',
-                ]
-            ],
             'telefone' => [
                 'rules' => V::length(8, 20)->notBlank()->noWhitespace(),
                 'messages' => [
@@ -102,55 +94,11 @@ class EditarIndicacaoController
                     'contains' => 'Email inválido',
                 ]
             ],
-            'cep' => [
-                'rules' => V::length(8)->noWhitespace()->notBlank(),
+            'cargo' => [
+                'rules' => V::length(4, 45)->notBlank(),
                 'messages' => [
-                    'length' => 'CEP deve conter 8 caracteres',
-                    'notBlank' => 'CEP não pode ser vazio',
-                    'noWhitespace' => 'CEP não pode ter espaço',
-                ]
-            ],
-            'estado' => [
-                'rules' => V::notBlank()->length(2),
-                'messages' => [
-                    'notBlank' => 'Selecione um Estado',
-                    'length' => 'O Estado deve ter 2 caracteres',
-                ]
-            ],
-            'cidade' => [
-                'rules' => V::notBlank()->length(6, 100),
-                'messages' => [
-                    'length' => 'Cidade deve ter de 6 a 100 caracteres',
-                    'notBlank' => 'Cidade não pode ser vazio',
-                ]
-            ],
-            'bairro' => [
-                'rules' => V::notBlank()->length(6, 100),
-                'messages' => [
-                    'length' => 'Bairro deve ter de 6 a 100 caracteres',
-                    'notBlank' => 'Bairro não pode ser vazio',
-                ]
-            ],
-            'rua' => [
-                'rules' => V::notBlank()->length(6, 100),
-                'messages' => [
-                    'length' => 'Rua deve ter de 6 a 100 caracteres',
-                    'notBlank' => 'Rua não pode ser vazio',
-                ]
-            ],
-            'numero' => [
-                'rules' => V::notBlank()->length(1, 5)->numeric()->noWhitespace(),
-                'messages' => [
-                    'length' => 'Número deve ter de 1 a 5 caracteres',
-                    'notBlank' => 'Número não pode ser vazio',
-                    'noWhitespace' => 'Número não pode ter espaços',
-                    'numeric' => 'Número deve ser numérioco',
-                ]
-            ],
-            'complemento' => [
-                'rules' => V::length(0, 30),
-                'messages' => [
-                    'length' => 'Complemento deve ter até 30 caracteres',
+                    'length' => 'O Cargo deve conter de 4 a 45 caracteres',
+                    'notBlank' => 'Cargp não pode ser vazio',
                 ]
             ],
             'service_uuid' => [
@@ -178,19 +126,24 @@ class EditarIndicacaoController
             try{
                 $indicationsModel = new IndicationsModel($this->container);
 
-                $indication = $indicationsModel->validateCompanie(['cpf_cnpj'=>$metadata['cpf_cnpj'], 'uuid'=>$metadata['indication_uuid']]);
-
-                if($indication){
-                    $this->container->flash->addMessage('error', 'Indicação com mesmo CPF_CNPJ já existe');
-                    return $response->withRedirect($this->container->router->pathFor('editaIndicacao'));
+                if($metadata['cpf_cnpj']){
+                    $indication = $indicationsModel->validateCompanie(['cpf_cnpj'=>$metadata['cpf_cnpj'], 'uuid'=>$metadata['indication_uuid']]);
+                    if($indication){
+                        $this->container->flash->addMessage('error', 'Indicação com mesmo CPF_CNPJ já existe');
+                        return $response->withRedirect($this->container->router->pathFor('editaIndicacao'));
+                    }
                 }
-
+                else{
+                    $metadata['cpf_cnpj'] =  null;
+                }
 
                 $indication = $indicationsModel->update([  'uuid'=>$metadata['indication_uuid'],
                                             'name'=>$metadata['name'],
                                             'cpf_cnpj'=>$metadata['cpf_cnpj'], 
                                             'telefone'=>$metadata['telefone'],
+                                            'telefone'=>$metadata['telefone2'],
                                             'name_responsavel'=>$metadata['name_responsavel'],
+                                            'cargo'=>$metadata['cargo'],
                                             'email'=>$metadata['email'],
                                             'cep'=>$metadata['cep'],
                                             'estado'=>$metadata['estado'],
@@ -199,12 +152,19 @@ class EditarIndicacaoController
                                             'rua'=>$metadata['rua'],
                                             'numero'=>$metadata['numero'],
                                             'complemento'=>$metadata['complemento'],
+                                            'observation'=>$metadata['observation'],
                                             'service_uuid'=>$metadata['service_uuid'],
                                             //'company_uuid'=>$metadata['company_uuid'],
                                             'status'=>$metadata['status'],
                                             'user_uuid'=>$metadata['user_uuid']]);
 
                 if($indication){
+                    if($metadata['observation_status'] && $metadata['observation_status'] != " "){//adiciona observação status
+                        $ObservationIndicationModel = new ObservationIndicationModel($this->container);
+                        $observation = $ObservationIndicationModel->set(['uuid_indication'=>$metadata['indication_uuid'],
+                                                                'status'=>$metadata['status'],
+                                                                'observation'=>$metadata['observation_status']]);
+                    }
                     $this->container->flash->addMessage('success', 'Alterado com sucesso');
                     if($metadata['status'] == 5){
                         return $response->withRedirect($this->container->router->pathFor('cadastroContrato',[
@@ -235,9 +195,12 @@ class EditarIndicacaoController
     {
         $metadata = $request->getParsedBody();
      
+        $ObservationIndicationModel = new ObservationIndicationModel($this->container);
         $indicationsModel = new IndicationsModel($this->container);
 
         $indication = $indicationsModel->find(['uuid'=>$metadata['uuid']]);
+
+        $indication['observation_status'] = $ObservationIndicationModel->all(['uuid_indication'=>$metadata['uuid']]);
 
         return json_encode($indication);
     }

@@ -213,8 +213,7 @@
                                                     <label class="col-sm-2 control-label">Status:</label>
                                                     <div class="col-sm-6">
                                                         <select  id='opt_status' name="status" class="normal form-control select2" onchange="">
-                                                            <option value="">Selecione o Status</option>
-                                                            <option value="7">Sem Consultor</option>
+                                                            <option value="7" selected>Sem Consultor</option>
                                                             <option value="1">Pendente</option>
                                                             <option value="2">Cliente Contatado</option>
                                                             <option value="3">Visita Realizada</option>
@@ -227,7 +226,7 @@
 
                                                 <div class="form-group">
                                                     <div class="col-sm-3 col-sm-offset-2">
-                                                        <button id="buscar" type="button" class="btn btn-primary" onclick="listaUsuarios()">Buscar</button>
+                                                        <button id="buscar" type="button" class="btn btn-primary" onclick="listaIndicacoes()">Buscar</button>
                                                     </div>
                                                 </div>
                                             </div>    
@@ -272,6 +271,7 @@
                                                                             <th width="10"><i class="fa fa-edit"></i></th>
                                                                             <th width="10"><i class="fa fa-trash-o"></i></th>
                                                                         <?php }?>
+                                                                            <th width="10"><i class="fa fa-list"></i></th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody  id="tbIndicacaoBody">
@@ -292,32 +292,81 @@
 
                     <!-- MODAL VER COMISSÕES-->
                     <div class="modal fade" id="modal_commission" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                    <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title" id="myModalLabel">Comissões</h4>
-                            </div>
-                            <div class="modal-body">
-                            <table id='table_commissions' class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Valor</th>
-                                        <th>Data</th>
-                                        <th>Status</th>
-                                        <th>Observação</th>
-                                        <th width="10"><i class="fa fa-edit"></i></th>
-                                        <th width="10"><i class="fa fa-trash-o"></i></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody_commission">
-                                
-                                </tbody>
-                            </table>
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Bônus</h4>
+                                </div>
+                                <div class="modal-body">
+                                <table id='table_commissions' class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Valor</th>
+                                            <th>Data</th>
+                                            <th>Status</th>
+                                            <th>Observação</th>
+                                            <th width="10"><i class="fa fa-edit"></i></th>
+                                            <th width="10"><i class="fa fa-trash-o"></i></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody_commission">
+                                    
+                                    </tbody>
+                                </table>
 
+                                </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- MODAL OBSERVACAO-->
+                    <div class="modal fade" id="modal_observation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Observações</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" id="txt_status_modal">
+                                    <!-- <button class="btn btn-default pull-right" onclick="modal_adicionar_observacao()"><i class="fa fa-plus"></i> Adicionar Observação</button> -->
+                                    <table id='table_observation' class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Status</th>
+                                                <th width="550">Observação</th>
+                                                <th width="150">Data/hora da criação</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbody_observation">
+                                        
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MODAL ADICIONAR OBSERVACAO-->
+                    <div class="modal fade" id="modal_add_observation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Adicionar Observação</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <button class="btn btn-default pull-right" onclick="add_observacao()"><i class="fa fa-plus"></i></button>
+                                    <div id="div_observation" class="form-group has-feedback">
+                                        <div class="col-sm-11">
+                                            <input type="text" class="form-control" id="txt_observation_modal" name="observation_modal">
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
 
@@ -385,6 +434,7 @@
 
         <script>
         $('.select2').select2();
+        listaIndicacoes();
 
             // function atualizaUsuario(nome,valor){
             //     $.ajax({
@@ -402,7 +452,7 @@
             //     });
             // }
 
-            function listaUsuarios(){
+            function listaIndicacoes(){
                 var tabela = '';
                 var status = '';
                 var nome = '';
@@ -525,6 +575,7 @@
                                 tabela += '<td><button onclick="editarIndicacao(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
                                 tabela += '<td><button onclick="excluirIndicacao(\''+resposta[i]['uuid']+'\',\''+i+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-trash-o"></i></button></td>';
                             <?php }?>
+                            tabela += '<td><button onclick="ver_observacao(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs" title="Ver observações"><i class="fa fa-list"></i></button></td>';                            
                             tabela += '</tr>';
                         }
                         $('#tbIndicacaoBody').html(tabela);
@@ -535,6 +586,121 @@
                             'aLengthMenu' :	[[10, 25, 50, -1], [10, 25, 50, "Tudo"]],
                             'oLanguage'   : {"sEmptyTable": "Nenhum registro encontrado", "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros", "sInfoEmpty": "Mostrando 0 até 0 de 0 registros", "sInfoFiltered": "(Filtrados de _MAX_ registros)", "sInfoPostFix": "", "sInfoThousands": ".", "sLengthMenu": "_MENU_ resultados por página", "sLoadingRecords": "Carregando...", "sProcessing": "Processando...", "sZeroRecords": "Nenhum registro encontrado", "sSearch": "Pesquisar", "oPaginate": { "sNext": "Próximo", "sPrevious": "Anterior", "sFirst": "Primeiro", "sLast": "Último" }, "oAria": { "sSortAscending": ": Ordenar colunas de forma ascendente", "sSortDescending": ": Ordenar colunas de forma descendente"}}
                         });
+                    }
+                });
+            }
+
+            function ver_observacao(uuid){
+                $.get('getObservacao/'+uuid,function(dados){
+                    dados = JSON.parse(dados);
+                    var tabela = "";
+                    var status = "";
+                    
+                    for(var i = 0; i<dados.length; i++) {
+                        tabela += '<tr>';
+                        switch (dados[i]['status']) {
+                            case "1":
+                                status = 'Pendente';
+                                break;
+                            case "2":
+                                status = 'Cliente contatado';
+                                break;
+                            case "3":
+                                status = 'Visita Realizada';
+                                break;
+                            case "4":
+                                status = 'Proposta Enviada';
+                                break;
+                            case "5":
+                                status = 'Negocio ganho';
+                                break;
+                            case "6":
+                                status = 'Negocio perdido';
+                                break;
+                            case "7":
+                                status = 'Sem Consultor';
+                                break;
+                            default:
+                                break;
+                        }
+                        var data = dados[i]['create_time'];
+                        
+                        var vetor = data.split(" ");
+                        var vetor2 = vetor[0].split("-");
+                        
+                        var ano = vetor2[0];
+                        var mes = vetor2[1];
+                        var dia = vetor2[2];
+                        var horario = vetor[1];
+
+                        tabela += "<td>"+status+"</td>";
+                        tabela += '<td>'+dados[i]['observation']+'</td>';
+                        tabela += "<td>"+dia+"/"+mes+"/"+ano+" - "+horario+"</td>";
+
+                        tabela += '</tr>';
+                    }
+                    $('#tbody_observation').html(tabela);
+                    $('#modal_observation').modal(); 
+                });
+            }
+
+            function modal_adicionar_observacao(){
+                $('#txt_observation_modal').val("");
+                $('#modal_add_observation').modal();
+            }
+
+            function add_observacao(){
+                var observacao = $('#txt_observation_modal').val();
+                if(observacao == "" || observacao == " " || !observacao){
+                    toastr.warning('Digite uma observação');
+                    return false;
+                }
+                var status = $('#txt_status_modal').val();
+                var uuid = $('#opt_indication_uuid').val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/addObservacao',
+                    data: 'uuid='+uuid+'&status='+status+'&observation='+observacao,
+                    dataType: 'json',
+                    success: function (dados) {
+                        if(dados){
+                            toastr.success('Adicionado');
+                            $('#modal_add_observation').modal('hide');
+                            var coluna = "<tr>";
+                            switch (status) {
+                                case "1":
+                                    status = 'Pendente';
+                                    break;
+                                case "2":
+                                    status = 'Cliente contatado';
+                                    break;
+                                case "3":
+                                    status = 'Visita Realizada';
+                                    break;
+                                case "4":
+                                    status = 'Proposta Enviada';
+                                    break;
+                                case "5":
+                                    status = 'Negocio ganho';
+                                    break;
+                                case "6":
+                                    status = 'Negocio perdido';
+                                    break;
+                                case "7":
+                                    status = 'Sem Consultor';
+                                    break;
+                                default:
+                                    break;
+                            }
+                            coluna += "<td>"+dados.status+"</td>";
+                            coluna += "<td>"+dados.observacao+"</td>";
+                            coluna += "<td>"+dados.data+"</td></tr>";
+                            $('#table_observation').append(coluna);
+                        }
+                        else{
+                            toastr.error('Erro ao adicionar');
+                        }
                     }
                 });
             }
