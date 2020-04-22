@@ -1146,15 +1146,15 @@
                         else                                    observation = "<td>"+resposta[i]['observation']+"</td>";
                         
                         botao = '';
-                        <?php if($user_type != 4){?>
+                        <?php if($user_type == 1 || $user_type == 2){?>
                             if(resposta[i]['paid'] == 1)    botao = "<button onclick='payCommission(\""+resposta[i]['uuid']+"\",\""+i+"\");' type='button' title='Pagar' class='btn btn-default btn-xs'><i class='fa fa-thumbs-down'></i></button>";
                             else                            botao = "<button onclick='unpaidCommission(\""+resposta[i]['uuid']+"\",\""+i+"\");' type='button' title='Não Pago' class='btn btn-default btn-xs'><i class='fa fa-thumbs-up'></i></button>";
                         <?php }?>
 
-                        <?php if($user_type != 4){?>
-                            if(resposta[i]['paid'] == 1)    status = "<td style='color:red' id=pay"+i+">Não Pago "+botao+"</td>";
-                            else                            status = "<td style='color:green' id=pay"+i+">Pago "+botao+"</td>";
-                        <?php }?>
+                        
+                        if(resposta[i]['paid'] == 1)    status = "<td style='color:red' id=pay"+i+">Não Pago "+botao+"</td>";
+                        else                            status = "<td style='color:green' id=pay"+i+">Pago "+botao+"</td>";
+                        
 
                         tabela += '<tr id="'+resposta[i]['uuid']+'4">';
                         tabela += '<td>R$'+(resposta[i]['value_commission']/100)+'</td>';
@@ -1164,8 +1164,11 @@
                         <?php if($user_type == 1 || $user_type == 2){?>
                             tabela += '<td><button onclick="editarComissao(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
                             tabela += '<td><button onclick="excluirComissao(\''+resposta[i]['uuid']+'\',\''+resposta[i]['uuid']+'4\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-trash-o"></i></button></td>';
-                            tabela += '</tr>';
+                        <?php }else{?>
+                            tabela += '<td></td>'
+                            tabela += '<td></td>'
                         <?php }?>
+                            tabela += '</tr>';
                         
 
                     }

@@ -225,9 +225,15 @@
                             }
                         }
                     }
-                    else if(isset($success[0]))
+                    else if(isset($success[0])){
                         echo "toastr.success('".$success[0]."');";
-                    
+                        echo" 
+                        $('#txt_name').val('');  
+                        $('#txt_email').val('');
+                        $('#txt_password').val('');
+                        $('#txt_confirm_password').val('');
+                        $('#txt_cpf').val('');";
+                    }
                     else if(isset($error[0]))
                         echo "toastr.error('".$error[0]."');";    
                  ?>

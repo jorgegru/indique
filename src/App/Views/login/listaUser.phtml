@@ -120,7 +120,7 @@
                                                         <select  id='opt_status' name="status" class="normal form-control select2" onchange="">
                                                             <option value="">Selecione o Status</option>
                                                             <option value="1">Ativo</option>
-                                                            <option value="2">Pendente</option>
+                                                            <option value="2" selected>Pendente</option>
                                                             <option value="3">Desativado</option>
                                                         </select>
                                                     </div>    
@@ -251,7 +251,7 @@
 
         <script>
         $('.select2').select2();
-
+        listaUsuarios();
             // function atualizaUsuario(nome,valor){
             //     $.ajax({
             //         type: 'POST',
