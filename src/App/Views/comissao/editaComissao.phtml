@@ -13,7 +13,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>INDIQUE | Editar Comissão</title>
+        <title>INDIQUE | Editar Bônus</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <!-- Bootstrap 3.3.7 -->
@@ -57,7 +57,7 @@
 
                 <section class="content-header">
                     <h1>
-                    Comissão
+                    Bônus
                         <small></small>
                     </h1>
                     <ol class="breadcrumb">
@@ -72,7 +72,7 @@
                             <!-- TABLE: LATEST ORDERS -->
                             <div class="box box-info">
                                 <div class="box-header with-border">
-                                <h3 class="box-title">Editar Comissões</h3>
+                                <h3 class="box-title">Editar Bônus</h3>
                                 <div class="box-tools pull-right">
                                     
                                 </div>
@@ -102,10 +102,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group has-feedback">
-                                                    <label class="col-sm-2 control-label">Comissões:</label>
+                                                    <label class="col-sm-2 control-label">Bônus:</label>
                                                     <div class="col-sm-6">
                                                         <select  id='opt_commission_uuid' name="commission_uuid" class="normal form-control select2" onchange="carregaComissao();revisaCampos();">
-                                                            <option value="">Selecione uma Comissao</option>
+                                                            <option value="">Selecione um Bônus</option>
                                                             <?php
                                                                 if($commissions != ''){
                                                                     foreach($commissions as $value){

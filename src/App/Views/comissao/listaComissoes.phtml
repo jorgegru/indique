@@ -57,7 +57,7 @@
 
                 <section class="content-header">
                     <h1>
-                    Comissões
+                    Bônus
                         <small></small>
                     </h1>
                     <ol class="breadcrumb">
@@ -72,7 +72,7 @@
                             <!-- TABLE: LATEST ORDERS -->
                             <div class="box box-info">
                                 <div class="box-header with-border">
-                                <h3 class="box-title">Listar Comissões</h3>
+                                <h3 class="box-title">Listar Bônus</h3>
                                 <div class="box-tools pull-right">
                                     
                                 </div>
@@ -133,6 +133,11 @@
                                                                 <option value="1">Não Pagas</option>
                                                                 <option value="2">Pagas</option>
                                                             </select>
+                                                        </div>
+
+                                                        <div class="col-sm-2">    
+                                                            <label class="col-sm-10 control-label">Meus Bônus:</label>
+                                                            <input type="checkbox" style="width:20px;" value="1" name="meus_bonus" id="chk_meus_bonus" class="checkbox_check" checked>
                                                         </div>                 
                                                     </div>
                                                     <div class="form-group">
@@ -158,7 +163,7 @@
                             <!-- TABLE: LATEST ORDERS -->
                             <div class="box box-info">
                                 <div class="box-header with-border">
-                                <h3 class="box-title">Lista de Usuários</h3>
+                                <h3 class="box-title">Lista de Bônus</h3>
                                 <div class="box-tools pull-right">
                                     
                                 </div>
@@ -207,7 +212,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title" id="myModalLabel">Comissões</h4>
+                                <h4 class="modal-title" id="myModalLabel">Bônus</h4>
                             </div>
                             <div class="modal-body">
                             <table id='table_commissions' class="table table-hover">
@@ -296,6 +301,7 @@
 
         <script>
         $('.select2').select2();
+        listaComissoes();
 
             // function atualizaUsuario(nome,valor){
             //     $.ajax({
@@ -321,6 +327,13 @@
                 var comissao = '';
                 var consultor= '';
                 var join = '';
+                
+                if ($('input.checkbox_check').is(':checked')) {
+                    var my_commission = true;
+                }
+                else{
+                    var my_commission = false;
+                }
 
                 $.ajax({
                     type: 'POST',
@@ -333,16 +346,23 @@
                     "&mes="+$('#mes').val()+
                     "&ano="+$('#ano').val()+
                     "&empresa="+$('#txt_empresa').val()+
+                    "&my_commission="+my_commission+
                     "&status="+$('#status').val(),
                     success: function(resposta){
                         var t = $('#tbIndicacao').dataTable();t.fnDestroy();
                         for(var i=0; i<resposta.length;i++){
-                            if(resposta[i]['paid'] == 1){
-                                status = "<td style='color:red' id=pay"+i+">Não Pago <button onclick='payCommission(\""+resposta[i]['uuid']+"\",\""+i+"\");' type='button' title='Pagar' class='btn btn-default btn-xs'><i class='fa fa-thumbs-down'></i></button></p>";
-                            } 
-                            else{
-                                status = "<td style='color:green' id=pay"+i+">Pago <button onclick='unpaidCommission(\""+resposta[i]['uuid']+"\",\""+i+"\");' type='button' title='Não Pago' class='btn btn-default btn-xs'><i class='fa fa-thumbs-up'></i></button></p>";
-                            }
+                            
+                            botao = '';
+                            <?php if($user_type == 1 || $user_type == 2){?>
+                                if(resposta[i]['paid'] == 1)    botao = "<button onclick='payCommission(\""+resposta[i]['uuid']+"\",\""+i+"\");' type='button' title='Pagar' class='btn btn-default btn-xs'><i class='fa fa-thumbs-down'></i></button>";
+                                else                            botao = "<button onclick='unpaidCommission(\""+resposta[i]['uuid']+"\",\""+i+"\");' type='button' title='Não Pago' class='btn btn-default btn-xs'><i class='fa fa-thumbs-up'></i></button>";
+                            <?php }?>
+
+                            
+                            if(resposta[i]['paid'] == 1)    status = "<td style='color:red' id=pay"+i+">Não Pago "+botao+"</td>";
+                            else                            status = "<td style='color:green' id=pay"+i+">Pago "+botao+"</td>";
+                            
+                            
                             
                             if(!resposta[i]['observation']){
                                 observacao = " ";
@@ -353,7 +373,7 @@
 
                             tabela += '<tr id="'+i+'">';
                             tabela += status+'</td>';
-                            tabela += '<td>'+resposta[i]['value_commission']+'</td>';
+                            tabela += '<td>R$'+(resposta[i]['value']/100)+'</td>';
                             tabela += '<td>'+resposta[i]['date']+'</td>';
                             tabela += '<td>'+observacao+'</td>';
                             tabela += '<td>'+resposta[i]['name']+'</td>';//criador

@@ -134,6 +134,7 @@ class CadastroContratoController
                 if($metadata['start_date'] == $metadata['end_date']){
                     $metadata['start_date'] = null;
                     $metadata['end_date'] = null;
+                    $metadata['commission'] = 1;
                 }
 
                 //arrumando a data
@@ -151,6 +152,7 @@ class CadastroContratoController
 
                 $indication = $indicationsModel->update([   'uuid'=>$metadata['indication_uuid'],
                                                             'value_commission'=>$metadata['value_commission'], 
+                                                            'commission'=>$metadata['commission'],
                                                             'start_date'=>$metadata['start_date'],
                                                             'end_date'=>$metadata['end_date'],
                 ]);

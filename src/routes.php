@@ -78,6 +78,12 @@ return function (App $app) {
             $this->post('', Project\Controllers\CadastroCompaniaController::class . ':cadastrarCompania')->setName('cadastrarCompania');
         });  
 
+    // Adicionar Observaco    
+        $app->post('/addObservacao', Project\Controllers\AdicionarObservacaoController::class . ':addObservacao')->setName('addObservacao');
+    
+    //Get observacoes
+        $app->get('/getObservacao/{uuid}', Project\Controllers\ObservationIndicationController::class . ':getObservacao')->setName('getObservacao');
+
     // Cadastro Indicacao
         $app->group('/cadastroIndicacao', function () {
             $this->get('', Project\Controllers\CadastroIndicacaoController::class . ':cadastroIndicacao')->setName('cadastroIndicacao');
@@ -121,7 +127,7 @@ return function (App $app) {
     //Get Commission
     $app->get('/getCommissionsIndication/{uuid}', Project\Controllers\CommissionController::class . ':getCommissionsIndication')->setName('getCommissionsIndication');
     
-    //Excluir Comissao
+    //Excluir Comissao 
     $app->post('/excluiComissao', Project\Controllers\ExcluirComissaoController::class . ':excluiComissao')->setName('excluiComissao');
 
     //Editar Comissão

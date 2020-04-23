@@ -94,7 +94,7 @@ class CommissionController
         $join['users']['campo2'] = 'indications.creator_uuid';
         $campos = "commissions.uuid,
         commissions.paid,
-        commissions.value_commission/100 value,
+        commissions.value_commission value,
         DATE_FORMAT(commissions.date,'%d-%m-%Y') date,
         commissions.observation,
         users.name, 
@@ -104,6 +104,11 @@ class CommissionController
 
         if($tipo == 4){
             $metadata['creator_uuid'] = $_SESSION['user']['id'];
+        }
+
+        //MINHAS COMISSOES
+        if($metadata['my_commission'] != ""){
+            $data['indications.creator_uuid'] = $_SESSION['user']['id'];
         }
 
         //NR CONTRATO
