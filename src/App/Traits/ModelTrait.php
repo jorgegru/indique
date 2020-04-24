@@ -308,6 +308,28 @@ trait ModelTrait {
         }
     }
 
+    public function allLeftJoinFields(array $join, $campos, $fields, $filtro="")
+    {
+        try{
+            
+            foreach ($join as $tabela => $row){
+                $sqlJoin[] = "LEFT JOIN $tabela ON $tabela.".$row['campo']."=".$row['campo2'];
+            }
+
+            $sql = "SELECT DISTINCT {$campos} FROM {$this->table}
+            ".implode(' ', $sqlJoin)."
+            WHERE ". $fields . $filtro;
+
+            $stmt = $this->conn->prepare($sql);
+
+            $stmt->execute();
+            
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        }catch(\PDOException $e){
+            throw $e;
+        }
+    }
+
     public function allInnerJoin(array $dados, array $join, $campos, $filtro="")
     {
         try{

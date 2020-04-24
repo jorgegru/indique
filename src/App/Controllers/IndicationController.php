@@ -16,7 +16,7 @@ class IndicationController
        $this->container = $container;
    }
 
-   public function filtroLista($request, $response, $args) 
+   public function filtroLista($request, $response, $args)  
    {
 		$metadata = $request->getParsedBody();
 		
@@ -30,6 +30,32 @@ class IndicationController
         if(isset($metadata['nome']))$data[$metadata['nome']] = '%'.$metadata['valor'].'%';
         if(isset($metadata['status']))  $data['status'] = $metadata['status'];
         if(isset($metadata['filtro']))  $filtro = $metadata['filtro'];
+        if($metadata['status'] == 0){
+            $data['status'] = 1;
+            $data2['indications.status'] = 7;
+        }
+
+        if(isset($data2['indications.status'])){
+            if($tipo == 4){
+                $fields = " creator_uuid = '%".$_SESSION['user']['id']."%' AND (indications.status = 1 OR indications.status = 7) ";
+            }
+            else if($tipo == 3){
+                $fields = " (indications.user_uuid = '%".$_SESSION['user']['id']."%' OR indications.creator_uuid = '%".$_SESSION['user']['id']."%') AND (indications.status = 1 OR indications.status = 7) ";
+            }
+            else{
+                $fields = " indications.status = 1 OR indications.status = 7 ";
+            }
+            $join['users']['campo'] = 'uuid';
+            $join['users']['campo2'] = 'indications.creator_uuid';
+            $campos = "indications.*, users.name as user_name";
+            $indication = $indicationsModel->allLeftJoinFields($join,$campos,$fields, $filtro);
+            for($i=0;$i<count($indication);$i++){
+                $busca['uuid'] = $indication[$i]['user_uuid'];
+                $nome = $usersModel->find($busca);
+                $indication[$i]['user_name'] = $nome['name'];
+            }
+            return json_encode($indication);
+        }
         
         if($tipo == 4){
             $data['creator_uuid'] = '%'.$_SESSION['user']['id'].'%';
@@ -59,7 +85,7 @@ class IndicationController
             return json_encode($indication);
         }
         
-
+        
         if(isset($metadata['join'])){
             $join['users']['campo'] = 'uuid';
             $join['users']['campo2'] = 'indications.creator_uuid';
