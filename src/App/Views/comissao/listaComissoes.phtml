@@ -130,7 +130,7 @@
                                                         <div class="col-sm-2">            
                                                             <select class="form-control" name="status" id="status">
                                                                 <option value="">Todas</option>
-                                                                <option value="1">Não Pagas</option>
+                                                                <option value="1" <?php if($_SESSION['user']['user_type'] == 1 || $_SESSION['user']['user_type'] == 2) echo"selected";?>>Não Pagas</option>
                                                                 <option value="2">Pagas</option>
                                                             </select>
                                                         </div>
