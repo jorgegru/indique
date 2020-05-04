@@ -35,7 +35,7 @@ class LoginController
    {
 	   	$metadata = $request->getParsedBody();
 		$validator  = $this->container->validator->validate($request, [
-			'username' => V::length(6, 100)->alnum('@.:')->noWhitespace()->notBlank(),
+			'username' => V::length(6, 100)->alnum('@.:_')->noWhitespace()->notBlank(),
 			'password' => V::length(6, 25)->noWhitespace()->notBlank(),
         ]);
         
