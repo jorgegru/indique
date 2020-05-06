@@ -30,25 +30,26 @@ class IndicationController
         if(isset($metadata['nome']))$data[$metadata['nome']] = '%'.$metadata['valor'].'%';
         if(isset($metadata['status']))  $data['status'] = $metadata['status'];
         if(isset($metadata['filtro']))  $filtro = $metadata['filtro'];
-        if($metadata['status'] == 0){
+        if($metadata['status'] == 0 && isset($metadata['status'])){
             $data['status'] = 1;
             $data2['indications.status'] = 7;
         }
 
         if(isset($data2['indications.status'])){
             if($tipo == 4){
-                $fields = " creator_uuid = '%".$_SESSION['user']['id']."%' AND (indications.status = 1 OR indications.status = 7) ";
+                $fields = " creator_uuid = '".$_SESSION['user']['id']."' AND (indications.status = 1 OR indications.status = 7) ";
             }
             else if($tipo == 3){
-                $fields = " (indications.user_uuid = '%".$_SESSION['user']['id']."%' OR indications.creator_uuid = '%".$_SESSION['user']['id']."%') AND (indications.status = 1 OR indications.status = 7) ";
+                $fields = " users.uuid = '".$_SESSION['user']['id']."' AND (indications.status = 1 OR indications.status = 7) ";
             }
             else{
                 $fields = " indications.status = 1 OR indications.status = 7 ";
             }
-            $join['users']['campo'] = 'uuid';
-            $join['users']['campo2'] = 'indications.creator_uuid';
+            // $join['users']['campo'] = 'uuid';
+            // $join['users']['campo2'] = 'indications.creator_uuid';
+            $join = "LEFT JOIN users ON users.uuid=indications.creator_uuid OR users.uuid=indications.user_uuid";
             $campos = "indications.*, users.name as user_name";
-            $indication = $indicationsModel->allLeftJoinFields($join,$campos,$fields, $filtro);
+            $indication = $indicationsModel->allJoinFields($join,$campos,$fields, $filtro);
             for($i=0;$i<count($indication);$i++){
                 $busca['uuid'] = $indication[$i]['user_uuid'];
                 $nome = $usersModel->find($busca);

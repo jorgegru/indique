@@ -141,7 +141,7 @@ class EditarIndicacaoController
                                             'name'=>$metadata['name'],
                                             'cpf_cnpj'=>$metadata['cpf_cnpj'], 
                                             'telefone'=>$metadata['telefone'],
-                                            'telefone'=>$metadata['telefone2'],
+                                            'telefone2'=>$metadata['telefone2'],
                                             'name_responsavel'=>$metadata['name_responsavel'],
                                             'cargo'=>$metadata['cargo'],
                                             'email'=>$metadata['email'],
