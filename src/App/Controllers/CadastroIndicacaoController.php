@@ -58,11 +58,10 @@ class CadastroIndicacaoController
                 ]
             ],
             'telefone' => [
-                'rules' => V::length(8, 20)->notBlank()->noWhitespace(),
+                'rules' => V::length(8, 20)->notBlank(),
                 'messages' => [
                     'length' => 'Telefone deve ter de 8 a 20 caracteres',
                     'notBlank' => 'Telefone não pode ser vazio',
-                    'noWhitespace' => 'Telefone não pode ter espaços',
                 ]
             ],
             'name_responsavel' => [
@@ -141,6 +140,9 @@ class CadastroIndicacaoController
                 }
 
                 $metadata['commission'] = 1;
+
+                $metadata['telefone'] = preg_replace('/\D+/', '', $metadata['telefone']);//arrumando o telefone
+                $metadata['telefone2'] = preg_replace('/\D+/', '', $metadata['telefone2']);
 
                 $IndicationsModel = new IndicationsModel($this->container);
 

@@ -514,7 +514,7 @@
 		<!-- <script src='plugins/fastclick/fastclick.min.js'></script> -->
 		<!-- AdminLTE App -->
         <script src="template/dist/js/app.min.js" type="text/javascript"></script>
-        <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script> -->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script> 
 	<!-- InputMask -->
 	    <script src="template/plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
 		<script src="template/plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
@@ -566,7 +566,7 @@
 
         <script>
         $('.select2').select2();
-        //$('#txt_telefone,#txt_telefone2').mask("(99) 9999-9999?9")
+        $('#txt_telefone,#txt_telefone2').mask("(99) 9999-9999?9");
 
         <?php if($user_type == 3 || $user_type == 4) echo('$("#div_admin").hide();');?>
        
