@@ -71,11 +71,10 @@ class EditarIndicacaoController
                 ]
             ],
             'telefone' => [
-                'rules' => V::length(8, 20)->notBlank()->noWhitespace(),
+                'rules' => V::length(8, 20)->notBlank(),
                 'messages' => [
                     'length' => 'Telefone deve ter de 8 a 20 caracteres',
                     'notBlank' => 'Telefone não pode ser vazio',
-                    'noWhitespace' => 'Telefone não pode ter espaços',
                 ]
             ],
             'name_responsavel' => [
@@ -136,6 +135,9 @@ class EditarIndicacaoController
                 else{
                     $metadata['cpf_cnpj'] =  null;
                 }
+
+                $metadata['telefone'] = preg_replace('/\D+/', '', $metadata['telefone']);//arrumando o telefone
+                $metadata['telefone2'] = preg_replace('/\D+/', '', $metadata['telefone2']);
 
                 $indication = $indicationsModel->update([  'uuid'=>$metadata['indication_uuid'],
                                             'name'=>$metadata['name'],

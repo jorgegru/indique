@@ -67,6 +67,13 @@ class EditarLoginController
                     'contains' => 'Email inválido',
                 ]
             ],
+            'telefone' => [
+                'rules' => V::length(8, 20)->notBlank(),
+                'messages' => [
+                    'length' => 'Telefone deve ter de 8 a 20 caracteres',
+                    'notBlank' => 'Telefone não pode ser vazio',
+                ]
+            ],
             'password' => [
                 'rules' => V::length(6, 25)->noWhitespace()->notBlank(),
                 'messages' => [
@@ -115,7 +122,7 @@ class EditarLoginController
 		if ($validator->isValid()) {
             try{
 
-            
+                $metadata['telefone'] = preg_replace('/\D+/', '', $metadata['telefone']);//arrumando o telefone
             
                 $UsersModel = new UsersModel($this->container);
 
@@ -135,6 +142,7 @@ class EditarLoginController
                     $user = $UsersModel->update(['uuid'=>$metadata['user_uuid'],
                                                 'user_type'=>$metadata['user_type'],
                                                 'email'=>$metadata['email'], 
+                                                'telefone'=>$metadata['telefone'], 
                                                 'password'=>$metadata['password'],
                                                 'cpf'=>$metadata['cpf'],
                                                 'name'=>$metadata['name'],

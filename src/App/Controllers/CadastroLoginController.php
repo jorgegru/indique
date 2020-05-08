@@ -66,6 +66,13 @@ class CadastroLoginController
                     'contains' => 'Email inválido',
                 ]
             ],
+            'telefone' => [
+                'rules' => V::length(8, 20)->notBlank(),
+                'messages' => [
+                    'length' => 'Telefone deve ter de 8 a 20 caracteres',
+                    'notBlank' => 'Telefone não pode ser vazio',
+                ]
+            ],
             'password' => [
                 'rules' => V::length(6, 25)->noWhitespace()->notBlank(),
                 'messages' => [
@@ -120,6 +127,8 @@ class CadastroLoginController
 
                 $user = $UsersModel->validateUser(['email'=>$metadata['email'], 'cpf'=>$metadata['cpf']]);
 
+                $metadata['telefone'] = preg_replace('/\D+/', '', $metadata['telefone']);//arrumando o telefone
+
                 if($user){
                     $this->container->flash->addMessage('error', 'Usuário já existente');
                     return $response->withRedirect($this->container->router->pathFor('cadastroLogin'));
@@ -132,6 +141,7 @@ class CadastroLoginController
                     $user = $UsersModel->set([  'uuid'=>$uuid,
                                                 'user_type'=>$metadata['user_type'],
                                                 'email'=>$metadata['email'], 
+                                                'telefone'=>$metadata['telefone'], 
                                                 'password'=>$metadata['password'],
                                                 'cpf'=>$metadata['cpf'],
                                                 'name'=>$metadata['name'],
@@ -174,6 +184,13 @@ class CadastroLoginController
                     'notBlank' => 'Email não pode ser vazio',
                     'noWhitespace' => 'Email não pode ter espaçoes vazios',
                     'contains' => 'Email inválido',
+                ]
+            ],
+            'telefone' => [
+                'rules' => V::length(8, 20)->notBlank(),
+                'messages' => [
+                    'length' => 'Telefone deve ter de 8 a 20 caracteres',
+                    'notBlank' => 'Telefone não pode ser vazio',
                 ]
             ],
             'password' => [
@@ -221,6 +238,8 @@ class CadastroLoginController
 
                 $user = $UsersModel->validateUser(['email'=>$metadata['email'], 'cpf'=>$metadata['cpf']]);
 
+                $metadata['telefone'] = preg_replace('/\D+/', '', $metadata['telefone']);//arrumando o telefone
+                
                 if($user){
                     $this->container->flash->addMessage('error', 'Usuário já existente');
                     return $response->withRedirect($this->container->router->pathFor('cadastroLoginDeslogado'));
@@ -232,6 +251,7 @@ class CadastroLoginController
                     $user = $UsersModel->set([  'uuid'=>$uuid,
                                                 'user_type'=>$metadata['user_type'],
                                                 'email'=>$metadata['email'], 
+                                                'telefone'=>$metadata['telefone'],
                                                 'password'=>$metadata['password'],
                                                 'cpf'=>$metadata['cpf'],
                                                 'name'=>$metadata['name'],
