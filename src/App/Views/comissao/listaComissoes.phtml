@@ -378,7 +378,7 @@
                             tabela += '<td>'+observacao+'</td>';
                             tabela += '<td>'+resposta[i]['name']+'</td>';//criador
 
-                            <?php if($user_type != 4){?>
+                            <?php if($user_type == 1 || $user_type == 2){?>
                                 tabela += '<td><button onclick="editarComissao(\''+resposta[i]['uuid']+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></td>';
                                 tabela += '<td><button onclick="excluirComissao(\''+resposta[i]['uuid']+'\',\''+i+'\');" type="button" class="btn btn-default btn-xs"><i class="fa fa-trash-o"></i></button></td>';
                             <?php }?>

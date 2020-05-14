@@ -92,7 +92,7 @@
                                                 <div class="form-group">
                                                     <label class="col-sm-2 control-label">Razão Social:</label>
                                                     <div class="col-sm-6">
-                                                        <input type="text" class="form-control" id="txt_corporate" name="corporate" placeholder="Razão Social" onkeyup="revisaCampos();" onchange="
+                                                        <input type="text" value="<?php echo $indication['name']; ?>" class="form-control" id="txt_corporate" name="corporate" placeholder="Razão Social" onkeyup="revisaCampos();" onchange="
                                                             if(this.value.length<6 || this.value.length>100){
                                                                 toastr.error('A Razão Social deve ter de 6 a 100 caracteres!');
                                                                 $('#txt_corporate').css('border-color','red');
@@ -299,11 +299,11 @@
                                                         <div class="col-sm-3">
                                                             <input type="text" maxlength="30" class="form-control" id="txt_value_commission" name="value_commission2" placeholder="Valor" value="" onchange="
                                                                 if(this.value == ''){
-                                                                    toastr.error('Digite um valor para o contrato!');
-                                                                    $('#txt_value_contract').css('border-color','red');
+                                                                    toastr.error('Digite um valor para o bônus!');
+                                                                    $('#txt_value_commission').css('border-color','red');
                                                                 }
                                                                 else{
-                                                                    $('#txt_value_contract').css('border-color','#d2d6de');
+                                                                    $('#txt_value_commission').css('border-color','#d2d6de');
                                                                 }
                                                                 revisaCampos();
                                                                 tratarValor('txt_value_commission');

@@ -7,7 +7,7 @@ use Project\Models\IndicationsModel;
 use \Psr\Container\ContainerInterface;
 use Respect\Validation\Validator as V;
 
-class CadastroComissaoController
+class CadastroComissaoController 
 {
    protected $container;
 
@@ -16,6 +16,16 @@ class CadastroComissaoController
    {
        $this->container = $container;
    }
+
+   public function cadastrarComissao($request, $response, $args)
+   {
+        $metadata = $request->getParsedBody();
+
+        $uploadedFiles = $files['anexo'];
+        $uploadedFiles = $request->getUploadedFiles();
+
+       return true;
+    }
 
    public function cadastroComissao($data)
    {

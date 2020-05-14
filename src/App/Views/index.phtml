@@ -643,7 +643,7 @@
                                     if(resposta[i]['status'] == 5)  ganhos++;
                                     else if(resposta[i]['status'] == 6)  perdidos++;
                                     else if(resposta[i]['status'] != 7) andamento++;
-                                    if(resposta[i]['status'] == status2){
+                                    if(resposta[i]['status'] != 5 && resposta[i]['status'] != 6){
 
                                         if(resposta[i]['status'] == 1){ status = "<td style='color:orange'><b>Atribuída</b>"; pendentes++;}
                                         else if(resposta[i]['status'] == 2) status = "<td><b>Cliente contatado</b>";
@@ -1230,6 +1230,41 @@
                     });
                 }
             }
+
+            // function cadastrarComissao(){
+            //     $.ajax({
+            //         url:"/cadastrarComissao",
+            //         method:"POST",
+            //         data:	new FormData($('#myFormCommission')[0]),
+            //         contentType: false,
+            //         cache: false,
+            //         processData: false,
+                                                                                    
+            //         beforeSend: function(){
+            //         },
+            //         success:function(data){
+            //             toastr.options = {
+            //                 "positionClass": "toast-bottom-right"
+            //             }
+            //             if(data.id == 1){
+            //                 toastr.success(data.mensagem, "Sucesso!");
+            //             }
+            //             else if(data.id == 2){
+            //                 toastr.error(data.mensagem, 'Erro!');
+            //             }	
+            //             else{
+            //                 toastr.warning(data.mensagem, 'Aviso!')
+            //             }
+            //         },
+            //         error : function(data){
+                        
+            //             toastr.options = {
+            //                 "positionClass": "toast-bottom-right"
+            //             }
+            //             toastr.error(str.mensagem, 'Erro!');
+            //         },
+            //     });
+            // }
         </script>
     </body>
 </html>

@@ -145,10 +145,48 @@
                                                 <div class="form-group has-feedback">
                                                     <label class="col-sm-2 control-label">Atualizar:</label>
                                                     <div class="col-sm-6">
-                                                        <select  id='opt_update' name="update" class="normal form-control select2" onchange="revisaCampos();">
+                                                        <select  id='opt_update' name="update" class="normal form-control select2" onchange="revisaCampos();
+                                                            if($('#opt_update').val() == 2) $('#div_data_limite').show(); else $('#div_data_limite').hide();
+                                                        ">
                                                             <option value="1">Atualizar apenas este lançamento</option>
                                                             <option value="2">Atualizar este e os próximos</option>
                                                             <option value="3">Atualizar todos os lançamentos</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group has-feedback" id='div_data_limite' style="display:none">
+                                                    <label class="col-sm-2 control-label">Atualizar:</label>
+                                                    <div class="col-sm-3">
+                                                        <select  id='opt_update2' name="update2" class="normal form-control select2" onchange="
+                                                            if($('#opt_update2').val() == 2) $('#div_data').show(); else $('#div_data').hide();
+                                                        ">
+                                                            <option value="1">Atualizar pŕoximos</option>
+                                                            <option value="2">Atualizar até:</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-5" id="div_data" style="display:none">
+                                                        <select  id='opt_data_m' name="data_m" class="normal form-control" style="width: 114px;display: inline-block;">
+                                                            <?php 
+                                                                for($i=0;$i<12; $i++){
+                                                                    if($i+1 == date('m')){
+                                                                        echo("<option value='".($i+1)."' selected>".($i+1)."</option>");
+                                                                    }else{
+                                                                        echo("<option value='".($i+1)."'>".($i+1)."</option>");
+                                                                    }
+                                                                }
+                                                            ?>
+                                                        </select> /
+                                                        <select  id='opt_data_y' name="data_y" class="normal form-control" style="width: 114px;display:inline-block;">
+                                                            <?php 
+                                                                for($i=0;$i<5; $i++){
+                                                                    if($i == 0){
+                                                                        echo("<option value='".date('Y')."' selected>".date('Y')."</option>");
+                                                                    }else{
+                                                                        echo("<option value='".(date('Y')+$i)."'>".(date('Y')+$i)."</option>");
+                                                                    }
+                                                                }
+                                                            ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -379,7 +417,7 @@
             function payCommission(uuid){
                 var r = confirm("Deseja pagar a comissão?");
                 if(r == true){
-                    $.get('payCommission/'+uuid,function(data){
+                    $.get('/payCommission/'+uuid,function(data){
                         var resposta = JSON.parse(data);
                         if(data == "true"){
                             $('#txt_status').val(2);
@@ -413,7 +451,7 @@
             function unpaidCommission(uuid){
                 var r = confirm("Deseja não pagar a comissão?");
                 if(r == true){
-                    $.get('unpaidCommission/'+uuid,function(data){
+                    $.get('/unpaidCommission/'+uuid,function(data){
                         var resposta = JSON.parse(data);
                         if(data == "true"){
                             $('#txt_status').val(1);
