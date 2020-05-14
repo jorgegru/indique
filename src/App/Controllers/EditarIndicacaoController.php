@@ -5,6 +5,7 @@ namespace Project\Controllers;
 use Project\Models\UsersModel;
 use Project\Models\CompaniesModel;
 use Project\Models\IndicationsModel;
+use Project\Models\ContractsModel;
 use Project\Models\ObservationIndicationModel;
 use Project\Models\ServicesModel;
 use \Psr\Container\ContainerInterface;
@@ -125,6 +126,8 @@ class EditarIndicacaoController
             try{
                 $indicationsModel = new IndicationsModel($this->container);
 
+                $user_type = $_SESSION['user']['user_type'];
+
                 if($metadata['cpf_cnpj']){
                     $indication = $indicationsModel->validateCompanie(['cpf_cnpj'=>$metadata['cpf_cnpj'], 'uuid'=>$metadata['indication_uuid']]);
                     if($indication){
@@ -168,9 +171,9 @@ class EditarIndicacaoController
                                                                 'observation'=>$metadata['observation_status']]);
                     }
                     $this->container->flash->addMessage('success', 'Alterado com sucesso');
-                    if($metadata['status'] == 5){
+                    if($metadata['status'] == 5 && ($user_type == 1 || $user_type == 2)){
                         return $response->withRedirect($this->container->router->pathFor('cadastroContrato',[
-                            'uuid' => $metadata['indication_uuid']
+                            'uuid' => $metadata['indication_uuid'],'name' => $metadata['name']
                         ]));        
                     }
                     return $response->withRedirect($this->container->router->pathFor('editaIndicacao'));    
@@ -193,16 +196,19 @@ class EditarIndicacaoController
       	}
     }
     
-    public function carregaEditarIndicacao($request, $response, $args)
+    public function carregaEditarIndicacao($request, $response, $args) 
     {
         $metadata = $request->getParsedBody();
      
         $ObservationIndicationModel = new ObservationIndicationModel($this->container);
         $indicationsModel = new IndicationsModel($this->container);
+        $contractsModel = new ContractsModel($this->container);
 
         $indication = $indicationsModel->find(['uuid'=>$metadata['uuid']]);
 
         $indication['observation_status'] = $ObservationIndicationModel->all(['uuid_indication'=>$metadata['uuid']]);
+
+        $indication['contract'] = $contractsModel->find(['indication_uuid'=>$metadata['uuid']]);
 
         return json_encode($indication);
     }

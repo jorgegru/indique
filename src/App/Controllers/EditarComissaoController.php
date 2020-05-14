@@ -56,7 +56,7 @@ class EditarComissaoController
 	* @param [type] $args
 	* @return redirect
 	*/
-   public function editarComissao($request, $response, $args)
+   public function editarComissao($request, $response, $args) 
    {
 	   	$metadata = $request->getParsedBody();
         $validator = $this->container->validator->validate($request, [
@@ -97,12 +97,19 @@ class EditarComissaoController
                                             ]);
                 }
                 else if($metadata['update'] == 2){
-                    $commissions = $commissionsModel->all(['indication_uuid'=>$metadata['indication_uuid']]);
+                    
                     $dia = substr($metadata['date'],0, -8);
                     $mes = substr($metadata['date'],3, -5);
                     $ano = substr($metadata['date'], -4);
 
                     $data2 = substr($metadata['date'], -4)."-".substr($metadata['date'],3, -5)."-".substr($metadata['date'],0, -8);
+
+                    $dados["indication_uuid"]['field'] = $metadata['indication_uuid'];
+                    $dados["indication_uuid"]['operator'] = "=";
+                    $dados["date"]['field'] = $data2;
+                    $dados["date"]['operator'] = ">";
+                    $filtro = " ORDER BY date ";
+                    $commissions = $commissionsModel->operatorAll($dados,$filtro);
 
                     $commission = $commissionsModel->update(['uuid'=>$metadata['commission_uuid'],
                                             'value_commission'=>$metadata['value'],
@@ -110,24 +117,73 @@ class EditarComissaoController
                                             'observation'=>$metadata['observation']
                                             ]);
 
-                    foreach($commissions as $value){
-                        $data = explode("-", $value['date']);
-                        if((int)$ano < (int)$data[0]){
+                    if($metadata['update2'] == 2){
 
-                            
-                            $commission = $commissionsModel->update(['uuid'=>$value['uuid'],
-                                            'value_commission'=>$metadata['value'],
-                                            'paid'=>$metadata['status'],
-                                            'observation'=>$metadata['observation']
-                                            ]);
+                        if($ano == $metadata['data_y']){
+                            $meses = $metadata['data_m'] - $mes;
+                            $anos = 0;
                         }
-                        else if((int)$mes < (int)$data[1] && (int)$ano <= (int)$data[0]){
+                        else{
+                            $anos = $metadata['data_y'] - $ano;
+                            $meses = $anos * 12;
+                            $meses += $metadata['data_m'] - $mes;
+                        }
 
-                            $commission = $commissionsModel->update(['uuid'=>$value['uuid'],
-                                            'value_commission'=>$metadata['value'],
-                                            'paid'=>$metadata['status'],
-                                            'observation'=>$metadata['observation']
-                                            ]);
+                        $mes_ini = $mes+1;
+                        $ano_ini = $ano;
+                        for($i=0; $i<$meses;$i++){
+                            if(isset($commissions[$i])){
+                                $commission = $commissionsModel->update(['uuid'=>$commissions[$i]['uuid'],
+                                    'value_commission'=>$metadata['value'],
+                                    'paid'=>$metadata['status'],
+                                    'observation'=>$metadata['observation']
+                                    ]);
+                            }
+                            else{
+                                $mes = $mes_ini;
+                                $ano = $ano_ini;
+                                $uuid = uuid();
+                                $mes += $i;
+                                
+                                if((int)($mes/13) > 0){
+                                    $ano += (int)($mes/13);
+                
+                                    if((int)($mes % 12) == 1 && $mes != 13) $ano++;
+                
+                                    if((int)($mes % 12) == 0)   $mes = 12;
+                                    else    $mes = (int)($mes % 12);
+                                }
+
+                                $commissionsModel->set(["uuid"=>$uuid,  
+                                                        "value_commission"=>$metadata['value'],
+                                                        "date"=>$ano."-".$mes."-".$dia,
+                                                        "indication_uuid"=>$metadata['indication_uuid'],
+                                                        "paid"=>$metadata['status'],
+                                                        "observation"=>$metadata['observation']]);
+                            }
+                        }
+                    }
+
+                    else{
+                        foreach($commissions as $value){
+                            $data = explode("-", $value['date']);
+                            if((int)$ano < (int)$data[0]){
+
+                                
+                                $commission = $commissionsModel->update(['uuid'=>$value['uuid'],
+                                                'value_commission'=>$metadata['value'],
+                                                'paid'=>$metadata['status'],
+                                                'observation'=>$metadata['observation']
+                                                ]);
+                            }
+                            else if((int)$mes < (int)$data[1] && (int)$ano <= (int)$data[0]){
+
+                                $commission = $commissionsModel->update(['uuid'=>$value['uuid'],
+                                                'value_commission'=>$metadata['value'],
+                                                'paid'=>$metadata['status'],
+                                                'observation'=>$metadata['observation']
+                                                ]);
+                            }
                         }
                     }
                 }

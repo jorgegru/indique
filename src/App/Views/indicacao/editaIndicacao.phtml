@@ -422,6 +422,12 @@
                                                             <button type="button" class="btn btn-default btn-xs" onclick="ver_comisao();"><i class="fa fa-eye"></i></button>
                                                         </div>
                                                     </div>
+                                                    <div id="div_cadastrar_contrato" class="form-group has-feedback" style="display:none;">
+                                                        <label class="col-sm-2 control-label">Cadastrar Contrato:</label>
+                                                        <div class="col-sm-3">
+                                                            <button type="button" class="btn btn-default btn-xs" onclick="cadastrar_contrato();"><i class="fa fa-file-text"></i></button>
+                                                        </div>
+                                                    </div>
                                                 </div>
 
                                                 <div class="form-group">
@@ -596,7 +602,11 @@
 
             }
 
-            function carregaIndicacao(){
+            function cadastrar_contrato(){
+                document.location.href = "/cadastroContrato/"+$('#opt_indication_uuid').val();
+            }
+
+            function carregaIndicacao(){ 
                 var uuid = $('#opt_indication_uuid').val();
                 $.ajax({
                     type: 'POST',
@@ -658,6 +668,15 @@
                             $('#opt_end_data_m').val(parseInt(dados['end_date'].slice(5,7)));
                             $('#opt_end_data_m').trigger('change');
                         }
+
+                        <?php if($user_type == 1 || $user_type == 2){?>
+                        if(dados['status'] == 5 && !dados['contract']){
+                            $('#div_cadastrar_contrato').show();
+                        }
+                        else{
+                            $('#div_cadastrar_contrato').hide();
+                        }
+                        <?php }?>
 
                     //     $('#opt_user_type').val(dados['user_type']);
                     //     $('#opt_user_type').trigger('change');

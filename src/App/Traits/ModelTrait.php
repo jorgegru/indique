@@ -33,6 +33,36 @@ trait ModelTrait {
         }
     }
 
+    public function operatorAll(array $dados, $filtro='')
+    {
+        try{
+            if(count($dados)==0)
+                return false;
+            foreach ($dados as $key => $row) {
+                $key_name = explode('.',$key);
+                $key_name = end($key_name);
+
+                $sqlArray[] = "{$key} ".$row['operator']." :{$key_name}";
+            }
+            $sql = "SELECT * FROM {$this->table}
+            WHERE ". implode(' AND ', $sqlArray) . " " . $filtro;
+
+            $stmt = $this->conn->prepare($sql);
+
+            foreach ($dados as $key => $row) {
+                $key_name = explode('.',$key);
+                $key_name = end($key_name);
+                $stmt->bindValue(":{$key_name}", $row['field'], \PDO::PARAM_STR);
+            }
+                
+            $stmt->execute();
+            
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        }catch(\PDOException $e){
+            throw $e;
+        }
+    }
+
     public function allOr(array $dados)
     {
         try{

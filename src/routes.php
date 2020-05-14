@@ -124,6 +124,9 @@ return function (App $app) {
     $app->post('/carregaEditarContrato', Project\Controllers\EditarContratoController::class . ':carregaEditarContrato')->setName('carregaEditarContrato');
     $app->get('/editaContrato/{uuid}', Project\Controllers\EditarContratoController::class . ':editaContrato')->setName('editaContrato');
 
+    //Cadastrar Comissao
+    //$app->post('/cadastrarComissao', Project\Controllers\CadastroComissaoController::class . ':cadastrarComissao')->setName('cadastrarComissao');
+    
     //Get Commission
     $app->get('/getCommissionsIndication/{uuid}', Project\Controllers\CommissionController::class . ':getCommissionsIndication')->setName('getCommissionsIndication');
     
